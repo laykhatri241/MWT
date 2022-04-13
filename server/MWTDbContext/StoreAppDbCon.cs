@@ -12,9 +12,7 @@ namespace MWTDbContext
 
         public DbSet<User> users{ get; set; }
         public DbSet<UserRoles> userRoles { get; set; }
-        public DbSet<Product> products { get; set; }
-
-        public DbSet<LogProduct> logProducts { get; set; }
+        
 
     }
 }

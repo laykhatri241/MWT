@@ -36,10 +36,7 @@ namespace MWTWebApi
             services.AddDbContext<StoreAppDbCon>(ops => ops.UseSqlServer(Configuration.GetConnectionString("MWTConn")));
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IAccountRepository, AccountRepository>();
-            services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<IProductRepository, ProductRepository>();
-            services.AddTransient<ILoggingService, LoggingService>();
-            services.AddTransient<ILoggingRepository, LoggingRepository>();
+            
             services.AddSwaggerGen();
             services.AuthenticateConfig();
             services.AddCors(c =>
