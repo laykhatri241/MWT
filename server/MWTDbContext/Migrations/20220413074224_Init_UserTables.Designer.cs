@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MWTDbContext.Migrations
 {
     [DbContext(typeof(StoreAppDbCon))]
-    [Migration("20220309064254_Add_TUsers")]
-    partial class Add_TUsers
+    [Migration("20220413074224_Init_UserTables")]
+    partial class Init_UserTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,6 +47,23 @@ namespace MWTDbContext.Migrations
                     b.HasKey("id");
 
                     b.ToTable("users");
+                });
+
+            modelBuilder.Entity("MWTDbContext.Models.UserRoles", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("rolename")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(16)")
+                        .HasMaxLength(16);
+
+                    b.HasKey("id");
+
+                    b.ToTable("userRoles");
                 });
 #pragma warning restore 612, 618
         }

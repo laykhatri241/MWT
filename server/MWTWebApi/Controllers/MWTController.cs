@@ -25,13 +25,13 @@ namespace MWTWebApi.Controllers
     {
         #region DI
         private readonly IAccountService _accountService;
-        private readonly IProductService _productService;
+       
         private readonly IAuthentication _authentication;
 
-        public MWTController(IAccountService accountService, IProductService productService, IAuthentication authentication)
+        public MWTController(IAccountService accountService, IAuthentication authentication)
         {
             _accountService = accountService;
-            _productService = productService;
+            
             _authentication = authentication;
         }
         #endregion
@@ -99,140 +99,13 @@ namespace MWTWebApi.Controllers
         #region Login
         [AllowAnonymous]
         [HttpPost("LogIn")]
-        public HttpAPIResponse LogIn(UserLogin usr)
+        // TODO: ReImplement Login
+        public HttpAPIResponse LogIn(User usr)
         {
             usr.Password = ComputeSha256Hash(usr.Password);
-            var status = _accountService.FindUser(usr).Result;
-            if (status != null)
-            {
-                // TODO: Implement UserRole
-                var token = _authentication.AuthenticateData(status.Username, ((int)status.Role));
-                status.Password = token;
-
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject(status),
-                    StatusCode = HttpStatusCode.OK
-                };
-            }
-            else
-            {
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject(null),
-                    StatusCode = HttpStatusCode.OK
-                };
-            }
-        }
-        #endregion
-
-        #region AllProduct
-        [Authorize(Roles ="1")]
-        [HttpGet("AllProduct")]
-        public HttpAPIResponse AllProduct()
-        {
-            var status = _productService.GetProducts().Result;
-            if (status != null)
-            {
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject(status),
-                    StatusCode = HttpStatusCode.OK
-                };
-            }
-            else
-            {
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject(""),
-                    StatusCode = HttpStatusCode.OK
-                };
-            }
-        }
-        #endregion
-
-        #region AddProduct
-        [HttpPost("AddProduct")]
-        public HttpAPIResponse AddProduct(Product prod)
-        {
-            var status = _productService.AddProduct(prod).Result;
-            if (status == 1)
-            {
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject("ProductAdded"),
-                    StatusCode = HttpStatusCode.OK
-                };
-            }
-            else
-            {
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject("Error Adding Product"),
-                    StatusCode = HttpStatusCode.OK
-                };
-            }
-        }
-        #endregion
-
-        #region GetProduct
-        [HttpPost("GetProduct")]
-        public HttpAPIResponse GetProduct([FromBody] int id)
-        {
-            var product = _productService.GetProduct(id).Result;
-            if (product != null)
-            {
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject(product),
-                    StatusCode = HttpStatusCode.OK
-                };
-            }
-            else
-            {
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject(""),
-                    StatusCode = HttpStatusCode.OK
-                };
-            }
-        }
-        #endregion
-
-        #region DeleteProduct
-        [HttpPost("DeleteProduct")]
-        public HttpAPIResponse DeleteProduct([FromBody] int id)
-        {
-            var status = _productService.DeleteProduct(id).Result;
-            if (status == 1)
-            {
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject("Success"),
-                    StatusCode = HttpStatusCode.OK
-                };
-            }
-            else
-            {
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject("Failed"),
-                    StatusCode = HttpStatusCode.OK
-                };
-            }
-        }
-        #endregion
-
-        #region UpdateProduct
-        [HttpPost("UpdateProduct")]
-        public HttpAPIResponse UpdateProduct([FromBody] Product prod)
-        {
-            var status = _productService.EditProduct(prod);
-
             return new HttpAPIResponse()
             {
-                StatusCode = HttpStatusCode.OK,
-                Content = JsonConvert.SerializeObject("Success")
+                Content = "None"
             };
         }
         #endregion

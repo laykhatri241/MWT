@@ -18,10 +18,7 @@ namespace MWTCore.Repository
             _context = context;
         }
 
-        public async Task<User> GetUser(UserLogin usr)
-        {
-            return await _context.users.FirstOrDefaultAsync(u => u.Username.Equals(usr.Username) && u.Password.Equals(usr.Password));
-        }
+      
 
         public async Task<int> InsertUser(User usr)
         {

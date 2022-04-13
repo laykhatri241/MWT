@@ -2,10 +2,23 @@
 
 namespace MWTDbContext.Migrations
 {
-    public partial class Add_TUsers : Migration
+    public partial class Init_UserTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "userRoles",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    rolename = table.Column<string>(maxLength: 16, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_userRoles", x => x.id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
@@ -25,6 +38,9 @@ namespace MWTDbContext.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "userRoles");
+
             migrationBuilder.DropTable(
                 name: "users");
         }

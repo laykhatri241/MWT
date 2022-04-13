@@ -22,10 +22,7 @@ namespace MWTCore.Services
             return await _accountRepository.InsertUser(usr);
         }
 
-        public async Task<User> FindUser(UserLogin usr)
-        {
-            return await _accountRepository.GetUser(usr);
-        }
+      
 
         public bool UserExists(string Username, string Password)
         {
