@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using MWTCore.Services.Interfaces;
 using MWTDbContext.Models;
 using MWTWebApi.Model;
+using MWTWebApi.Model.Custom;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -25,13 +26,12 @@ namespace MWTWebApi.Controllers
     {
         #region DI
         private readonly IAccountService _accountService;
-       
         private readonly IAuthentication _authentication;
 
         public MWTController(IAccountService accountService, IAuthentication authentication)
         {
             _accountService = accountService;
-            
+
             _authentication = authentication;
         }
         #endregion
@@ -62,7 +62,8 @@ namespace MWTWebApi.Controllers
             var response = new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject("WebAPI is working As expected"),
-                StatusCode = HttpStatusCode.OK
+                StatusCode = HttpStatusCode.OK,
+                Timestamp = DateTime.Now
             };
 
             return response;
@@ -75,37 +76,73 @@ namespace MWTWebApi.Controllers
         [HttpPost]
         public HttpAPIResponse SignUp(User usr)
         {
-            usr.Password = ComputeSha256Hash(usr.Password);
-            int status = _accountService.CreateUser(usr).Result;
-            if (status == 1)
+            if (!_accountService.checkUsername(usr.Username).Result)
             {
-                return new HttpAPIResponse()
+                usr.Password = ComputeSha256Hash(usr.Password);
+                int status = _accountService.CreateUser(usr).Result;
+                if (status == 1)
                 {
-                    Content = JsonConvert.SerializeObject("User Created Successfully"),
-                    StatusCode = HttpStatusCode.OK
-                };
+                    return new HttpAPIResponse()
+                    {
+                        Content = JsonConvert.SerializeObject(1),
+                        StatusCode = HttpStatusCode.OK,
+                        Timestamp = DateTime.Now
+                    };
+                }
+                else
+                {
+                    return new HttpAPIResponse()
+                    {
+                        Content = JsonConvert.SerializeObject(-1),
+                        StatusCode = HttpStatusCode.OK,
+                        Timestamp = DateTime.Now
+                    };
+                }
             }
             else
             {
                 return new HttpAPIResponse()
                 {
-                    Content = JsonConvert.SerializeObject("Error Creating User"),
-                    StatusCode = HttpStatusCode.OK
+                    Content = JsonConvert.SerializeObject("UsernameExists"),
+                    StatusCode = HttpStatusCode.OK,
+                    Timestamp = DateTime.Now
                 };
             }
         }
         #endregion
 
-        #region Login
+        #region CheckUsername
         [AllowAnonymous]
-        [HttpPost("LogIn")]
-        // TODO: ReImplement Login
-        public HttpAPIResponse LogIn(User usr)
+        [HttpPost("CheckUsername")]
+        public HttpAPIResponse CheckUsername(string usrname)
         {
-            usr.Password = ComputeSha256Hash(usr.Password);
+            var response = _accountService.checkUsername(usrname).Result;
+
             return new HttpAPIResponse()
             {
-                Content = "None"
+                Content = JsonConvert.SerializeObject(response),
+                StatusCode = HttpStatusCode.OK,
+                Timestamp = DateTime.Now
+            };
+        }
+        #endregion
+
+        #region Login
+        [AllowAnonymous]
+        [HttpPost("Login")]
+        public HttpAPIResponse Login(UserModel usr)
+        {
+            var _user = _accountService.UserExists(usr.Username, ComputeSha256Hash(usr.Password)).Result;
+            if (_user != null)
+            {
+                _user.Password = _authentication.AuthenticateData(_user.Username, _user.Role);
+            }
+
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(_user),
+                Timestamp = DateTime.Now,
+                StatusCode = HttpStatusCode.OK
             };
         }
         #endregion

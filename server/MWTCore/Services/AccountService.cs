@@ -17,16 +17,19 @@ namespace MWTCore.Services
             _accountRepository = accountRepository;
         }
 
+        public async Task<bool> checkUsername(string username)
+        {
+            return await _accountRepository.RetrieveUsername(username);
+        }
+
         public async Task<int> CreateUser(User usr)
         {
             return await _accountRepository.InsertUser(usr);
-        }
+        }      
 
-      
-
-        public bool UserExists(string Username, string Password)
+        public async Task<User> UserExists(string Username, string Password)
         {
-            return _accountRepository.IsUser(Username, Password);
+            return await _accountRepository.IsUser(Username, Password);
         }
     }
 }
