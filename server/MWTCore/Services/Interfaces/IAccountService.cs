@@ -9,9 +9,10 @@ namespace MWTCore.Services.Interfaces
     public interface IAccountService
     {
         public Task<int> CreateUser(User usr);
-        
 
-        public bool UserExists(string Username, string Password);
+        public Task<bool> checkUsername(string username);
+
+        public Task<User> UserExists(string Username, string Password);
 
     }
 }

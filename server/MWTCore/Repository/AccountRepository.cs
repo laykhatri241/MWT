@@ -18,8 +18,6 @@ namespace MWTCore.Repository
             _context = context;
         }
 
-      
-
         public async Task<int> InsertUser(User usr)
         {
             _context.users.Add(usr);
@@ -27,9 +25,14 @@ namespace MWTCore.Repository
 
         }
 
-        public bool IsUser(string Username, string Password)
+        public async Task<User> IsUser(string Username, string Password)
         {
-            return (_context.users.FirstOrDefaultAsync(u => u.Username.Equals(Username) && u.Password.Equals(Password)) != null);
+            return await (_context.users.FirstOrDefaultAsync(u => u.Username.Equals(Username) && u.Password.Equals(Password)));
+        }
+
+        public async Task<bool> RetrieveUsername(string username)
+        {
+            return await (_context.users.AnyAsync(usr => usr.Username.Equals(username)));
         }
     }
 }

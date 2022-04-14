@@ -15,7 +15,7 @@ namespace MWTWebApi.Model
 
         public Authentication(string key) { _key = key;}
 
-        public string AuthenticateData(string username, int role)
+        public string AuthenticateData(string username,  int role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.ASCII.GetBytes(_key);
