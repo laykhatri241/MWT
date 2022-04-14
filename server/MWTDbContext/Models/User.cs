@@ -20,9 +20,16 @@ namespace MWTDbContext.Models
         [MaxLength(65)]
         public string Password { get; set; }
 
+        public string Avatar { get; set; }
+
         [ForeignKey("UserRoles")]
         public virtual int Role { get; set; }
-        
+
+        [Required]
+        public DateTime createdAt { get; set; }
+        [Required]
+        public DateTime updatedAt { get; set; }
+
     }
 
 }
