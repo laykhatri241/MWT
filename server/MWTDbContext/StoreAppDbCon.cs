@@ -12,7 +12,8 @@ namespace MWTDbContext
 
         public DbSet<User> users{ get; set; }
         public DbSet<UserRoles> userRoles { get; set; }
-        
+
+        public DbSet<DetailsMaster> detailsMasters { get; set; }
 
     }
 }
