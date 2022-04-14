@@ -59,14 +59,12 @@ namespace MWTWebApi.Controllers
         [HttpGet]
         public HttpAPIResponse TestWebAPI()
         {
-            var response = new HttpAPIResponse()
+            return new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject("WebAPI is working As expected"),
                 StatusCode = HttpStatusCode.OK,
                 Timestamp = DateTime.Now
             };
-
-            return response;
         }
         #endregion
 
@@ -147,5 +145,96 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
+        #region AddUserDetails
+        [Authorize(Roles = "1,2,3")]
+        [HttpPost("AddUserDetails")]
+        public HttpAPIResponse AddUserDetails(DetailsMaster details)
+        {
+            var status = _accountService.AddUserDetails(details).Result;
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(status),
+                StatusCode = HttpStatusCode.OK,
+                Timestamp = DateTime.Now
+            };
+        }
+        #endregion
+
+        #region GetMyuser
+        [Authorize(Roles = "1,2,3")]
+        [HttpPost("GetMyUser")]
+        public HttpAPIResponse GetMyUser(int id)
+        {
+            var _user = _accountService.FetchUser(id).Result;
+            _user.Password = "";
+            return new HttpAPIResponse()
+            {
+                Timestamp = DateTime.Now,
+                StatusCode = HttpStatusCode.OK,
+                Content = JsonConvert.SerializeObject(_user)
+            };
+        }
+        #endregion
+
+        #region ChangePassword
+        [Authorize(Roles = "1,2,3")]
+        [HttpPost("ChangePassword")]
+        public HttpAPIResponse ChangePassword(ChangePassword changePassword)
+        {
+            if (ComputeSha256Hash(changePassword.OldPass).Equals(_accountService.FetchUser(changePassword.id).Result.Password))
+            {
+                changePassword.OldPass = ComputeSha256Hash(changePassword.OldPass);
+                changePassword.NewPass = ComputeSha256Hash(changePassword.NewPass);
+                var status = _accountService.UpdatePassword(changePassword).Result;
+                return new HttpAPIResponse()
+                {
+                    Timestamp = DateTime.Now,
+                    StatusCode = HttpStatusCode.OK,
+                    Content = JsonConvert.SerializeObject(status)
+                };
+            }
+            else
+            {
+                return new HttpAPIResponse()
+                {
+                    Timestamp = DateTime.Now,
+                    StatusCode = HttpStatusCode.OK,
+                    Content = JsonConvert.SerializeObject(-1)
+                };
+            }
+        }
+        #endregion
+
+        #region UpdateUser
+        [Authorize(Roles ="1,2,3,")]
+        [HttpPost("UpdateUser")]
+        public HttpAPIResponse UpdateUser(User usr)
+        {
+            try
+            {
+                var status = _accountService.UpdateUser(usr).Result;
+
+                return new HttpAPIResponse()
+                {
+                    Content = JsonConvert.SerializeObject(status),
+                    StatusCode = HttpStatusCode.OK,
+                    Timestamp = DateTime.Now
+                };
+            }
+            catch(Exception ex)
+            {
+                return new HttpAPIResponse()
+                {
+                    Content = JsonConvert.SerializeObject(-1),
+                    StatusCode = HttpStatusCode.OK,
+                    Timestamp = DateTime.Now
+                };
+            }
+            
+        }
+        #endregion
     }
+
+
 }
+
