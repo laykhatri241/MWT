@@ -5,7 +5,7 @@ import User from "@/interfaces/user";
 @Module({ namespaced: true })
 class Users extends VuexModule {
   public user: User = {
-    Fullname: "hhh",
+    Fullname: "",
     id: 0,
     Username: "",
     Password: "",
@@ -14,15 +14,9 @@ class Users extends VuexModule {
 
   @Action
   public async createUser(data: User): Promise<boolean> {
-    console.log(data);
-
     return api
-
-      .post('/SignUp', {
-        data,
-      })
+      .post('/SignUp', data)
       .then((response) => {
-        debugger;
         response.data.data.id = response.data.id;
         this.context.commit("create", response.data.data);
         return true;
@@ -30,18 +24,12 @@ class Users extends VuexModule {
       .catch(() => {
         return false;
       });
-  }
+  } 
   @Action
-  public async Check(data: User): Promise<boolean> {
-    console.log(data);
-
+  public async login(data: User): Promise<boolean> {
     return api
-
-      .post('/CheckUsername', {
-        data,
-      })
+      .post('/Login', data)
       .then((response) => {
-        debugger;
         response.data.data.id = response.data.id;
         this.context.commit("create", response.data.data);
         return true;
@@ -49,6 +37,6 @@ class Users extends VuexModule {
       .catch(() => {
         return false;
       });
-  }
+  } 
 }
 export default Users;

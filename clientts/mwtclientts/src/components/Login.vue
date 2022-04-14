@@ -32,14 +32,16 @@
                       </h4>
                       <v-form>
                         <v-text-field
-                          label="Email"
+                          label="Username"
                           type="text"
                           color="blue accent-3"
+                          v-model="user.Username"
                         />
 
                         <v-text-field
                           id="password"
                           label="Password"
+                          v-model="user.Password"
                           :append-icon="value ? 'visibility' : 'visibility_off'"
                           @click:append="() => (value = !value)"
                           name="password"
@@ -116,7 +118,7 @@
                           color="blue accent-3"
                         />
                         <v-text-field
-                          label="Email"
+                          label="Username"
                           v-model="user.Username"
                           name="Email"
                           type="text"
@@ -163,7 +165,7 @@
                         rounded
                         class="mt-3"
                         color="blue accent-3"
-                       @click="submitForm()"
+                        @click="submitForm()"
                         :disabled="!valid"
                         dark
                         >SIGN UP</v-btn
@@ -185,11 +187,11 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { namespace } from "vuex-class";
-import  User  from "@/interfaces/user";
+import User from "@/interfaces/user";
 const users = namespace("user");
 @Component
 export default class AddUser extends Vue {
-  public isNew?: boolean = true
+  public isNew?: boolean = true;
   valid = true;
   Roles = [
     { Did: 1, DName: "User" },
@@ -224,10 +226,10 @@ export default class AddUser extends Vue {
   simpleData!: string;
 
   public user: User = {
-    Fullname: 'hhth',
+    Fullname: "",
     id: 0,
-    Username: 'thh',
-    Password: 'Krunal@214',
+    Username: "",
+    Password: "",
     Role: 3,
   };
 
@@ -235,17 +237,11 @@ export default class AddUser extends Vue {
   @users.Action
   public createUser!: (data: User) => Promise<boolean>;
 
-  
-    public submitForm(): void {
-    
+  public submitForm(): void {
     if (this.isNew) {
-      console.log("Subm");
-      
-      
-      this.createUser(this.user)
+      this.createUser(this.user);
     } else {
       console.log("error");
-      
     }
   }
 }
