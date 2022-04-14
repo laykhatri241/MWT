@@ -1,8 +1,8 @@
 <template>
-  <v-app id="inspire" >
+  <v-app id="inspire">
     <v-content po="fixed">
       <!-- <v-container position="fixed"> -->
-      <v-row align="center" justify="center" >
+      <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="8">
           <v-card class="elevation-12">
             <v-window v-model="step">
@@ -34,14 +34,12 @@
                         <v-text-field
                           label="Email"
                           type="text"
-                          
                           color="blue accent-3"
                         />
 
                         <v-text-field
                           id="password"
                           label="Password"
-                          
                           :append-icon="value ? 'visibility' : 'visibility_off'"
                           @click:append="() => (value = !value)"
                           name="password"
@@ -51,16 +49,15 @@
                       </v-form>
                       <h3 class="text-center mt-4">Forgot your password ?</h3>
                     </v-card-text>
-                    <h3 style="color:red;" class="text-center mt-4" v-if="this.simpleData">
+                    <h3
+                      style="color: red"
+                      class="text-center mt-4"
+                      v-if="this.simpleData"
+                    >
                       {{ this.simpleData }}
                     </h3>
                     <div class="text-center mt-3">
-                      <v-btn
-                        class="mt-3"
-                        rounded
-                        color="blue accent-3"
-                        dark
-                        
+                      <v-btn class="mt-3" rounded color="blue accent-3" dark
                         >SIGN IN</v-btn
                       >
                     </div>
@@ -113,15 +110,14 @@
                         <v-text-field
                           label="Full Name"
                           :rules="nameRules"
-                         
+                          v-model="user.Fullname"
                           name="Name"
                           type="text"
                           color="blue accent-3"
                         />
                         <v-text-field
                           label="Email"
-                          
-                          :rules="emailRules"
+                          v-model="user.Username"
                           name="Email"
                           type="text"
                           color="blue accent-3"
@@ -129,7 +125,7 @@
 
                         <v-text-field
                           id="password"
-                         
+                          v-model="user.Password"
                           :append-icon="value ? 'visibility' : 'visibility_off'"
                           @click:append="() => (value = !value)"
                           :rules="passwordRules"
@@ -140,9 +136,10 @@
                         />
                         <v-text-field
                           id="confirm_password"
+                          v-model="user.Password"
                           :append-icon="value ? 'visibility' : 'visibility_off'"
                           @click:append="() => (value = !value)"
-                          :rules="passwordRules"
+                          :rules="confirmPasswordRules"
                           label="Confirm_password"
                           name="confirm_password"
                           :type="value ? 'password' : 'text'"
@@ -166,7 +163,7 @@
                         rounded
                         class="mt-3"
                         color="blue accent-3"
-                        
+                       @click="submitForm()"
                         :disabled="!valid"
                         dark
                         >SIGN UP</v-btn
@@ -180,17 +177,19 @@
           </v-card>
         </v-col>
       </v-row>
-       <!-- </v-container>  -->
+      <!-- </v-container>  -->
     </v-content>
   </v-app>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-
-
+import { namespace } from "vuex-class";
+import  User  from "@/interfaces/user";
+const users = namespace("user");
 @Component
 export default class AddUser extends Vue {
+  public isNew?: boolean = true
   valid = true;
   Roles = [
     { Did: 1, DName: "User" },
@@ -209,12 +208,12 @@ export default class AddUser extends Vue {
       /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) ||
       "Password must contain at least lowercase letter, one number, a special character and one uppercase letter",
   ];
-//   confirmPasswordRules = [
-//     (value: any) => !!value || "type confirm password",
-//     (value: any) =>
-//       value === this.user.password ||
-//       "The password confirmation does not match.",
-//   ];
+  confirmPasswordRules = [
+    (value: any) => !!value || "type confirm password",
+    (value: any) =>
+      value === this.user.Password ||
+      "The password confirmation does not match.",
+  ];
   nameRules = [(v: any) => !!v || "Value is required"];
   step = 1;
   @Prop(String)
@@ -224,13 +223,35 @@ export default class AddUser extends Vue {
   @Prop(String)
   simpleData!: string;
 
- 
+  public user: User = {
+    Fullname: 'hhth',
+    id: 0,
+    Username: 'thh',
+    Password: 'Krunal@214',
+    Role: 3,
+  };
+
   public submitted: boolean = false;
+  @users.Action
+  public createUser!: (data: User) => Promise<boolean>;
 
- 
-
+  
+    public submitForm(): void {
+    
+    if (this.isNew) {
+      console.log("Subm");
+      
+      
+      this.createUser(this.user)
+    } else {
+      console.log("error");
+      
+    }
+  }
 }
 </script>
 <style>
-  html { overflow-y: hidden }
+html {
+  overflow-y: hidden;
+}
 </style>
