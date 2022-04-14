@@ -11,7 +11,7 @@
       <v-toolbar-title
         style="width: 350px"
       >
-        <a href="/" class="white--text" style="text-decoration: none"><v-icon>mdi-shopping</v-icon>&nbsp;PLStores</a>
+        <a href="/" class="white--text" style="text-decoration: none"><v-icon>mdi-shopping</v-icon>&nbsp;PNLStores</a>
       </v-toolbar-title>
       <v-text-field
         flat
@@ -22,11 +22,11 @@
         class="hidden-sm-and-down pl-10 ml-4"
       />
       <v-spacer />
-      <v-btn icon>
+      <v-btn icon href="/Login"  >
         <v-icon>mdi-account-circle</v-icon>
-        
+              
       </v-btn>
-      <v-btn v-on="on" icon>
+      <v-btn icon>
         <v-badge
           content="2"
           value="2"
@@ -36,7 +36,7 @@
           <v-icon>mdi-bell</v-icon>
         </v-badge>
       </v-btn>
-      <v-btn v-on="on" href="/cart" icon>
+      <v-btn  href="/cart" icon>
         <v-badge
           content="2"
           value="2"
@@ -57,8 +57,8 @@
           <span>Home</span>
         </a>
         <v-menu open-on-hover offset-y>
-          <template v-slot:activator="{ on }">
-            <v-btn v-on="on">
+          <template v-slot:activator="{  }">
+            <v-btn >
               <span>Shop</span>
             </v-btn>
           </template>
@@ -125,13 +125,14 @@
         </v-card-text>
 
         <v-card-text class="white--text pt-0">
-          Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet. Mauris cursus commodo interdum. Praesent ut risus eget metus luctus accumsan id ultrices nunc. Sed at orci sed massa consectetur dignissim a sit amet dui. Duis commodo vitae velit et faucibus. Morbi vehicula lacinia malesuada. Nulla placerat augue vel ipsum ultrices, cursus iaculis dui sollicitudin. Vestibulum eu ipsum vel diam elementum tempor vel ut orci. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+        For every sale you miss because you're too enthusiastic, you will miss a hundred because you're not enthusiastic enough.” “Every choice you make has an end result.” "Your attitude, not your aptitude, will determine your altitude."
+        .
         </v-card-text>
 
         <v-divider></v-divider>
 
         <v-card-text class="white--text">
-          {{ new Date().getFullYear() }} — <strong>ShipIT</strong>
+          {{ new Date().getFullYear() }} — <strong>@ CopyRight</strong>
         </v-card-text>
       </v-card>
     </v-footer>
