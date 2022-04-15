@@ -1,4 +1,5 @@
 ﻿using MWTDbContext.Models;
+using MWTWebApi.Model.Custom;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,5 +14,14 @@ namespace MWTCore.Repository.Interfaces
         public Task<bool> RetrieveUsername(string username);
 
         public Task<User> IsUser(string Username, string Password);
+
+        public Task<int> InsertUserDetails(DetailsMaster details);
+
+        public Task<User> RetriveUser(int id);
+
+        public Task<bool> UpdatePassword(ChangePassword changePassword);
+
+        public Task<bool> UpdateUser(User usr);
+
     }
 }

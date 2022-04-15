@@ -1,7 +1,7 @@
 <template>
 <div id="app">
     <v-app>
-        <v-dialog v-model="dialog" 
+        <v-dialog  persistent v-model="dialog" 
          max-width="600px" min-width="360px">
             <div>
                 <v-tabs v-model="tab" show-arrows background-color="primary accent-1" icons-and-text dark grow>

@@ -22,11 +22,12 @@ namespace MWTWebApi.Model
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters {
-                    ValidateIssuerSigningKey = true,
                     ValidateIssuer = false,
                     ValidateAudience = false,
+                    ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
-                    ClockSkew = TimeSpan.Zero
+                    ClockSkew = TimeSpan.FromMinutes(5),
+                    
                 };
             });
 
