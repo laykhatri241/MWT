@@ -36,6 +36,7 @@
                           type="text"
                           color="blue accent-3"
                           v-model="user.Username"
+                          :rules="nameRules"
                         />
 
                         <v-text-field
@@ -59,7 +60,7 @@
                       {{ this.simpleData }}
                     </h3>
                     <div class="text-center mt-3">
-                      <v-btn class="mt-3" rounded color="blue accent-3" dark
+                      <v-btn class="mt-3" rounded color="blue accent-3" dark @click="Loginform()"
                         >SIGN IN</v-btn
                       >
                     </div>
@@ -138,7 +139,6 @@
                         />
                         <v-text-field
                           id="confirm_password"
-                          v-model="user.Password"
                           :append-icon="value ? 'visibility' : 'visibility_off'"
                           @click:append="() => (value = !value)"
                           :rules="confirmPasswordRules"
@@ -197,13 +197,6 @@ export default class AddUser extends Vue {
     { Did: 1, DName: "User" },
     { Did: 0, DName: "Admin" },
   ];
-  emailRules = [
-    (v: any) => !!v || "E-mail is required",
-    (v: string) =>
-      /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()\\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-        v
-      ) || "E-mail must be valid",
-  ];
   passwordRules = [
     (v: any) => !!v || "Password is required",
     (v: string) =>
@@ -236,15 +229,21 @@ export default class AddUser extends Vue {
   public submitted: boolean = false;
   @users.Action
   public createUser!: (data: User) => Promise<boolean>;
-
+  @users.Action
+  public login!: (data: any) => Promise<any>;
   public submitForm(): void {
     if (this.isNew) {
       this.createUser(this.user);
+      this.submitted = true;
     } else {
       console.log("error");
     }
   }
+  public Loginform(): void {
+   this.login({Username:this.user.Username ,Password:this.user.Password})
+ }
 }
+
 </script>
 <style>
 html {
