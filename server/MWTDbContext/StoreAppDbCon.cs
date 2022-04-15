@@ -15,5 +15,7 @@ namespace MWTDbContext
 
         public DbSet<DetailsMaster> detailsMasters { get; set; }
 
+        public DbSet<CategoryMaster> categoryMasters { get; set; }
+
     }
 }

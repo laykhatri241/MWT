@@ -1,4 +1,5 @@
-﻿using MWTCore.Repository.Interfaces;
+﻿using MWTCore.Models.Custom;
+using MWTCore.Repository.Interfaces;
 using MWTCore.Services.Interfaces;
 using MWTDbContext.Models;
 using MWTWebApi.Model.Custom;
@@ -21,7 +22,6 @@ namespace MWTCore.Services
         public async Task<int> AddUserDetails(DetailsMaster details)
         => await _accountRepository.InsertUserDetails(details);
         
-
         public async Task<bool> checkUsername(string username)
         => await _accountRepository.RetrieveUsername(username);
         
@@ -36,11 +36,15 @@ namespace MWTCore.Services
         public async Task<bool> UpdatePassword(ChangePassword changePassword)
         => await _accountRepository.UpdatePassword(changePassword);
 
-        public async Task<bool> UpdateUser(User usr)
+        public async Task<bool> UpdateUser(UserModel usr)
         => await _accountRepository.UpdateUser(usr);
+
+        public async Task<bool> UpdateUserDetails(UserDetailsModel details)
+        => await _accountRepository.UpdateUserDetails(details);
 
         public async Task<User> UserExists(string Username, string Password)
             =>await _accountRepository.IsUser(Username, Password);
         
+
     }
 }

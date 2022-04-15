@@ -11,11 +11,14 @@ namespace MWTWebApi.Model.Custom
         public int id { get; set; }
         
         public string Fullname { get; set; }
-        
         public string Username { get; set; }
-        
         public string Password { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string Avatar { get; set; }
+        public virtual int Role { get; set; }
 
-        public int Role { get; set; }
+        public DateTime createdAt { get; set; }
+        public DateTime updatedAt { get; set; }
+        public bool isActive { get; set; }
     }
 }

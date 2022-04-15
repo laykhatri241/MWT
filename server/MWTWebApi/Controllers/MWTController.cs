@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MWTCore.Models.Custom;
 using MWTCore.Services.Interfaces;
 using MWTDbContext.Models;
 using MWTWebApi.Model;
@@ -145,21 +146,6 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-        #region AddUserDetails
-        [Authorize(Roles = "1,2,3")]
-        [HttpPost("AddUserDetails")]
-        public HttpAPIResponse AddUserDetails(DetailsMaster details)
-        {
-            var status = _accountService.AddUserDetails(details).Result;
-            return new HttpAPIResponse()
-            {
-                Content = JsonConvert.SerializeObject(status),
-                StatusCode = HttpStatusCode.OK,
-                Timestamp = DateTime.Now
-            };
-        }
-        #endregion
-
         #region GetMyuser
         [Authorize(Roles = "1,2,3")]
         [HttpPost("GetMyUser")]
@@ -208,10 +194,8 @@ namespace MWTWebApi.Controllers
         #region UpdateUser
         [Authorize(Roles ="1,2,3,")]
         [HttpPost("UpdateUser")]
-        public HttpAPIResponse UpdateUser(User usr)
+        public HttpAPIResponse UpdateUser(UserModel usr)
         {
-            try
-            {
                 var status = _accountService.UpdateUser(usr).Result;
 
                 return new HttpAPIResponse()
@@ -219,20 +203,40 @@ namespace MWTWebApi.Controllers
                     Content = JsonConvert.SerializeObject(status),
                     StatusCode = HttpStatusCode.OK,
                     Timestamp = DateTime.Now
-                };
-            }
-            catch(Exception ex)
-            {
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject(-1),
-                    StatusCode = HttpStatusCode.OK,
-                    Timestamp = DateTime.Now
-                };
-            }
-            
+                };            
         }
         #endregion
+
+        #region AddUserDetails
+        [Authorize(Roles = "1,2,3")]
+        [HttpPost("AddUserDetails")]
+        public HttpAPIResponse AddUserDetails(DetailsMaster details)
+        {
+            var status = _accountService.AddUserDetails(details).Result;
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(status),
+                StatusCode = HttpStatusCode.OK,
+                Timestamp = DateTime.Now
+            };
+        }
+        #endregion
+
+        #region EditUserDetails
+        [Authorize(Roles ="1,2,3")]
+        [HttpPost("EditUserDetails")]
+        public HttpAPIResponse EditUserDetails(UserDetailsModel details)
+        {
+            var status = _accountService.UpdateUserDetails(details).Result;
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(status),
+                StatusCode = HttpStatusCode.OK,
+                Timestamp = DateTime.Now
+            };
+        }
+        #endregion
+
     }
 
 

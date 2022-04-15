@@ -1,4 +1,5 @@
-﻿using MWTDbContext.Models;
+﻿using MWTCore.Models.Custom;
+using MWTDbContext.Models;
 using MWTWebApi.Model.Custom;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,9 @@ namespace MWTCore.Repository.Interfaces
 
         public Task<bool> UpdatePassword(ChangePassword changePassword);
 
-        public Task<bool> UpdateUser(User usr);
+        public Task<bool> UpdateUser(UserModel usr);
+
+        public Task<bool> UpdateUserDetails(UserDetailsModel details);
 
     }
 }
