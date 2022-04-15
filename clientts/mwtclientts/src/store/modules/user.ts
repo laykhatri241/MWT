@@ -15,7 +15,7 @@ class Users extends VuexModule {
   @Action
   public async createUser(data: User): Promise<boolean> {
     return api
-      .post('/SignUp', data)
+      .post("/SignUp", data)
       .then((response) => {
         response.data.data.id = response.data.id;
         this.context.commit("create", response.data.data);
@@ -24,19 +24,36 @@ class Users extends VuexModule {
       .catch(() => {
         return false;
       });
-  } 
+  }
   @Action
-  public async login(data: User): Promise<boolean> {
+  public async login(data: any): Promise<any> {
     return api
-      .post('/Login', data)
+      .post("/Login", data)
       .then((response) => {
-        response.data.data.id = response.data.id;
-        this.context.commit("create", response.data.data);
+        console.log(response);
+       
+        //this.context.commit("login  hdjsahd Success", response.data.data);
+        
+        //return Promise.resolve(user);
         return true;
       })
       .catch(() => {
         return false;
       });
-  } 
+  }
+  @Action
+  public async CheckUsername(data: any): Promise<any> {
+    return api
+      .post("/CheckUsername", data)
+      .then((response) => {
+        console.log(response);
+        
+        //this.context.commit("CheckUsername", response.data.data);
+        return true;
+      })
+      .catch(() => {
+        return false;
+      });
+  }
 }
 export default Users;
