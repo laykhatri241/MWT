@@ -19,9 +19,9 @@ namespace MWTDbContext.Models
         [Required]
         [MaxLength(65)]
         public string Password { get; set; }
-
+        [Required]
+        public DateTime DateOfBirth { get; set; }
         public string Avatar { get; set; }
-
         [ForeignKey("UserRoles")]
         public virtual int Role { get; set; }
 
@@ -29,6 +29,8 @@ namespace MWTDbContext.Models
         public DateTime createdAt { get; set; }
         [Required]
         public DateTime updatedAt { get; set; }
+        [Required]
+        public bool isActive { get; set; }
 
     }
 

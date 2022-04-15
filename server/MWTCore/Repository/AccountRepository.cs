@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MWTCore.Models.Custom;
 using MWTCore.Repository.Interfaces;
 using MWTDbContext;
 using MWTDbContext.Models;
@@ -21,35 +22,19 @@ namespace MWTCore.Repository
 
         public async Task<int> InsertUser(User usr)
         {
-            try
-            {
                 usr.createdAt = DateTime.Now;
                 usr.updatedAt = DateTime.Now;
+                usr.isActive = true;
                 _context.users.Add(usr);
                 return await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                return -1;
-            }
-
         }
 
         public async Task<int> InsertUserDetails(DetailsMaster details)
         {
-            try
-            {
-
             details.createdAt = DateTime.Now;
             details.updatedAt = DateTime.Now;
             _context.detailsMasters.Add(details);
             return await _context.SaveChangesAsync();
-            }
-            catch(Exception ex)
-            {
-                return -1;
-            }
-
         }
 
         public async Task<User> IsUser(string Username, string Password)
@@ -78,16 +63,29 @@ namespace MWTCore.Repository
             
         }
 
-        public async Task<bool> UpdateUser(User usr)
+        public async Task<bool> UpdateUser(UserModel usr)
         {
             var _user = await _context.users.FirstAsync(us => us.id == usr.id);
 
             _user.Fullname = usr.Fullname;
-            _user.Avatar = usr.Avatar;
             _user.updatedAt = DateTime.Now;
             _user.Username = usr.Username;
 
             return await _context.SaveChangesAsync() == 1? true : false;
+        }
+
+        public async Task<bool> UpdateUserDetails(UserDetailsModel details)
+        {
+            var _userDetails = await _context.detailsMasters.FirstAsync(dm => dm.id == details.id);
+
+            
+            _userDetails.Address1 = details.Address1;
+            _userDetails.Address2 = details.Address2;
+            _userDetails.GSTIN = details.GSTIN;
+            _userDetails.Pincode = details.Pincode;
+            _userDetails.updatedAt = DateTime.Now;
+
+            return await _context.SaveChangesAsync() == 1 ? true : false;
         }
     }
 }

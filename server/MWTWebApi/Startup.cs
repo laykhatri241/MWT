@@ -62,6 +62,7 @@ namespace MWTWebApi
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sample API");
                 });
             }
+            app.ConfigureExceptionHandler();
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors(options => {
