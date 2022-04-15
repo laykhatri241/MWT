@@ -49,6 +49,7 @@
           <v-icon>mdi-cart</v-icon>
         </v-badge>
       </v-btn>
+      <v-switch  @click="darkMode" />
     </v-app-bar>
     <v-content>
       <v-bottom-navigation
@@ -146,6 +147,24 @@ import Login from './Login.vue'
     export default {
      
     components: { Login },
+    theme: {
+      themes: {
+        light: {
+          primary: "#82b19f",
+          secondary: "#f4bf1c",
+          accent: "#47333c",
+          error: "#dc6276",
+          background: "#F6F5F4",
+          formBackground: "#f7f7f7"
+        },
+        dark: {
+          primary: "#82b19f",
+          background: "#181b1f",
+          formBackground: "#23272b"
+        }
+      }
+    },
+    
         data () {
             return {
                 items: [
@@ -165,7 +184,20 @@ import Login from './Login.vue'
           showpopup(){
             
              this.showdialog =false;
-          }
-        }
+          },
+               darkMode() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     }
+  },
+  computed: {
+    theme() {
+      return this.$vuetify.theme.dark ? "dark" : "light";
+    }
+  }
+
+        }
+        
+        
+    
+    
 </script>
