@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-content po="fixed">
-      <!-- <v-container position="fixed"> -->
+      <v-container position="fixed">
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="8">
           <v-card class="elevation-12">
@@ -51,16 +51,19 @@
                         />
                       </v-form>
                       <h3 class="text-center mt-4">Forgot your password ?</h3>
+
+                      <h3 style="color: red" class="text-center mt-4">
+                        {{ message }}
+                      </h3>
                     </v-card-text>
-                    <h3
-                      style="color: red"
-                      class="text-center mt-4"
-                      v-if="this.simpleData"
-                    >
-                      {{ this.simpleData }}
-                    </h3>
+                   
                     <div class="text-center mt-3">
-                      <v-btn class="mt-3" rounded color="blue accent-3" dark @click="Loginform()"
+                      <v-btn
+                        class="mt-3"
+                        rounded
+                        color="blue accent-3"
+                        dark
+                        @click="Loginform()"
                         >SIGN IN</v-btn
                       >
                     </div>
@@ -179,7 +182,7 @@
           </v-card>
         </v-col>
       </v-row>
-      <!-- </v-container>  -->
+      </v-container> 
     </v-content>
   </v-app>
 </template>
@@ -192,6 +195,7 @@ const users = namespace("user");
 @Component
 export default class AddUser extends Vue {
   public isNew?: boolean = true;
+  private message: string = "";
   valid = true;
   Roles = [
     { Did: 1, DName: "User" },
@@ -240,10 +244,26 @@ export default class AddUser extends Vue {
     }
   }
   public Loginform(): void {
-   this.login({Username:this.user.Username ,Password:this.user.Password})
- }
+    if (this.user.Username && this.user.Password) {
+      this.login(this.user).then(
+        (data) => {
+          if (data.data.content != "null") {
+            this.$router.push("/Dashboard");
+            localStorage.setItem
+          } else {
+            this.message = "Username Or Password is incorrect!!";
+          }
+          //console.log(data.data.content);
+        },
+        (error) => {
+          this.message = error;
+        }
+      );
+    }
+    //this.login({Username:this.user.Username ,Password:this.user.Password})
+    //this.$router.push('/profile')
+  }
 }
-
 </script>
 <style>
 html {
