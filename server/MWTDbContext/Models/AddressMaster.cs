@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MWTDbContext.Models
 {
-    public class DetailsMaster
+    public class AddressMaster
     {
         [Key]
         public int id { get; set; }
@@ -20,8 +20,7 @@ namespace MWTDbContext.Models
 
         [MaxLength(250)]
         public string Address2 { get; set; }
-        [MaxLength(16)]
-        public string GSTIN { get; set; }
+        
         [Required,MaxLength(33)]
         public string Pincode { get; set; }
         [Required]
