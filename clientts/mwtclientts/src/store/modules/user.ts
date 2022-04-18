@@ -31,9 +31,9 @@ class Users extends VuexModule {
       .post("/Login", data)
       .then((response) => {
         console.log(response);
-       
+
         //this.context.commit("login  hdjsahd Success", response.data.data);
-        
+
         //return Promise.resolve(user);
         return true;
       })
@@ -47,7 +47,7 @@ class Users extends VuexModule {
       .post("/CheckUsername", data)
       .then((response) => {
         console.log(response);
-        
+
         //this.context.commit("CheckUsername", response.data.data);
         return true;
       })
