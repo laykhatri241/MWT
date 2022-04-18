@@ -11,7 +11,7 @@
       <v-toolbar-title
         style="width: 350px"
       >
-        <a href="/" class="white--text" style="text-decoration: none"><v-icon>mdi-shopping</v-icon>&nbsp;PNLStores</a>
+        <a href="/" class="white--text" style="text-decoration: none"><v-icon>mdi-basket</v-icon>&nbsp;PNLStores</a>
       </v-toolbar-title>
       <v-text-field
         flat
@@ -49,6 +49,7 @@
           <v-icon>mdi-cart</v-icon>
         </v-badge>
       </v-btn>
+
       <v-switch  @click="darkMode" />
     </v-app-bar>
     <v-content>
@@ -195,7 +196,7 @@ import Login from './Login.vue'
     }
   }
 
-        }
+  }
         
         
     

@@ -29,7 +29,7 @@
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
-                                            <v-btn large block :disabled="!valid" color="success" @click="validate()" href="updateuserprofile"> Login </v-btn>
+                                            <v-btn large block :disabled="!valid" color="success" @click="validate()" href="companyregister"> Login </v-btn>
                                             </v-col>
                                             <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
                                              <v-btn large  color="success" @click="showpopup"> Close </v-btn>
