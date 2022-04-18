@@ -1,44 +1,44 @@
-import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
+import Vue from "vue";
+import VueRouter, { RouteConfig } from "vue-router";
 // import HomeView from '../views/HomeView.vue'
-import Login from '@/components/Login.vue'
+import Signin from "@/components/Signin.vue";
+import Dashboard from "@/views/HomeView.vue";
 
-
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: '/',
-    name: 'login',
-    component: Login
+    path: "/",
+    name: "Signin",
+    component: Signin,
   },
   {
-    path: '/login',
-    name: 'login',
-    component: Login
+    path: "/Dashboard",
+    name: "Dashboard",
+    component: Dashboard,
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: "/Signin",
+    name: "Signin",
+    component: Signin,
   },
   {
-    path: '/profile',
-    name: 'profile',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../components/profile.vue')
-  }
-]
+    path: "/Signup",
+    name: "Signup",
+    component: () => import("../components/Signup.vue"),
+  },
+  {
+    path: "/profile",
+    name: "profile",
+
+    component: () => import("../components/profile.vue"),
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

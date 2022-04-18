@@ -31,11 +31,13 @@ class Users extends VuexModule {
       .post("/Login", data)
       .then((response) => {
         console.log(response);
-
-        //this.context.commit("login  hdjsahd Success", response.data.data);
-
+        // if (response.data.accessToken) {
+        //   localStorage.setItem("user", JSON.stringify(response.data));
+        // }
+        //return response.data;
+        //this.context.commit("login  hdjsahd Success", response.data.data)
         //return Promise.resolve(user);
-        return true;
+        return response;
       })
       .catch(() => {
         return false;
