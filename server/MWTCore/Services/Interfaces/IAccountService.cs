@@ -16,14 +16,16 @@ namespace MWTCore.Services.Interfaces
 
         public Task<User> UserExists(string Username, string Password);
 
-        public Task<int> AddUserDetails(DetailsMaster details);
+        public Task<bool> CheckOldPassword(string oldPassword, int id);
+
+        public Task<int> AddAddress(AddressMaster details);
 
         public Task<User> FetchUser(int id);
 
         public Task<bool> UpdatePassword(ChangePassword changePassword);
 
-        public Task<bool> UpdateUser(UserModel usr);
+        public Task<bool> UpdateUser(UpdateUser user);
 
-        public Task<bool> UpdateUserDetails(UserDetailsModel details);
+        public Task<bool> UpdateAddress(AddressModel details);
     }
 }
