@@ -5,3 +5,4 @@
 /server/MWTWebApi/bin
 /server/MWTWebApi/obj
 /server/MWTWebApi/*.user
+/server/MWTWebApi/appsettings.json

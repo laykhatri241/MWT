@@ -29,17 +29,17 @@ namespace MWTCore.Repository
                 return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> InsertUserDetails(DetailsMaster details)
+        public async Task<int> AddAddress(AddressMaster address)
         {
-            details.createdAt = DateTime.Now;
-            details.updatedAt = DateTime.Now;
-            _context.detailsMasters.Add(details);
+            address.createdAt = DateTime.Now;
+            address.updatedAt = DateTime.Now;
+            _context.addressMasters.Add(address);
             return await _context.SaveChangesAsync();
         }
 
         public async Task<User> IsUser(string Username, string Password)
         {
-            return await (_context.users.AsNoTracking().FirstOrDefaultAsync(u => u.Username.Equals(Username) && u.Password.Equals(Password)));
+            return await (_context.users.AsNoTracking().FirstOrDefaultAsync(u => u.Username.Equals(Username) && u.Password.Equals(Password) && u.isActive==true));
         }
 
         public async Task<bool> RetrieveUsername(string username)
@@ -63,27 +63,27 @@ namespace MWTCore.Repository
             
         }
 
-        public async Task<bool> UpdateUser(UserModel usr)
+        public async Task<bool> UpdateUser(UpdateUser user)
         {
-            var _user = await _context.users.FirstAsync(us => us.id == usr.id);
+            var _user = await _context.users.FirstAsync(us => us.id == user.id);
 
-            _user.Fullname = usr.Fullname;
+            _user.Fullname = user.Fullname;
             _user.updatedAt = DateTime.Now;
-            _user.Username = usr.Username;
+            _user.DateOfBirth = user.DateOfBirth;
+            _user.Avatar = user.Avatar;
 
             return await _context.SaveChangesAsync() == 1? true : false;
         }
 
-        public async Task<bool> UpdateUserDetails(UserDetailsModel details)
+        public async Task<bool> UpdateAddress(AddressModel address)
         {
-            var _userDetails = await _context.detailsMasters.FirstAsync(dm => dm.id == details.id);
+            var _Address = await _context.addressMasters.FirstAsync(dm => dm.id == address.id);
 
             
-            _userDetails.Address1 = details.Address1;
-            _userDetails.Address2 = details.Address2;
-            _userDetails.GSTIN = details.GSTIN;
-            _userDetails.Pincode = details.Pincode;
-            _userDetails.updatedAt = DateTime.Now;
+            _Address.Address1 = address.Address1;
+            _Address.Address2 = address.Address2;
+            _Address.Pincode = address.Pincode;
+            _Address.updatedAt = DateTime.Now;
 
             return await _context.SaveChangesAsync() == 1 ? true : false;
         }
