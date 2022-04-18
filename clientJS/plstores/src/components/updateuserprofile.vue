@@ -76,7 +76,7 @@ html{
     height: 100%;
 }
 body {
-    background: #151515;  /* fallback for old browsers */
+    background: #151515;  
     margin: 0;
     font-family: 'Montserrat', sans-serif;
     background:

@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Layout from '@/components/Layout'
 import updateuserprofile from '@/components/updateuserprofile'
+import companyregister from '@/components/companyregister'
 
 Vue.use(Router)
 
@@ -27,6 +28,11 @@ export default new Router({
         path:'/updateuserprofile',
         component:updateuserprofile,
         name:'updateuserprofile',
+      },
+      {
+        path:'/companyregister',
+        component:companyregister,
+        name:'companyregister',
       }
 
         
