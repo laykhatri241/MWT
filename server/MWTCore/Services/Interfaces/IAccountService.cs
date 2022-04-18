@@ -27,5 +27,20 @@ namespace MWTCore.Services.Interfaces
         public Task<bool> UpdateUser(UpdateUser user);
 
         public Task<bool> UpdateAddress(AddressModel details);
+
+        public Task<List<AddressMaster>> GetAddresses(int id);
+
+        public Task<AddressMaster> GetAddress(int id);
+        public Task<bool> RemoveAddress(int id);
+
+        public Task<int> CreateBusinessDetails(BusinessDetailsMaster businessDetails);
+
+        public Task<bool> BusinessDetailsExist(int id);
+
+        public Task<bool> DeleteBusinessDetails(int id);
+
+        public Task<BusinessDetailsMaster> GetBusinessDetails(int id);
+
+        public Task<bool> UpdateBusinessDetail(BusinessDetailModel businessDetail);
     }
 }

@@ -23,7 +23,7 @@ namespace MWTWebApi.Model
                        context.Response.ContentType = "application/json";
 
                        var contextFeatures = context.Features.Get<IExceptionHandlerFeature>();
-                       if(contextFeatures != null)
+                       if (contextFeatures != null)
                        {
                            await context.Response.WriteAsync(
                                JsonConvert.SerializeObject(

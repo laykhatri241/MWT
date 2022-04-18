@@ -35,21 +35,17 @@ namespace MWTCore.Services
         =>
             _accountRepository = accountRepository;
 
-
         public async Task<int> AddAddress(AddressMaster address)
         => await _accountRepository.AddAddress(address);
 
         public async Task<bool> checkUsername(string username)
         => await _accountRepository.RetrieveUsername(username);
 
-
         public async Task<int> CreateUser(User usr)
         {
             usr.Password = ComputeSha256Hash(usr.Password);
             return await _accountRepository.InsertUser(usr);
         }
-
-
 
         public async Task<User> FetchUser(int id)
         => await _accountRepository.RetriveUser(id);
@@ -85,5 +81,37 @@ namespace MWTCore.Services
                 return false;
             }
         }
+
+        public async Task<List<AddressMaster>> GetAddresses(int id)
+        => await _accountRepository.GetAddresses(id);
+
+        public async Task<AddressMaster> GetAddress(int id)
+        {
+            return await _accountRepository.GetAddress(id);
+        }
+
+        public async Task<bool> RemoveAddress(int id)
+        {
+            return await _accountRepository.DeleteAddress(id);
+        }
+        public async Task<int> CreateBusinessDetails(BusinessDetailsMaster businessDetails)
+        {            
+            return await _accountRepository.CreateBusinessDetails(businessDetails);
+        }
+
+        public async Task<bool> BusinessDetailsExist(int id)
+        {
+            return await _accountRepository.IsBusinessDetail(id);
+        }
+
+        public async Task<bool> DeleteBusinessDetails(int id)
+        =>await _accountRepository.DeleteBusinessDetail(id);
+
+
+        public async Task<BusinessDetailsMaster> GetBusinessDetails(int id)
+        => await _accountRepository.RetrieveBusinessDetail(id);
+
+        public async Task<bool> UpdateBusinessDetail(BusinessDetailModel businessDetail)
+        => await _accountRepository.UpdateBusinessDetail(businessDetail);
     }
 }

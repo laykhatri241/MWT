@@ -27,5 +27,19 @@ namespace MWTCore.Repository.Interfaces
 
         public Task<bool> UpdateAddress(AddressModel address);
 
+        public Task<List<AddressMaster>> GetAddresses(int id);
+
+        public Task<AddressMaster> GetAddress(int id);
+
+        public Task<bool> DeleteAddress(int id);
+        public Task<int> CreateBusinessDetails(BusinessDetailsMaster businessDetails);
+
+        public Task<bool> IsBusinessDetail(int id);
+
+        public Task<bool> DeleteBusinessDetail(int id);
+
+        public Task<BusinessDetailsMaster> RetrieveBusinessDetail(int id);
+
+        public Task<bool> UpdateBusinessDetail(BusinessDetailModel businessDetail);
     }
 }

@@ -20,8 +20,8 @@ using System.Threading.Tasks;
 namespace MWTWebApi.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("[controller]")]
     [EnableCors("AllowOrigin")]
+    [Route("Account")]
     [ApiController]
     public class MWTController : ControllerBase
     {
@@ -60,25 +60,14 @@ namespace MWTWebApi.Controllers
         {
             if (!_accountService.checkUsername(usr.Username).Result)
             {
-                int status = _accountService.CreateUser(usr).Result;
-                if (status == 1)
+                int id = _accountService.CreateUser(usr).Result;
+
+                return new HttpAPIResponse()
                 {
-                    return new HttpAPIResponse()
-                    {
-                        Content = JsonConvert.SerializeObject(1),
-                        StatusCode = HttpStatusCode.OK,
-                        Timestamp = DateTime.Now
-                    };
-                }
-                else
-                {
-                    return new HttpAPIResponse()
-                    {
-                        Content = JsonConvert.SerializeObject(-1),
-                        StatusCode = HttpStatusCode.OK,
-                        Timestamp = DateTime.Now
-                    };
-                }
+                    Content = JsonConvert.SerializeObject(id),
+                    StatusCode = HttpStatusCode.OK,
+                    Timestamp = DateTime.Now
+                };
             }
             else
             {
@@ -130,11 +119,12 @@ namespace MWTWebApi.Controllers
 
         #region GetMyuser
         [Authorize(Roles = "1,2,3")]
-        [HttpPost("GetMyUser")]
-        public HttpAPIResponse GetMyUser([FromBody] int id)
+        [HttpGet("GetMyUser/{id}")]
+        public HttpAPIResponse GetMyUser(int id)
         {
             var _user = _accountService.FetchUser(id).Result;
-            if(_user != null)
+            _user.Password = "";
+            if (_user != null)
             {
                 return new HttpAPIResponse()
                 {
@@ -150,7 +140,7 @@ namespace MWTWebApi.Controllers
                 StatusCode = HttpStatusCode.OK,
                 Content = JsonConvert.SerializeObject(null)
             };
-            
+
         }
         #endregion
 
@@ -159,9 +149,9 @@ namespace MWTWebApi.Controllers
         [HttpPost("ChangePassword")]
         public HttpAPIResponse ChangePassword(ChangePassword changePassword)
         {
-            if (_accountService.CheckOldPassword(changePassword.OldPass,changePassword.id).Result)
+            if (_accountService.CheckOldPassword(changePassword.OldPass, changePassword.id).Result)
             {
-                
+
                 var status = _accountService.UpdatePassword(changePassword).Result;
                 return new HttpAPIResponse()
                 {
@@ -183,27 +173,12 @@ namespace MWTWebApi.Controllers
         #endregion
 
         #region UpdateUser
-        [Authorize(Roles ="1,2,3,")]
+        [Authorize(Roles = "1,2,3,")]
         [HttpPost("UpdateUser")]
         public HttpAPIResponse UpdateUser(UpdateUser user)
         {
-                var status = _accountService.UpdateUser(user).Result;
+            var status = _accountService.UpdateUser(user).Result;
 
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject(status),
-                    StatusCode = HttpStatusCode.OK,
-                    Timestamp = DateTime.Now
-                };            
-        }
-        #endregion
-
-        #region AddAddress
-        [Authorize(Roles = "1,2,3")]
-        [HttpPost("AddAddress")]
-        public HttpAPIResponse AddAddress(AddressMaster address)
-        {
-            var status = _accountService.AddAddress(address).Result;
             return new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject(status),
@@ -213,23 +188,10 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-        #region UpdateAddress
-        [Authorize(Roles ="1,2,3")]
-        [HttpPost("UpdateAddress")]
-        public HttpAPIResponse UpdateAddress(AddressModel address)
-        {
-            var status = _accountService.UpdateAddress(address).Result;
-            return new HttpAPIResponse()
-            {
-                Content = JsonConvert.SerializeObject(status),
-                StatusCode = HttpStatusCode.OK,
-                Timestamp = DateTime.Now
-            };
-        }
-        #endregion
 
+     
+
+        
     }
-
-
 }
 
