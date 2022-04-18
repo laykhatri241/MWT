@@ -20,8 +20,8 @@ using System.Threading.Tasks;
 namespace MWTWebApi.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("[controller]")]
     [EnableCors("AllowOrigin")]
+    [Route("Account")]
     [ApiController]
     public class MWTController : ControllerBase
     {
@@ -34,23 +34,6 @@ namespace MWTWebApi.Controllers
             _accountService = accountService;
 
             _authentication = authentication;
-        }
-        #endregion
-
-        #region ComputeSHA265
-        private string ComputeSha256Hash(string rawData)
-        {
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
         }
         #endregion
 
@@ -77,26 +60,14 @@ namespace MWTWebApi.Controllers
         {
             if (!_accountService.checkUsername(usr.Username).Result)
             {
-                usr.Password = ComputeSha256Hash(usr.Password);
-                int status = _accountService.CreateUser(usr).Result;
-                if (status == 1)
+                int id = _accountService.CreateUser(usr).Result;
+
+                return new HttpAPIResponse()
                 {
-                    return new HttpAPIResponse()
-                    {
-                        Content = JsonConvert.SerializeObject(1),
-                        StatusCode = HttpStatusCode.OK,
-                        Timestamp = DateTime.Now
-                    };
-                }
-                else
-                {
-                    return new HttpAPIResponse()
-                    {
-                        Content = JsonConvert.SerializeObject(-1),
-                        StatusCode = HttpStatusCode.OK,
-                        Timestamp = DateTime.Now
-                    };
-                }
+                    Content = JsonConvert.SerializeObject(id),
+                    StatusCode = HttpStatusCode.OK,
+                    Timestamp = DateTime.Now
+                };
             }
             else
             {
@@ -113,7 +84,7 @@ namespace MWTWebApi.Controllers
         #region CheckUsername
         [AllowAnonymous]
         [HttpPost("CheckUsername")]
-        public HttpAPIResponse CheckUsername(string usrname)
+        public HttpAPIResponse CheckUsername([FromBody] string usrname)
         {
             var response = _accountService.checkUsername(usrname).Result;
 
@@ -129,9 +100,9 @@ namespace MWTWebApi.Controllers
         #region Login
         [AllowAnonymous]
         [HttpPost("Login")]
-        public HttpAPIResponse Login(UserModel usr)
+        public HttpAPIResponse Login(LoginModel usr)
         {
-            var _user = _accountService.UserExists(usr.Username, ComputeSha256Hash(usr.Password)).Result;
+            var _user = _accountService.UserExists(usr.Username, usr.Password).Result;
             if (_user != null)
             {
                 _user.Password = _authentication.AuthenticateData(_user.Username, _user.Role);
@@ -148,17 +119,28 @@ namespace MWTWebApi.Controllers
 
         #region GetMyuser
         [Authorize(Roles = "1,2,3")]
-        [HttpPost("GetMyUser")]
+        [HttpGet("GetMyUser/{id}")]
         public HttpAPIResponse GetMyUser(int id)
         {
             var _user = _accountService.FetchUser(id).Result;
             _user.Password = "";
+            if (_user != null)
+            {
+                return new HttpAPIResponse()
+                {
+                    Timestamp = DateTime.Now,
+                    StatusCode = HttpStatusCode.OK,
+                    Content = JsonConvert.SerializeObject(_user)
+                };
+            }
+
             return new HttpAPIResponse()
             {
                 Timestamp = DateTime.Now,
                 StatusCode = HttpStatusCode.OK,
-                Content = JsonConvert.SerializeObject(_user)
+                Content = JsonConvert.SerializeObject(null)
             };
+
         }
         #endregion
 
@@ -167,10 +149,9 @@ namespace MWTWebApi.Controllers
         [HttpPost("ChangePassword")]
         public HttpAPIResponse ChangePassword(ChangePassword changePassword)
         {
-            if (ComputeSha256Hash(changePassword.OldPass).Equals(_accountService.FetchUser(changePassword.id).Result.Password))
+            if (_accountService.CheckOldPassword(changePassword.OldPass, changePassword.id).Result)
             {
-                changePassword.OldPass = ComputeSha256Hash(changePassword.OldPass);
-                changePassword.NewPass = ComputeSha256Hash(changePassword.NewPass);
+
                 var status = _accountService.UpdatePassword(changePassword).Result;
                 return new HttpAPIResponse()
                 {
@@ -192,27 +173,12 @@ namespace MWTWebApi.Controllers
         #endregion
 
         #region UpdateUser
-        [Authorize(Roles ="1,2,3,")]
+        [Authorize(Roles = "1,2,3,")]
         [HttpPost("UpdateUser")]
-        public HttpAPIResponse UpdateUser(UserModel usr)
+        public HttpAPIResponse UpdateUser(UpdateUser user)
         {
-                var status = _accountService.UpdateUser(usr).Result;
+            var status = _accountService.UpdateUser(user).Result;
 
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject(status),
-                    StatusCode = HttpStatusCode.OK,
-                    Timestamp = DateTime.Now
-                };            
-        }
-        #endregion
-
-        #region AddUserDetails
-        [Authorize(Roles = "1,2,3")]
-        [HttpPost("AddUserDetails")]
-        public HttpAPIResponse AddUserDetails(DetailsMaster details)
-        {
-            var status = _accountService.AddUserDetails(details).Result;
             return new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject(status),
@@ -222,23 +188,10 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-        #region EditUserDetails
-        [Authorize(Roles ="1,2,3")]
-        [HttpPost("EditUserDetails")]
-        public HttpAPIResponse EditUserDetails(UserDetailsModel details)
-        {
-            var status = _accountService.UpdateUserDetails(details).Result;
-            return new HttpAPIResponse()
-            {
-                Content = JsonConvert.SerializeObject(status),
-                StatusCode = HttpStatusCode.OK,
-                Timestamp = DateTime.Now
-            };
-        }
-        #endregion
 
+     
+
+        
     }
-
-
 }
 

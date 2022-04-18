@@ -13,9 +13,11 @@ namespace MWTDbContext
         public DbSet<User> users{ get; set; }
         public DbSet<UserRoles> userRoles { get; set; }
 
-        public DbSet<DetailsMaster> detailsMasters { get; set; }
+        public DbSet<AddressMaster> addressMasters{ get; set; }
 
         public DbSet<CategoryMaster> categoryMasters { get; set; }
+
+        public DbSet<BusinessDetailsMaster> businessDetailsMasters { get; set; }
 
     }
 }

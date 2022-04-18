@@ -11,40 +11,107 @@ using System.Threading.Tasks;
 
 namespace MWTCore.Services
 {
-    public class AccountService: IAccountService
+    public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
+
+        #region ComputeSHA265
+        private string ComputeSha256Hash(string rawData)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+        #endregion
         public AccountService(IAccountRepository accountRepository)
         =>
             _accountRepository = accountRepository;
-        
 
-        public async Task<int> AddUserDetails(DetailsMaster details)
-        => await _accountRepository.InsertUserDetails(details);
-        
+        public async Task<int> AddAddress(AddressMaster address)
+        => await _accountRepository.AddAddress(address);
+
         public async Task<bool> checkUsername(string username)
         => await _accountRepository.RetrieveUsername(username);
-        
 
         public async Task<int> CreateUser(User usr)
-            =>await _accountRepository.InsertUser(usr);
-
+        {
+            usr.Password = ComputeSha256Hash(usr.Password);
+            return await _accountRepository.InsertUser(usr);
+        }
 
         public async Task<User> FetchUser(int id)
         => await _accountRepository.RetriveUser(id);
 
         public async Task<bool> UpdatePassword(ChangePassword changePassword)
-        => await _accountRepository.UpdatePassword(changePassword);
+        {
+            changePassword.OldPass = ComputeSha256Hash(changePassword.OldPass);
+            changePassword.NewPass= ComputeSha256Hash(changePassword.NewPass);
+            return await _accountRepository.UpdatePassword(changePassword);
+        }
 
-        public async Task<bool> UpdateUser(UserModel usr)
-        => await _accountRepository.UpdateUser(usr);
+        public async Task<bool> UpdateUser(UpdateUser user)
+        => await _accountRepository.UpdateUser(user);
 
-        public async Task<bool> UpdateUserDetails(UserDetailsModel details)
-        => await _accountRepository.UpdateUserDetails(details);
+        public async Task<bool> UpdateAddress(AddressModel address)
+        => await _accountRepository.UpdateAddress(address);
 
         public async Task<User> UserExists(string Username, string Password)
-            =>await _accountRepository.IsUser(Username, Password);
-        
+            {
+            return await _accountRepository.IsUser(Username, ComputeSha256Hash( Password));
+        }
 
+        public async Task<bool> CheckOldPassword(string oldPassword , int id)
+        {
+            var _user = await _accountRepository.RetriveUser(id);
+
+            if(_user.Password.Equals(ComputeSha256Hash(oldPassword)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<List<AddressMaster>> GetAddresses(int id)
+        => await _accountRepository.GetAddresses(id);
+
+        public async Task<AddressMaster> GetAddress(int id)
+        {
+            return await _accountRepository.GetAddress(id);
+        }
+
+        public async Task<bool> RemoveAddress(int id)
+        {
+            return await _accountRepository.DeleteAddress(id);
+        }
+        public async Task<int> CreateBusinessDetails(BusinessDetailsMaster businessDetails)
+        {            
+            return await _accountRepository.CreateBusinessDetails(businessDetails);
+        }
+
+        public async Task<bool> BusinessDetailsExist(int id)
+        {
+            return await _accountRepository.IsBusinessDetail(id);
+        }
+
+        public async Task<bool> DeleteBusinessDetails(int id)
+        =>await _accountRepository.DeleteBusinessDetail(id);
+
+
+        public async Task<BusinessDetailsMaster> GetBusinessDetails(int id)
+        => await _accountRepository.RetrieveBusinessDetail(id);
+
+        public async Task<bool> UpdateBusinessDetail(BusinessDetailModel businessDetail)
+        => await _accountRepository.UpdateBusinessDetail(businessDetail);
     }
 }

@@ -16,15 +16,30 @@ namespace MWTCore.Repository.Interfaces
 
         public Task<User> IsUser(string Username, string Password);
 
-        public Task<int> InsertUserDetails(DetailsMaster details);
+
+        public Task<int> AddAddress(AddressMaster address);
 
         public Task<User> RetriveUser(int id);
 
         public Task<bool> UpdatePassword(ChangePassword changePassword);
 
-        public Task<bool> UpdateUser(UserModel usr);
+        public Task<bool> UpdateUser(UpdateUser user);
 
-        public Task<bool> UpdateUserDetails(UserDetailsModel details);
+        public Task<bool> UpdateAddress(AddressModel address);
 
+        public Task<List<AddressMaster>> GetAddresses(int id);
+
+        public Task<AddressMaster> GetAddress(int id);
+
+        public Task<bool> DeleteAddress(int id);
+        public Task<int> CreateBusinessDetails(BusinessDetailsMaster businessDetails);
+
+        public Task<bool> IsBusinessDetail(int id);
+
+        public Task<bool> DeleteBusinessDetail(int id);
+
+        public Task<BusinessDetailsMaster> RetrieveBusinessDetail(int id);
+
+        public Task<bool> UpdateBusinessDetail(BusinessDetailModel businessDetail);
     }
 }
