@@ -109,19 +109,24 @@ export default class AddUser extends Vue {
         (data) => {
           if (data.data.content != "null") {
             this.$router.push("/Dashboard");
-            localStorage.setItem;
+            console.log(data);
+
+            localStorage.setItem(
+              "Token",
+              JSON.parse(data.data.content).Password
+            );
+            localStorage.setItem("UserId", JSON.parse(data.data.content).id);
           } else {
+            //console.log(data);
+
             this.message = "Username Or Password is incorrect!!";
           }
-          //console.log(data.data.content);
         },
         (error) => {
           this.message = error;
         }
       );
     }
-    //this.login({Username:this.user.Username ,Password:this.user.Password})
-    //this.$router.push('/profile')
   }
 }
 </script>

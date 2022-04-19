@@ -30,7 +30,7 @@ class Users extends VuexModule {
     return api
       .post("/Login", data)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         // if (response.data.accessToken) {
         //   localStorage.setItem("user", JSON.stringify(response.data));
         // }
@@ -56,6 +56,46 @@ class Users extends VuexModule {
       .catch(() => {
         return false;
       });
+  }
+  @Action
+  public async GetMyUser(data: any): Promise<any> {
+    return api
+      .get(`/GetMyUser/${data.id}`)
+      .then((response) => {
+        console.log(response);
+        localStorage.getItem('UserId')
+        return response;
+      })
+      .catch(() => {
+        return false;
+      });
+  }
+  @Action
+  public async UpdateUser(data: any): Promise<any> {
+    return api
+      .get("/UpdateUser", data)
+      .then((response) => {
+        console.log(response);
+        //localStorage.getItem('Token')
+        return response;
+      })
+      .catch(() => {
+        return false;
+      });
+  }
+  @Action
+  public async UpdatePassword(data: any): Promise<any> {
+    return api
+      .put("/ChangePassword",data)
+      .then(() => {
+      
+        this.context.commit('UpdatePasswoed', data)
+        return true
+      })
+      .catch(() => {
+       
+        return false
+      })
   }
 }
 export default Users;

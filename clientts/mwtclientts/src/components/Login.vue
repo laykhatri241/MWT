@@ -247,7 +247,7 @@ export default class AddUser extends Vue {
     if (this.user.Username && this.user.Password) {
       this.login(this.user).then(
         (data) => {
-          if (data.data.content != "null") {
+          if (data.data.Content != "null") {
             this.$router.push("/Dashboard");
             localStorage.setItem
           } else {
