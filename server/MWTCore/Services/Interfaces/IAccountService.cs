@@ -28,6 +28,8 @@ namespace MWTCore.Services.Interfaces
 
         public Task<bool> UpdateAddress(AddressModel details);
 
+        
+
         public Task<List<AddressMaster>> GetAddresses(int id);
 
         public Task<AddressMaster> GetAddress(int id);

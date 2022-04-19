@@ -27,7 +27,6 @@ namespace MWTWebApi.Model
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
                     ClockSkew = TimeSpan.Zero,
-                    
                 };
             });
 

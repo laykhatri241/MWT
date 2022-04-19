@@ -33,7 +33,6 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-
         #region AddAddress
         [Authorize(Roles = "2,3")]
         [HttpPost("AddAddress")]
@@ -107,6 +106,7 @@ namespace MWTWebApi.Controllers
                 StatusCode = HttpStatusCode.OK
             };
         }
-        #endregion 
+        #endregion
+
     }
 }
