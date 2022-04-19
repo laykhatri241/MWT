@@ -25,9 +25,15 @@ namespace MWTCore.Repository
             usr.createdAt = DateTime.Now;
             usr.updatedAt = DateTime.Now;
             usr.isActive = true;
+
             _context.users.Add(usr);
-            await _context.SaveChangesAsync();
-            return usr.id;
+
+            var status = await _context.SaveChangesAsync();
+            if (status == 1)
+            {
+                return usr.id;
+            }
+            return 0;
         }
 
         public async Task<int> AddAddress(AddressMaster address)
@@ -35,7 +41,12 @@ namespace MWTCore.Repository
             address.createdAt = DateTime.Now;
             address.updatedAt = DateTime.Now;
             _context.addressMasters.Add(address);
-            return await _context.SaveChangesAsync();
+            var status = await _context.SaveChangesAsync();
+            if (status == 1)
+                return address.id;
+
+            return 0;
+
         }
 
         public async Task<User> IsUser(string Username, string Password)
@@ -44,16 +55,13 @@ namespace MWTCore.Repository
         }
 
         public async Task<bool> RetrieveUsername(string username)
-        {
-            return await (_context.users.AsNoTracking().AnyAsync(usr => usr.Username.Equals(username)));
-        }
+        =>
+        await (_context.users.AsNoTracking().AnyAsync(usr => usr.Username.Equals(username)));
+
 
         public async Task<User> RetriveUser(int id)
-        {
-            var user = await _context.users.AsNoTracking().Where(us => us.id == id).FirstOrDefaultAsync();
-            
-            return user;
-        }
+        => (await _context.users.AsNoTracking().Where(us => us.id == id).FirstOrDefaultAsync());
+
 
         public async Task<bool> UpdatePassword(ChangePassword changePassword)
         {
@@ -61,7 +69,6 @@ namespace MWTCore.Repository
             _user.updatedAt = DateTime.Now;
             _user.Password = changePassword.NewPass;
             return await _context.SaveChangesAsync() == 1 ? true : false;
-
         }
 
         public async Task<bool> UpdateUser(UpdateUser user)
@@ -80,7 +87,6 @@ namespace MWTCore.Repository
         {
             var _Address = await _context.addressMasters.FirstAsync(dm => dm.id == address.id);
 
-
             _Address.Address1 = address.Address1;
             _Address.Address2 = address.Address2;
             _Address.Pincode = address.Pincode;
@@ -90,23 +96,18 @@ namespace MWTCore.Repository
         }
 
         public async Task<List<AddressMaster>> GetAddresses(int id)
-        {
-            var _Addresses = await _context.addressMasters.AsNoTracking().Where(ad => ad.UserID == id).ToListAsync();
-
-            return _Addresses;
-        }
+        =>
+        await _context.addressMasters.AsNoTracking().Where(ad => ad.UserID == id).ToListAsync();
 
         public async Task<AddressMaster> GetAddress(int id)
-        {
-            var _address = await _context.addressMasters.AsNoTracking().FirstOrDefaultAsync(ad => ad.id == id);
-            return _address;
-        }
+        => await _context.addressMasters.AsNoTracking().FirstOrDefaultAsync(ad => ad.id == id);
+           
         public async Task<bool> DeleteAddress(int id)
         {
             var address = await _context.addressMasters.Where(ad => ad.id == id).FirstOrDefaultAsync();
-            if(address != null)
+            if (address != null)
             {
-             _context.addressMasters.Remove(address);
+                _context.addressMasters.Remove(address);
                 return await _context.SaveChangesAsync() == 1 ? true : false;
             }
             return false;
@@ -115,22 +116,24 @@ namespace MWTCore.Repository
         {
             businessDetails.updatedAt = DateTime.Now;
             businessDetails.createdAt = DateTime.Now;
-            var status = await _context.businessDetailsMasters.AddAsync(businessDetails);
+            await _context.businessDetailsMasters.AddAsync(businessDetails);
 
-            return await _context.SaveChangesAsync();
+            var status = await _context.SaveChangesAsync();
+            if(status == 1)
+                return businessDetails.id;
+            
+            return 0;
         }
 
         public async Task<bool> IsBusinessDetail(int id)
-        {
-            var business = await _context.businessDetailsMasters.AsNoTracking().Where(bs => bs.UserID == id).ToListAsync();
-            return business.Count() == 1 ? true : false;
-        }
+        =>
+        (await _context.businessDetailsMasters.AsNoTracking().Where(bs => bs.UserID == id).ToListAsync()).Count()==1;
 
         public async Task<bool> DeleteBusinessDetail(int id)
         {
             var detail = await _context.businessDetailsMasters.Where(dt => dt.id == id).FirstOrDefaultAsync();
 
-            if(detail != null)
+            if (detail != null)
             {
                 _context.businessDetailsMasters.Remove(detail);
                 return await _context.SaveChangesAsync() == 1 ? true : false;
@@ -139,15 +142,8 @@ namespace MWTCore.Repository
         }
 
         public async Task<BusinessDetailsMaster> RetrieveBusinessDetail(int id)
-        {
-            var detail = await _context.businessDetailsMasters.Where(dt => dt.UserID == id).FirstOrDefaultAsync();
-
-            if(detail != null)
-            {
-                return detail;
-            }
-            return null;
-        }
+        =>
+        await _context.businessDetailsMasters.Where(dt => dt.UserID == id).FirstOrDefaultAsync();
 
         public async Task<bool> UpdateBusinessDetail(BusinessDetailModel businessDetail)
         {

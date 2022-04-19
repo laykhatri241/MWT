@@ -64,45 +64,32 @@ namespace MWTCore.Services
         => await _accountRepository.UpdateAddress(address);
 
         public async Task<User> UserExists(string Username, string Password)
-            {
-            return await _accountRepository.IsUser(Username, ComputeSha256Hash( Password));
-        }
-
+        =>
+        await _accountRepository.IsUser(Username, ComputeSha256Hash( Password));
+        
         public async Task<bool> CheckOldPassword(string oldPassword , int id)
-        {
-            var _user = await _accountRepository.RetriveUser(id);
-
-            if(_user.Password.Equals(ComputeSha256Hash(oldPassword)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        =>
+        (await _accountRepository.RetriveUser(id)).Password.Equals(ComputeSha256Hash(oldPassword));
 
         public async Task<List<AddressMaster>> GetAddresses(int id)
         => await _accountRepository.GetAddresses(id);
 
         public async Task<AddressMaster> GetAddress(int id)
-        {
-            return await _accountRepository.GetAddress(id);
-        }
+        => 
+        await _accountRepository.GetAddress(id);
 
         public async Task<bool> RemoveAddress(int id)
-        {
-            return await _accountRepository.DeleteAddress(id);
-        }
+        =>await _accountRepository.DeleteAddress(id);
+
         public async Task<int> CreateBusinessDetails(BusinessDetailsMaster businessDetails)
-        {            
-            return await _accountRepository.CreateBusinessDetails(businessDetails);
-        }
+        => 
+        await _accountRepository.CreateBusinessDetails(businessDetails);
+        
 
         public async Task<bool> BusinessDetailsExist(int id)
-        {
-            return await _accountRepository.IsBusinessDetail(id);
-        }
+        => 
+        await _accountRepository.IsBusinessDetail(id);
+        
 
         public async Task<bool> DeleteBusinessDetails(int id)
         =>await _accountRepository.DeleteBusinessDetail(id);
