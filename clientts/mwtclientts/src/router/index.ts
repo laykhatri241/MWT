@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 // import HomeView from '../views/HomeView.vue'
 import Signin from "@/components/Signin.vue";
 import Dashboard from "@/views/HomeView.vue";
+import Login  from "@/components/Login.vue"
 
 Vue.use(VueRouter);
 
