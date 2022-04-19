@@ -16,7 +16,6 @@ namespace MWTCore.Repository.Interfaces
 
         public Task<User> IsUser(string Username, string Password);
 
-
         public Task<int> AddAddress(AddressMaster address);
 
         public Task<User> RetriveUser(int id);
@@ -32,6 +31,7 @@ namespace MWTCore.Repository.Interfaces
         public Task<AddressMaster> GetAddress(int id);
 
         public Task<bool> DeleteAddress(int id);
+
         public Task<int> CreateBusinessDetails(BusinessDetailsMaster businessDetails);
 
         public Task<bool> IsBusinessDetail(int id);
