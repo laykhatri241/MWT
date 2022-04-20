@@ -15,7 +15,7 @@ class Users extends VuexModule {
   @Action
   public async createUser(data: User): Promise<boolean> {
     return api
-      .post("/SignUp", data)
+      .post("Account/SignUp", data)
       .then((response) => {
         response.data.data.id = response.data.id;
         this.context.commit("create", response.data.data);
@@ -28,7 +28,7 @@ class Users extends VuexModule {
   @Action
   public async login(data: any): Promise<any> {
     return api
-      .post("/Login", data)
+      .post("Account/Login", data)
       .then((response) => {
         // console.log(response);
         // if (response.data.accessToken) {
@@ -46,7 +46,7 @@ class Users extends VuexModule {
   @Action
   public async CheckUsername(data: any): Promise<any> {
     return api
-      .post("/CheckUsername", data)
+      .post("Account/CheckUsername", data)
       .then((response) => {
         console.log(response);
 
@@ -60,7 +60,7 @@ class Users extends VuexModule {
   @Action
   public async GetMyUser(data: any): Promise<any> {
     return api
-      .get(`/GetMyUser/${data.id}`)
+      .get(`Account/GetMyUser/${data.id}`)
       .then((response) => {
         console.log(response);
         localStorage.getItem('UserId')
@@ -73,7 +73,7 @@ class Users extends VuexModule {
   @Action
   public async UpdateUser(data: any): Promise<any> {
     return api
-      .get("/UpdateUser", data)
+      .get("Account/UpdateUser", data)
       .then((response) => {
         console.log(response);
         //localStorage.getItem('Token')
@@ -86,7 +86,7 @@ class Users extends VuexModule {
   @Action
   public async UpdatePassword(data: any): Promise<any> {
     return api
-      .put("/ChangePassword",data)
+      .put("Account/ChangePassword",data)
       .then(() => {
       
         this.context.commit('UpdatePasswoed', data)

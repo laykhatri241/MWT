@@ -34,6 +34,12 @@ const routes: Array<RouteConfig> = [
 
     component: () => import("../components/profile.vue"),
   },
+  {
+    path: "/companyRegister",
+    name: "companyRegister",
+
+    component: () => import("../components/companyRegister.vue"),
+  }
 ];
 
 const router = new VueRouter({
