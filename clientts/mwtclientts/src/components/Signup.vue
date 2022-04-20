@@ -126,7 +126,7 @@ export default class AddUser extends Vue {
       this.submitted = true;
       this.message = "Succesfully Register!!";
     } else {
-      console.log("error");
+     this.message = "Cancel Register!!";
     }
   }
   public Loginform(): void {
