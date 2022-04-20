@@ -88,11 +88,11 @@ export default({
     async validate() {
         
       if(this.$refs.loginForm.validate() ){
-           const signup=await axios.post("https://localhost:5001/MWT/Login",{"Username":this.userName,"Password":this.password})
- localStorage.setItem('Signuptoken',JSON.stringify(signup.data));
-        var getdata = JSON.parse(localStorage.getItem('Signutoken'));
+           const login=await axios.post("https://localhost:5001/Account/Login",{"Username":this.userName,"Password":this.password})
+ localStorage.setItem('logintoken',JSON.stringify(login.data));
+        var getdata = JSON.parse(localStorage.getItem('logintoken'));
         console.log(getdata);
-        console.log(signup)
+        console.log(login)
       }
     },
 
@@ -101,7 +101,7 @@ export default({
         console.log("hello");
       if (this.$refs.registerForm.validate()) {
         // submit form to server/API here...
-        const signup=await axios.post("https://localhost:5001/MWT/SignUp",{"Fullname":this.fullName,"Username":this.userName,"Password":this.password," Role":3})
+        const signup=await axios.post("https://localhost:5001/Account/SignUp",{"Fullname":this.fullName,"Username":this.userName,"Password":this.password," Role":3})
         console.log(signup)
        
       }
