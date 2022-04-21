@@ -20,5 +20,10 @@
     <ProjectReference Include="..\MWTDbContext\MWTDbContext.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Images\Avatar\" />
+    <Folder Include="Images\Product\" />
+  </ItemGroup>
+
 
 </Project>
