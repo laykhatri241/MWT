@@ -1,7 +1,7 @@
 import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
 import api from "@/api";
+import callApi from "@/api/callApi";
 import Address from "@/interfaces/address";
-localStorage.getItem("UserId");
 @Module({ namespaced: true })
 class Addresses extends VuexModule {
   public address: Address = {
@@ -14,14 +14,27 @@ class Addresses extends VuexModule {
 
   @Action
   public async createAddress(data: Address): Promise<boolean> {
-    // this.address.UserID = localStorage.getItem("UserId");
-    return api
+    data.UserID = Number(localStorage.getItem("UserID"));
+    return callApi
 
-      .post("Address/AddAddress", data)
+      .AsyncPOST("Address/AddAddress", data)
 
       .then((response) => {
         console.log(response);
-        // this.address.UserID = localStorage.getItem("UserId");
+
+        return true;
+      })
+      .catch(() => {
+        return false;
+      });
+  }
+  @Action
+  public async getAllAddress(data: Address): Promise<any> {
+    return callApi
+
+      .AsyncGET("Address/GetAllAddress/" + localStorage.getItem("UserID"))
+      .then((response) => {
+        console.log(response);
 
         return true;
       })

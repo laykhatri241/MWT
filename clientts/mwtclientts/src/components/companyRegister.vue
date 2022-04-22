@@ -1,24 +1,17 @@
 <template>
   <div>
     <Navbar />
+    <h1>Company Details</h1>
     <v-stepper v-model="e1">
       <v-stepper-header>
         <v-stepper-step :complete="e1 > 1" step="1">
           Company Address
         </v-stepper-step>
-        
+
         <v-divider></v-divider>
         <v-stepper-step :complete="e1 > 2" step="2">
           Company Details
         </v-stepper-step>
-
-        <v-divider></v-divider>
-
-        <v-stepper-step :complete="e1 > 3" step="3">
-          Go to Dashboard
-        </v-stepper-step>
-
-        <v-divider></v-divider>
       </v-stepper-header>
 
       <v-stepper-items>
@@ -47,8 +40,8 @@
             </v-card-text>
           </v-card>
           <v-col cols="12" class="text-right">
-            <v-btn color="primary" @click="e1 = 2" @keypress="submitAddress()"> Continue </v-btn>
-            <v-btn text @click="e1 = 2"> Back!! </v-btn>
+            <v-btn color="primary" @click="submitAddress()"> Continue </v-btn>
+            
           </v-col>
         </v-stepper-content>
         <v-stepper-content step="2">
@@ -56,10 +49,12 @@
             <v-card-text>
               <v-form ref="form" lazy-validation @submit.prevent="submit">
                 <v-text-field
+                  v-model="business.GSTIN"
                   :rules="GstRules"
                   label="GSTIN Number"
                 ></v-text-field>
                 <v-text-field
+                  v-model="business.PAN"
                   :rules="PanRules"
                   label="Pan Number"
                   required
@@ -68,32 +63,33 @@
             </v-card-text>
           </v-card>
           <v-col cols="12" class="text-right">
-            <v-btn color="primary" @click="e1 = 3"> Submit </v-btn>
-
-            <v-btn text @click="e1 = 2"> Back!! </v-btn>
-          </v-col>
-        </v-stepper-content>
-        <v-stepper-content step="3">
-          <v-col cols="12" class="text-right">
-            <v-btn color="primary" to="/companydashboard">
-              Go to Dashboard
+            <v-btn color="primary" @click="submitbussinessDetails()">
+              Submit
             </v-btn>
+
+            
           </v-col>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
+    <!-- <Footer /> -->
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import Navbar from "@/components/Navbar.vue";
+import Footer from "@/components/footer.vue";
 import { namespace } from "vuex-class";
 import Address from "@/interfaces/address";
+import BusinessDetailsMaster from "@/interfaces/businessDetailsMaster";
+import callAPI from "@/api/callApi"
 
 const address = namespace("address");
+const business = namespace("bussinessdetails");
 @Component({
   components: {
     Navbar,
+    Footer,
   },
 })
 export default class CompanyRegister extends Vue {
@@ -113,24 +109,59 @@ export default class CompanyRegister extends Vue {
     (v: string) =>
       /[A-Z]{5}[0-9]{4}[A-Z]{1}/.test(v) || "Enter Valid Pan Number!!",
   ];
-  public address: Address = {
-    id: 0,
-    UserID: 0,
-    Address1: "",
-    Address2: "",
-    Pincode: "",
-  };
+  public address = new Address();
+  public business = new BusinessDetailsMaster();
+
   @address.Action
   public createAddress!: (data: Address) => Promise<boolean>;
-  
+  @address.Action
+  public getAllAddress!: (data: Address) => Promise<any>;
+
+  @business.Action
+  public createBusinessDetails!: (
+    data: BusinessDetailsMaster
+  ) => Promise<boolean>;
+  @business.Action
+  public BusinessDetails!: (data: BusinessDetailsMaster) => Promise<any>;
   public submitAddress(): void {
     if (this.isNew) {
-      // this.address.UserID = localStorage.getItem("UserId");
       this.createAddress(this.address);
-
       this.message = "Succesfully Register!!";
+      this.e1 = 2;
     } else {
       this.message = "Cancel Register!!";
+    }
+  }
+  public submitbussinessDetails(): void {
+    if (this.isNew) {
+      this.createBusinessDetails(this.business);
+      this.message = "Succesfully Register!!";
+      this.$router.push("/companyDashboard");
+    } else {
+      this.message = "Cancel Register!!";
+    }
+  }
+  created(): void {
+    if (localStorage.getItem("UserID") == null) {
+      this.$router.push("/");
+    } else {
+      callAPI
+        .AsyncGET("Address/GetAllAddress/" + localStorage.getItem("UserID")).then((addressdata) => {
+        if (addressdata.content == "[]") {
+          this.e1 = 1;
+        } else {
+          callAPI
+              .AsyncGET(
+                "Business/IsBusinessDetail/" + localStorage.getItem("UserID")
+              ).then((businessdata) => {
+            if (businessdata.content == "false") {
+              this.e1 = 2;
+            } else {
+              this.$router.push("/CompanyDashboard");
+            }
+          });
+        }
+      });
     }
   }
 }

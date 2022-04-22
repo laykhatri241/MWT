@@ -64,6 +64,9 @@
           <h3 style="color: green" class="text-center mt-4">
             {{ message }}
           </h3>
+          <h3 style="color: red" class="text-center mt-4">
+            {{ warning }}
+          </h3>
           <v-btn
             block
             class="mt-3"
@@ -88,6 +91,8 @@ const users = namespace("user");
 export default class AddUser extends Vue {
   public isNew?: boolean = true;
   private message: string = "";
+  private warning: string = "";
+
   valid = true;
   Roles = [
     { Did: 1, DName: "User" },
@@ -125,12 +130,19 @@ export default class AddUser extends Vue {
 
   public submitted: boolean = false;
   @users.Action
-  public createUser!: (data: User) => Promise<boolean>;
+  public createUser!: (data: User) => Promise<any>;
   public submitForm(): void {
     if (this.isNew) {
-      this.createUser(this.user);
-      this.submitted = true;
-      this.message = "Succesfully Register!!";
+      this.createUser(this.user).then((data) => {
+        this.submitted = true;
+        // console.log(data);
+
+        if (data = "false") {
+          this.warning = "Username Exits!!";
+        } else {
+          this.message = "Succesfully Register!!";
+        }
+      });
     } else {
       this.message = "Cancel Register!!";
     }

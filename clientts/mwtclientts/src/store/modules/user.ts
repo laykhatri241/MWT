@@ -1,6 +1,8 @@
 import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
 import api from "@/api";
+import callApi from "@/api/callApi"
 import User from "@/interfaces/user";
+import call from "@/api";
 
 @Module({ namespaced: true })
 class Users extends VuexModule {
@@ -14,11 +16,13 @@ class Users extends VuexModule {
   };
 
   @Action
-  public async createUser(data: User): Promise<boolean> {
-    return api
-      .post("Account/SignUp", data)
-      .then((response) => {
-        response.data.data.id = response.data.id;
+  public async createUser(data: User): Promise<any> {
+    return callApi
+      .AsyncPOST("Account/SignUp", data)
+      .then((response ) => {
+        console.log(response);
+        
+        // response.data.data.id = response.data.id;
         this.context.commit("create", response.data.data);
         return true;
       })
@@ -28,16 +32,9 @@ class Users extends VuexModule {
   }
   @Action
   public async login(data: any): Promise<any> {
-    return api
-      .post("Account/Login", data)
-      .then((response) => {
-        // console.log(response);
-        // if (response.data.accessToken) {
-        //   localStorage.setItem("user", JSON.stringify(response.data));
-        // }
-        //return response.data;
-        //this.context.commit("login  hdjsahd Success", response.data.data)
-        //return Promise.resolve(user);
+    return callApi
+      .AsyncPOST("Account/Login", data)
+      .then((response : any) => {
         return response;
       })
       .catch(() => {
@@ -46,11 +43,12 @@ class Users extends VuexModule {
   }
   @Action
   public async CheckUsername(data: any): Promise<any> {
-    return api
-      .post("Account/CheckUsername", data)
+    return callApi
+      .AsyncPOST("Account/CheckUsername", data)
       .then((response) => {
         console.log(response);
 
+        
         //this.context.commit("CheckUsername", response.data.data);
         return true;
       })
@@ -60,11 +58,11 @@ class Users extends VuexModule {
   }
   @Action
   public async GetMyUser(data: any): Promise<any> {
-    return api
-      .get(`Account/GetMyUser/${data.id}`)
+    data.id = Number(localStorage.getItem("UserID"));
+    return callApi
+      .AsyncGET(`Account/GetMyUser/${data.id}`)
       .then((response) => {
         console.log(response);
-        localStorage.getItem('UserId')
         return response;
       })
       .catch(() => {
@@ -73,8 +71,9 @@ class Users extends VuexModule {
   }
   @Action
   public async UpdateUser(data: any): Promise<any> {
-    return api
-      .get("Account/UpdateUser", data)
+    data.id = Number(localStorage.getItem("UserID"));
+    return callApi
+      .AsyncPOST("Account/UpdateUser", data)
       .then((response) => {
         console.log(response);
         //localStorage.getItem('Token')
@@ -86,8 +85,9 @@ class Users extends VuexModule {
   }
   @Action
   public async UpdatePassword(data: any): Promise<any> {
-    return api
-      .put("Account/ChangePassword",data)
+    data.id = Number(localStorage.getItem("UserID"));
+    return callApi
+      .AsyncPOST("Account/ChangePassword",data)
       .then(() => {
       
         this.context.commit('UpdatePasswoed', data)
