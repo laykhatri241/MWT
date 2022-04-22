@@ -35,8 +35,8 @@ const routes: Array<RouteConfig> = [
     component: () => import("../components/profile.vue"),
   },
   {
-    path: "/companyRegister",
-    name: "companyRegister",
+    path: "/companyDetails",
+    name: "companyDetails",
 
     component: () => import("../components/companyRegister.vue"),
   },
@@ -48,16 +48,17 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: "/companySignup",
-    name: "companyDashboard",
+    name: "companySignup",
 
     component: () => import("@/components/CompanySignup.vue"),
   },
   {
-    path: "/CompanyDetailsFill",
-    name: "CompanyDetailsFill",
+    path: "/Sidebar",
+    name: "companySignup",
 
-    component: () => import("@/components/companydetails.vue"),
+    component: () => import("@/components/company_sidebar.vue"),
   },
+
 ];
 
 const router = new VueRouter({

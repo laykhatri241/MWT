@@ -75,7 +75,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .border {
   margin: 0px 8px;
   background: #6f0dff;

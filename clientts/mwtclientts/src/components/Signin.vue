@@ -110,19 +110,16 @@ export default class AddUser extends Vue {
 
   public Loginform(): void {
     if (this.user.Username && this.user.Password) {
-      this.login(this.user).then(
-        (data) => {
-          if (data.data.content != "null") {
-            this.$router.push("/Dashboard");
-            console.log(data);
-
-            localStorage.setItem(
-              "Token",
-              JSON.parse(data.data.content).Password
-            );
-            localStorage.setItem("UserId", JSON.parse(data.data.content).id);
-            localStorage.setItem("UserRole", JSON.parse(data.data.content).Role);
-            switch (JSON.parse(data.data.content).Role) {
+      this.login(this.user).then((resp) => {
+        var jdata = JSON.parse(resp.content);
+        if (jdata != null) {
+          localStorage.setItem("TokenBarrier", jdata.Password);
+          localStorage.setItem("UserID", jdata.id);
+          localStorage.setItem("UserFullName", jdata.Fullname);
+          localStorage.setItem("UserRole", jdata.Role);
+          // this.showLogin();
+          this.$emit("UserStatus", true);
+          switch (jdata.Role) {
             case 2:
               this.$router.push("/CompanyDashboard");
               break;
@@ -130,16 +127,10 @@ export default class AddUser extends Vue {
               this.$router.push("/Dashboard");
               break;
           }
-          } else {
-            //console.log(data);
-
-            this.message = "Username Or Password is incorrect!!";
-          }
-        },
-        (error) => {
-          this.message = error;
+        } else {
+          this.message = "Username or Password Invalid";
         }
-      );
+      });
     }
   }
 }

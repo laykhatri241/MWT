@@ -1,6 +1,5 @@
 <template>
   <v-app-bar app color="#000000" dark>
-    
     <div
       style="
         position: absolute;
@@ -10,9 +9,7 @@
         right: 0;
         text-align: center;
       "
-    >
-      <h4>User Profile</h4>
-    </div>
+    ></div>
 
     <v-spacer></v-spacer>
 
