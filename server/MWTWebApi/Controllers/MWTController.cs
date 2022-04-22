@@ -11,8 +11,10 @@ using MWTWebApi.Model.Custom;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,6 +59,7 @@ namespace MWTWebApi.Controllers
         [Route("SignUp")]
         [HttpPost]
         public HttpAPIResponse SignUp(User usr)
+        
         {
             if (!_accountService.checkUsername(usr.Username).Result)
             {
@@ -187,7 +190,39 @@ namespace MWTWebApi.Controllers
             };
         }
         #endregion
+<<<<<<< HEAD
   
+=======
+
+        #region UploadAvatar
+        [Authorize(Roles = "2,3")]
+        [HttpPost("UploadAvatar")]
+        public HttpAPIResponse UploadAvatar()
+        {
+            var formCollection = Request.ReadFormAsync().Result;
+            var file = formCollection.Files.First();
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Images", "Avatar"));
+            var fileExt = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+            var fileName = Guid.NewGuid().ToString("N");
+
+            using(var stream = new FileStream(Path.Combine(pathToSave,fileName+fileExt),FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+
+
+            return new HttpAPIResponse()
+            {
+                Content = fileName + fileExt,
+                StatusCode = HttpStatusCode.OK,
+
+            };
+
+        }
+        #endregion
+
+
+>>>>>>> 237d88004be3c9ac21a93ff975a12a61911bc396
     }
 }
 

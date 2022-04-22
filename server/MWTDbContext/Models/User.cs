@@ -11,7 +11,7 @@ namespace MWTDbContext.Models
     {
         [Key]
         public int id { get; set; }
-        [Required]
+        [Required,MaxLength(128)]
         public string Fullname { get; set; }
         [Required]
         [MaxLength(21)]
