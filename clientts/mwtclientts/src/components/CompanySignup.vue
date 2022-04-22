@@ -5,7 +5,7 @@
         class="text-start v-card--material__heading mb-n6 v-sheet theme--dark elevation-6 primary pa-7"
         style="width: 90%; margin: 20px"
       >
-        <div data-v-72fcb493="" class="display-1 text-center">Sign in!!</div>
+        <div data-v-72fcb493="" class="display-1 text-center">Company Sign-Up!!</div>
         <!---->
       </div>
       <div data-v-72fcb493="" class="text-center mb-4">
@@ -19,46 +19,66 @@
       <v-card-text>
         <v-form ref="form" lazy-validation @submit.prevent="submit">
           <v-text-field
-            label="Username"
-            type="text"
-            color="blue accent-3"
-            v-model="user.Username"
             :rules="nameRules"
-          />
+            label="Full Name"
+            v-model="user.Fullname"
+          ></v-text-field>
+          <v-text-field
+            :rules="nameRules"
+            label="Username"
+            v-model="user.Username"
+            required
+          ></v-text-field>
+          <v-text-field
+            label="Date OF Foundation"
+            type="date"
+            :rules="nameRules"
+            v-model="user.DateOfBirth"
+            prepend-inner-icon="mdi-calendar"
+          ></v-text-field>
           <v-text-field
             id="password"
-            label="Password"
             v-model="user.Password"
             :append-icon="value ? 'visibility' : 'visibility_off'"
             @click:append="() => (value = !value)"
+            :rules="passwordRules"
+            label="Password"
             name="password"
             :type="value ? 'password' : 'text'"
             color="blue accent-3"
-          />
+          ></v-text-field>
+          <v-text-field
+            id="confirm_password"
+            :append-icon="value ? 'visibility' : 'visibility_off'"
+            @click:append="() => (value = !value)"
+            :rules="confirmPasswordRules"
+            label="Confirm_password"
+            name="confirm_password"
+            :type="value ? 'password' : 'text'"
+            color="blue accent-3"
+          ></v-text-field>
           <p>
-            Don't have an account?
-            <router-link to="/Signup">Signup here</router-link>
+            Already have an account?
+            <router-link to="/Signin">Signin here</router-link>
           </p>
-           <p>
-            Company account?
-            <router-link to="/CompanySignup">Signup here</router-link>
-          </p>
-          <h3 style="color: red" class="text-center mt-4">
+          <h3 style="color: green" class="text-center mt-4">
             {{ message }}
           </h3>
           <v-btn
-            class="mt-3"
             block
+            class="mt-3"
             color="blue accent-3"
+            @click="submitForm()"
+            :disabled="!valid"
             dark
-            @click="Loginform()"
-            >SIGN IN</v-btn
+            >SIGN UP</v-btn
           >
         </v-form>
       </v-card-text>
     </v-card>
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { namespace } from "vuex-class";
@@ -100,46 +120,19 @@ export default class AddUser extends Vue {
     Username: "",
     Password: "",
     DateOfBirth: "",
-    Role: 3,
+    Role: 2,
   };
 
   public submitted: boolean = false;
-
   @users.Action
-  public login!: (data: any) => Promise<any>;
-
-  public Loginform(): void {
-    if (this.user.Username && this.user.Password) {
-      this.login(this.user).then(
-        (data) => {
-          if (data.data.content != "null") {
-            this.$router.push("/Dashboard");
-            console.log(data);
-
-            localStorage.setItem(
-              "Token",
-              JSON.parse(data.data.content).Password
-            );
-            localStorage.setItem("UserId", JSON.parse(data.data.content).id);
-            localStorage.setItem("UserRole", JSON.parse(data.data.content).Role);
-            switch (JSON.parse(data.data.content).Role) {
-            case 2:
-              this.$router.push("/CompanyDashboard");
-              break;
-            case 3:
-              this.$router.push("/Dashboard");
-              break;
-          }
-          } else {
-            //console.log(data);
-
-            this.message = "Username Or Password is incorrect!!";
-          }
-        },
-        (error) => {
-          this.message = error;
-        }
-      );
+  public createUser!: (data: User) => Promise<boolean>;
+  public submitForm(): void {
+    if (this.isNew) {
+      this.createUser(this.user);
+      this.submitted = true;
+      this.message = "Succesfully Register!!";
+    } else {
+      this.message = "Cancel Register!!";
     }
   }
 }

@@ -1,8 +1,6 @@
 <template>
   <v-app-bar app color="#000000" dark>
-    <v-divider vertical class="ml-1 mr-3"></v-divider>
-
-    <v-divider vertical class="ml-5"></v-divider>
+    
     <div
       style="
         position: absolute;

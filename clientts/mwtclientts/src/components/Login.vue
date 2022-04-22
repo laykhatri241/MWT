@@ -227,6 +227,7 @@ export default class AddUser extends Vue {
     id: 0,
     Username: "",
     Password: "",
+    DateOfBirth:"",
     Role: 3,
   };
 

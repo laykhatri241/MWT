@@ -3,6 +3,7 @@ class User {
     Fullname!: string
     Username!: string
     Password!: string
+    DateOfBirth!: string;
     Role !:number
   }
   

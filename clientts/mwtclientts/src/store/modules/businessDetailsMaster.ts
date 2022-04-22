@@ -10,13 +10,18 @@ class BusinessDetails extends VuexModule {
     GSTIN: "",
     PAN: "",
   };
+
   @Action
-  public async createBusinessDetails(data: BusinessDetailsMaster): Promise<boolean> {
+  public async createBusinessDetails(
+    data: BusinessDetailsMaster
+  ): Promise<boolean> {
     return api
       .post("Business/AddBusinessDetails", data)
       .then((response) => {
-        response.data.data.id = response.data.id;
-        this.context.commit("createBusiness", response.data.data);
+        // response.data.data.id = response.data.id;
+        // this.context.commit("createBusiness", response.data.data);
+        console.log(response);
+        
         return true;
       })
       .catch(() => {
@@ -24,4 +29,4 @@ class BusinessDetails extends VuexModule {
       });
   }
 }
-export default BusinessDetails
+export default BusinessDetails;
