@@ -9,6 +9,7 @@ class Users extends VuexModule {
     id: 0,
     Username: "",
     Password: "",
+    DateOfBirth:"",
     Role: 0,
   };
 

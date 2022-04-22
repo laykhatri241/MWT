@@ -24,10 +24,17 @@
             v-model="user.Fullname"
           ></v-text-field>
           <v-text-field
-            :rules="usernameRules"
+            :rules="nameRules"
             label="Username"
             v-model="user.Username"
             required
+          ></v-text-field>
+          <v-text-field
+            label="Date OF Birth"
+            type="date"
+            :rules="nameRules"
+            v-model="user.DateOfBirth"
+            prepend-inner-icon="mdi-calendar"
           ></v-text-field>
           <v-text-field
             id="password"
@@ -54,9 +61,9 @@
             Already have an account?
             <router-link to="/Signin">Signin here</router-link>
           </p>
-           <h3 style="color: green" class="text-center mt-4">
-                        {{ message }}
-                      </h3>
+          <h3 style="color: green" class="text-center mt-4">
+            {{ message }}
+          </h3>
           <v-btn
             block
             class="mt-3"
@@ -112,42 +119,21 @@ export default class AddUser extends Vue {
     id: 0,
     Username: "",
     Password: "",
+    DateOfBirth: "",
     Role: 3,
   };
 
   public submitted: boolean = false;
   @users.Action
   public createUser!: (data: User) => Promise<boolean>;
-  @users.Action
-  public login!: (data: any) => Promise<any>;
   public submitForm(): void {
     if (this.isNew) {
       this.createUser(this.user);
       this.submitted = true;
       this.message = "Succesfully Register!!";
     } else {
-     this.message = "Cancel Register!!";
+      this.message = "Cancel Register!!";
     }
-  }
-  public Loginform(): void {
-    if (this.user.Username && this.user.Password) {
-      this.login(this.user).then(
-        (data) => {
-          if (data.data.content != "null") {
-            this.$router.push("/Dashboard");
-            localStorage.setItem;
-          } else {
-            this.message = "Username Or Password is incorrect!!";
-          }
-          //console.log(data.data.content);
-        },
-        (error) => {
-          this.message = error;
-        }
-      );
-    }
-    //this.login({Username:this.user.Username ,Password:this.user.Password})
-    //this.$router.push('/profile')
   }
 }
 </script>
