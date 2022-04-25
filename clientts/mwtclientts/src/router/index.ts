@@ -4,8 +4,9 @@ import VueRouter, { RouteConfig } from "vue-router";
 import Signin from "@/components/Signin.vue";
 import Dashboard from "@/views/HomeView.vue";
 import Login from "@/components/Login.vue";
-
+import CompanyDetails from "@/components/companyRegister.vue" ;
 Vue.use(VueRouter);
+
 
 const routes: Array<RouteConfig> = [
   {
@@ -17,6 +18,7 @@ const routes: Array<RouteConfig> = [
     path: "/Dashboard",
     name: "Dashboard",
     component: Dashboard,
+    
   },
   {
     path: "/Signin",
@@ -43,8 +45,10 @@ const routes: Array<RouteConfig> = [
   {
     path: "/companyDashboard",
     name: "companyDashboard",
-
     component: () => import("@/components/companydashboard.vue"),
+    // children:[
+    //   {}
+    // ]
   },
   {
     path: "/companySignup",
@@ -67,4 +71,4 @@ const router = new VueRouter({
   routes,
 });
 
-export default router;
+export default router

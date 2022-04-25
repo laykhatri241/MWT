@@ -52,6 +52,7 @@
             color="blue accent-3"
             dark
             @click="Loginform()"
+            
             >SIGN IN</v-btn
           >
         </v-form>
@@ -101,6 +102,7 @@ export default class AddUser extends Vue {
     Password: "",
     DateOfBirth: "",
     Role: 3,
+    Avatar : ""
   };
 
   public submitted: boolean = false;
@@ -117,8 +119,8 @@ export default class AddUser extends Vue {
           localStorage.setItem("UserID", jdata.id);
           localStorage.setItem("UserFullName", jdata.Fullname);
           localStorage.setItem("UserRole", jdata.Role);
-          // this.showLogin();
-          this.$emit("UserStatus", true);
+         
+          //this.$emit("UserStatus", true);
           switch (jdata.Role) {
             case 2:
               this.$router.push("/CompanyDashboard");
