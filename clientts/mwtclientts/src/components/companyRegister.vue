@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Navbar />
     <h1>Company Details</h1>
     <v-stepper v-model="e1">
       <v-stepper-header>
@@ -41,7 +40,6 @@
           </v-card>
           <v-col cols="12" class="text-right">
             <v-btn color="primary" @click="submitAddress()"> Continue </v-btn>
-            
           </v-col>
         </v-stepper-content>
         <v-stepper-content step="2">
@@ -66,8 +64,6 @@
             <v-btn color="primary" @click="submitbussinessDetails()">
               Submit
             </v-btn>
-
-            
           </v-col>
         </v-stepper-content>
       </v-stepper-items>
@@ -77,21 +73,14 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import Navbar from "@/components/Navbar.vue";
-import Footer from "@/components/footer.vue";
 import { namespace } from "vuex-class";
 import Address from "@/interfaces/address";
 import BusinessDetailsMaster from "@/interfaces/businessDetailsMaster";
-import callAPI from "@/api/callApi"
+import callAPI from "@/api/callApi";
 
 const address = namespace("address");
 const business = namespace("bussinessdetails");
-@Component({
-  components: {
-    Navbar,
-    Footer,
-  },
-})
+@Component({})
 export default class CompanyRegister extends Vue {
   e1 = 1;
   public isNew?: boolean = true;
@@ -146,22 +135,24 @@ export default class CompanyRegister extends Vue {
       this.$router.push("/");
     } else {
       callAPI
-        .AsyncGET("Address/GetAllAddress/" + localStorage.getItem("UserID")).then((addressdata) => {
-        if (addressdata.content == "[]") {
-          this.e1 = 1;
-        } else {
-          callAPI
+        .AsyncGET("Address/GetAllAddress/" + localStorage.getItem("UserID"))
+        .then((addressdata) => {
+          if (addressdata.content == "[]") {
+            this.e1 = 1;
+          } else {
+            callAPI
               .AsyncGET(
                 "Business/IsBusinessDetail/" + localStorage.getItem("UserID")
-              ).then((businessdata) => {
-            if (businessdata.content == "false") {
-              this.e1 = 2;
-            } else {
-              this.$router.push("/CompanyDashboard");
-            }
-          });
-        }
-      });
+              )
+              .then((businessdata) => {
+                if (businessdata.content == "false") {
+                  this.e1 = 2;
+                } else {
+                  this.$router.push("/CompanyDashboard");
+                }
+              });
+          }
+        });
     }
   }
 }
