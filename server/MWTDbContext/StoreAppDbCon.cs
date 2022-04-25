@@ -18,6 +18,9 @@ namespace MWTDbContext
         public DbSet<CategoryMaster> categoryMasters { get; set; }
 
         public DbSet<BusinessDetailsMaster> businessDetailsMasters { get; set; }
+        public DbSet<ProductMaster> productMasters { get; set; }
+
+        public DbSet<StockMaster> stockMasters { get; set; }
 
     }
 }

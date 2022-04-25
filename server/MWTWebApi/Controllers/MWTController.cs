@@ -190,9 +190,6 @@ namespace MWTWebApi.Controllers
             };
         }
         #endregion
-<<<<<<< HEAD
-  
-=======
 
         #region UploadAvatar
         [Authorize(Roles = "2,3")]
@@ -221,8 +218,6 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-
->>>>>>> 237d88004be3c9ac21a93ff975a12a61911bc396
     }
 }
 
