@@ -1,75 +1,80 @@
 <template>
-<div>
-    <h2>User Profile</h2>
-    <div class="form-group">
-      <label for="name">Full Name:</label>
-      <div class="relative">
-        <input
-          class="form-control"
-          id="name"
-          type="text"
-          required=""
-          autofocus=""
-          autocomplete=""
-          placeholder="Type your name here..."
-          v-model="Fullname"
-        />
-        <i class="fa fa-user"></i>
-      </div>
-    </div>
-    
-    <div class="form-group">
-      <label for="Date">Date Of Birth:</label>
-      <div class="relative">
+  <div>
+    <v-card class="mx-auto" max-width="800">
+      <!-- <h2>User Profile</h2>
+     <image-input v-model="Avatar">
+        <div slot="activator">
+          <v-avatar size="150px" v-ripple v-if="!Avatar" class="grey lighten-3 mb-3">
+             <v-file-input
+            label="File input"
+                       ></v-file-input>
+            <span>Click to add Avatar</span>
+          </v-avatar>
+          <v-avatar size="150px" v-ripple v-else class="mb-3">
+            <img :src="Avatar.imageURL" alt="avatar">
+          </v-avatar>
+        </div>
+      </image-input> -->
 
-         <v-date-picker
-      v-model="DateOfBirth"
-      year-icon="mdi-calendar-blank"
-      prev-icon="mdi-skip-previous"
-      next-icon="mdi-skip-next"
-    
-
-    ></v-date-picker>
-    
-        <i class="fa fa-calendar"></i>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="Avatar">Avatar:</label>
-      <div class="relative">
-        <div class="input-group">
-          <label class="input-group-btn">
-            <span class="btn btn-default">
-              Browse&hellip;
-              <input type="file" style="display: none" multiple />
-            </span>
-          </label>
-          <input
-            type="text"
-            class="form-control"
-            required=""
-            placeholder="Upload Avatar..."
-            readonly
-            v-model="Avatar"
-          />
-          <i class="fa fa-link"></i>
+      <div class="form-group">
+        <label for="Avatar">Avatar:</label>
+        <div class="relative">
+          <div class="input-group">
+            <v-file-input
+              filled
+              prepend-icon="mdi-camera"
+              @change="onFileChange"
+             
+            ></v-file-input>
+            <i class="fa fa-link"></i>
+          </div>
         </div>
       </div>
-    </div>
+      <div class="form-group">
+        <label for="name">Full Name:</label>
+        <div class="relative">
+          <input
+            class="form-control"
+            id="name"
+            type="text"
+            required=""
+            autofocus=""
+            autocomplete=""
+            placeholder="Type your name here..."
+            v-model="Fullname"
+          />
+          <i class="fa fa-user"></i>
+        </div>
+      </div>
 
-    <div class="tright">
-      <button class="movebtn movebtnre" type="Reset">
-        <i class="fa fa-fw fa-refresh"></i> Reset
-      </button>
-      <button class="movebtn movebtnsu" @click="updateuser()">
-        Submit <i class="fa fa-fw fa-paper-plane"></i>
-      </button>
-    </div>
-    <div class="thanks" style="display: none">
-      <h4>Thank you!</h4>
-      <p><small>Your message has been successfully sent.</small></p>
-    </div>
+      <div class="form-group">
+        <label for="Date">Date Of Birth:</label>
+        <div class="relative">
+          <v-date-picker
+            v-model="DateOfBirth"
+            year-icon="mdi-calendar-blank"
+            prev-icon="mdi-skip-previous"
+            next-icon="mdi-skip-next"
+          ></v-date-picker>
+
+          <i class="fa fa-calendar"></i>
+        </div>
+      </div>
+
+      <div class="tright">
+        <button class="movebtn movebtnre" type="Reset">
+          <i class="fa fa-fw fa-refresh"></i> Reset
+        </button>
+        <button class="movebtn movebtnsu" @click="updateuser()">
+          Submit <i class="fa fa-fw fa-paper-plane"></i>
+        </button>
+      </div>
+      <router-link to="/resetpassword">resetpassword</router-link>
+      <div class="thanks" style="display: none">
+        <h4>Thank you!</h4>
+        <p><small>Your message has been successfully sent.</small></p>
+      </div>
+    </v-card>
   </div>
 </template>
 <style scoped>
@@ -384,25 +389,37 @@ fieldset[disabled] .form-control {
 }
 </style>
 <script>
-import axios from "axios";
-import callAPI from '@/apihelper/api';
+import callAPI from "@/apihelper/api";
 export default {
+  name: "upload-files",
   methods: {
+    async onFileChange(file) {
+      callAPI
+     .Asyncfileupload("Account/UploadAvatar",file
+
+     ).then(data=>console.log(data));
+    },
     async updateuser() {
-        callAPI
-      .AsyncPOST("Account/UpdateUser", {
-          "id": localStorage.getItem("userid"),
-        "Fullname": this.Fullname,
-     "DateOfBirth": this.DateOfBirth,
-        "Avatar": this.Avatar,
-      }).then(data => console.log(data));
+      callAPI
+        .AsyncPOST("Account/UpdateUser", {
+          id: localStorage.getItem("userid"),
+          Fullname: this.Fullname,
+          DateOfBirth: this.DateOfBirth,
+          Avatar: this.Avatar,
+        })
+        .then((data) => console.log(data));
     },
   },
-  data:()  =>( {
-      
-    Fullname:"",
+  async addavatar() {
+    uploadimg.AsyncPOST("Account/Avatar", {
+      id: localStorage.getItem("userid"),
+      Avatar: this.Avatar,
+    });
+  },
+  data: () => ({
+    Fullname: "",
     DateOfBirth: "",
-    Avatar:"",
-  })
+    Avatar: "",
+  }),
 };
 </script>
