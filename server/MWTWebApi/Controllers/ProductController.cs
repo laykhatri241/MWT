@@ -60,8 +60,35 @@ namespace MWTWebApi.Controllers
         #region AddProduct
         [Authorize(Roles = "2")]
         [HttpPost("AddProduct")]
-        public HttpAPIResponse AddProduct(ProductMaster product)
+        public HttpAPIResponse AddProduct()
         {
+            var formCollection = Request.ReadFormAsync().Result;
+            var file = formCollection.Files.First();
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Images", "Product"));
+            var fileExt = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+            var fileName = Guid.NewGuid().ToString("N");
+
+            try
+            {
+
+                using (var stream = new FileStream(Path.Combine(pathToSave, fileName + fileExt), FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new HttpAPIResponse()
+                {
+                    Content = null,
+                    StatusCode = HttpStatusCode.OK
+                };
+            }
+
+            var product = JsonConvert.DeserializeObject<ProductMaster>(formCollection.First().Value);
+            product.ProdImage = fileName + fileExt;
+
+
             var status = _productService.AddProduct(product).Result;
             return new HttpAPIResponse()
             {

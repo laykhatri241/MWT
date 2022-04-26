@@ -5,7 +5,7 @@ import Login from '@/components/Login'
 import Layout from '@/components/Layout'
 import updateuserprofile from '@/components/updateuserprofile'
 import companyregister from '@/components/companyregister'
-
+import newupdate from '@/components/newupdate'
 Vue.use(Router)
 
 export default new Router({
@@ -33,7 +33,12 @@ export default new Router({
         path:'/companyregister',
         component:companyregister,
         name:'companyregister',
-      }
+      },
+      {
+        path:'/newupdate',
+        component:newupdate,
+        name:'newupdate',
+      },
 
         
       ]
