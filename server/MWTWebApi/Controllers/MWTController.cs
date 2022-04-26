@@ -180,7 +180,6 @@ namespace MWTWebApi.Controllers
         [HttpPost("UpdateUser")]
         public HttpAPIResponse UpdateUser()
         {
-
             var formCollection = Request.ReadFormAsync().Result;
             var file = formCollection.Files.First();
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Images", "Avatar"));
@@ -219,23 +218,7 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-        //#region UploadAvatar
-        //[Authorize(Roles = "2,3")]
-        //[HttpPost("UploadAvatar")]
-        //public HttpAPIResponse UploadAvatar()
-        //{
 
-
-
-        //    return new HttpAPIResponse()
-        //    {
-        //        Content = fileName + fileExt,
-        //        StatusCode = HttpStatusCode.OK,
-
-        //    };
-
-        //}
-        //#endregion
 
     }
 }
