@@ -190,7 +190,6 @@ namespace MWTWebApi.Controllers
             };
         }
         #endregion
-
         #region UploadAvatar
         [Authorize(Roles = "2,3")]
         [HttpPost("UploadAvatar")]
