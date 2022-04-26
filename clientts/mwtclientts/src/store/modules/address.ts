@@ -22,10 +22,10 @@ class Addresses extends VuexModule {
       .then((response) => {
         console.log(response);
 
-        return true;
+        return response;
       })
-      .catch(() => {
-        return false;
+      .catch((err) => {
+        return err;
       });
   }
   @Action
@@ -36,10 +36,10 @@ class Addresses extends VuexModule {
       .then((response) => {
         console.log(response);
 
-        return true;
+        return response;
       })
-      .catch(() => {
-        return false;
+      .catch((err) => {
+        return err;
       });
   }
 }

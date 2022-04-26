@@ -39,7 +39,7 @@
             Don't have an account?
             <router-link to="/Signup">Signup here</router-link>
           </p>
-           <p>
+          <p>
             Company account?
             <router-link to="/CompanySignup">Signup here</router-link>
           </p>
@@ -52,7 +52,6 @@
             color="blue accent-3"
             dark
             @click="Loginform()"
-            
             >SIGN IN</v-btn
           >
         </v-form>
@@ -102,7 +101,7 @@ export default class AddUser extends Vue {
     Password: "",
     DateOfBirth: "",
     Role: 3,
-    Avatar : ""
+    Avatar: "",
   };
 
   public submitted: boolean = false;
@@ -119,8 +118,7 @@ export default class AddUser extends Vue {
           localStorage.setItem("UserID", jdata.id);
           localStorage.setItem("UserFullName", jdata.Fullname);
           localStorage.setItem("UserRole", jdata.Role);
-         
-          //this.$emit("UserStatus", true);
+
           switch (jdata.Role) {
             case 2:
               this.$router.push("/CompanyDashboard");

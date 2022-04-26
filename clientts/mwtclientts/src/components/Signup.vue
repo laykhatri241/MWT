@@ -132,22 +132,26 @@ export default class AddUser extends Vue {
   public submitted: boolean = false;
   @users.Action
   public createUser!: (data: User) => Promise<any>;
+  @users.Action
+  public CheckUsername !: (data:User) => Promise<any>;
   public submitForm(): void {
     if (this.isNew) {
       this.createUser(this.user).then((data) => {
-        this.submitted = true;
-        // console.log(data);
-
-        if (data = "false") {
+        // this.submitted = true;
+        console.log("idhfdsifhfdigh",data);
+       
+        if (data.content == "UsernameExists") {
           this.warning = "Username Exits!!";
         } else {
           this.message = "Succesfully Register!!";
+           this.$router.push("/");
         }
       });
     } else {
       this.message = "Cancel Register!!";
     }
   }
+
 }
 </script>
 <style scoped>
