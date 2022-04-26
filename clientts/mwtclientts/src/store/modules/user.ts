@@ -13,6 +13,7 @@ class Users extends VuexModule {
     Password: "",
     DateOfBirth:"",
     Role: 0,
+    Avatar :"",
   };
 
   @Action
@@ -95,6 +96,21 @@ class Users extends VuexModule {
       })
       .catch(() => {
        
+        return false
+      })
+  }
+  @Action
+  public async UpdateProfile(data: any): Promise<any> {
+    // data.id = Number(localStorage.getItem("UserID"));
+    return callApi
+      .AsyncPOST("Account/UploadAvatar",data)
+      .then((res) => {
+        console.log(res);
+        return res
+        
+        
+      })
+      .catch(() => {       
         return false
       })
   }

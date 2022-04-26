@@ -4,14 +4,16 @@ using MWTDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MWTDbContext.Migrations
 {
     [DbContext(typeof(StoreAppDbCon))]
-    partial class StoreAppDbConModelSnapshot : ModelSnapshot
+    [Migration("20220425052957_A_TProductMaster")]
+    partial class A_TProductMaster
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,39 +146,6 @@ namespace MWTDbContext.Migrations
                     b.HasKey("id");
 
                     b.ToTable("productMasters");
-                });
-
-            modelBuilder.Entity("MWTDbContext.Models.StockMaster", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Offer")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("OfferEnd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("OfferStart")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Stock")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("createdAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("updatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("id");
-
-                    b.ToTable("stockMasters");
                 });
 
             modelBuilder.Entity("MWTDbContext.Models.User", b =>

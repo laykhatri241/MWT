@@ -4,7 +4,8 @@ class User {
     Username!: string
     Password!: string
     DateOfBirth!: string;
-    Role !:number
+    Role !:number;
+    Avatar !: string;
   }
   
   export default  User 

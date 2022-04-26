@@ -126,6 +126,7 @@ export default class AddUser extends Vue {
     Password: "",
     DateOfBirth: "",
     Role: 3,
+    Avatar :""
   };
 
   public submitted: boolean = false;
