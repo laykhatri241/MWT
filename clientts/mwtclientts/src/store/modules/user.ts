@@ -24,11 +24,11 @@ class Users extends VuexModule {
         console.log(response);
         
         // response.data.data.id = response.data.id;
-        this.context.commit("create", response.data.data);
-        return true;
+        // this.context.commit("create", response.data.data);
+        return response;
       })
-      .catch(() => {
-        return false;
+      .catch((err) => {
+        return err;
       });
   }
   @Action
@@ -38,8 +38,8 @@ class Users extends VuexModule {
       .then((response : any) => {
         return response;
       })
-      .catch(() => {
-        return false;
+      .catch((err) => {
+        return err;
       });
   }
   @Action
@@ -51,10 +51,10 @@ class Users extends VuexModule {
 
         
         //this.context.commit("CheckUsername", response.data.data);
-        return true;
+        return response;
       })
-      .catch(() => {
-        return false;
+      .catch((err) => {
+        return err;
       });
   }
   @Action
@@ -66,8 +66,8 @@ class Users extends VuexModule {
         console.log(response);
         return response;
       })
-      .catch(() => {
-        return false;
+      .catch((err) => {
+        return err;
       });
   }
   @Action
@@ -80,8 +80,8 @@ class Users extends VuexModule {
         //localStorage.getItem('Token')
         return response;
       })
-      .catch(() => {
-        return false;
+      .catch((err) => {
+        return err;
       });
   }
   @Action
@@ -89,14 +89,14 @@ class Users extends VuexModule {
     data.id = Number(localStorage.getItem("UserID"));
     return callApi
       .AsyncPOST("Account/ChangePassword",data)
-      .then(() => {
+      .then((response) => {
       
         this.context.commit('UpdatePasswoed', data)
-        return true
+        return response
       })
-      .catch(() => {
+      .catch((err) => {
        
-        return false
+        return err
       })
   }
   @Action
@@ -110,8 +110,8 @@ class Users extends VuexModule {
         
         
       })
-      .catch(() => {       
-        return false
+      .catch((err) => {       
+        return err
       })
   }
 }

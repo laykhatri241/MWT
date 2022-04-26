@@ -1,26 +1,25 @@
 <template>
   <v-app>
-     <v-main>
-      <!-- <div class="row" >
-        <div style="float: left !important" ><CompanyDashboard /></div>
-        <div class="col" style="padding-left:0;">
-        </div>
-      </div> -->
+    <v-main>
       <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script lang="ts">
-import Vue from "vue"; 
-import CompanyDashboard from "@/components/companydashboard.vue"
-export default Vue.extend({
-  name: "App",
-  components:{
-    CompanyDashboard
+import CompanyDashboard from "@/components/companydashboard.vue";
+import Sidebar from "@/components/c_sidebar.vue";
+import Topbar from "@/components/company_topbar.vue";
+import { Component, Vue, Prop } from "vue-property-decorator";
+
+@Component({
+  components: {
+    Sidebar,
+    Topbar,
   },
-  data: () => ({
-    //
-  }),
-});
+})
+export default class App extends Vue {
+  // drawer = null;
+  // data = localStorage.getItem("UserRole");
+}
 </script>
