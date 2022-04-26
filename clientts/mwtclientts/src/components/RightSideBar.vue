@@ -8,7 +8,9 @@
     right
   >
     <v-avatar class="d-block text-center mx-auto mt-4 mb-10" size="80">
-      <v-btn class="ma-2" outlined large fab color="white" to="/profile"> SH </v-btn>
+      <v-btn class="ma-2" outlined large fab color="white" to="/profile">
+        SH</v-btn
+      >
     </v-avatar>
 
     <v-card flat color="#6F0DFF" class="rounded-xl mx-4 py-10 text-center top">
@@ -41,25 +43,22 @@
   </v-navigation-drawer>
 </template>
 
-<script lang ="ts">
+<script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import User from "@/interfaces/user";
 const users = namespace("user");
 @Component
 export default class RightSideBar extends Vue {
-   selectedItem= 0
-   drawer1= null
-@users.Action
-public GetMyUser!: (data: any) => Promise<any>;
+  Username = localStorage.getItem("UserFullName");
+  selectedItem = 0;
+  drawer1 = null;
+  @users.Action
+  public GetMyUser!: (data: any) => Promise<any>;
 
-public GetUser(): void {
-
-}
+  public GetUser(): void {}
 }
 </script>
-
-
 
 <style>
 .v-btn:not(.v-btn--round).v-size--default.changewith {

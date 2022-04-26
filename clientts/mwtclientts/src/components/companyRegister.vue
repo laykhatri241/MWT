@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-card class="mx-auto" width="1000"> 
     <h1>Company Details</h1>
     <v-stepper v-model="e1">
       <v-stepper-header>
@@ -69,6 +70,7 @@
       </v-stepper-items>
     </v-stepper>
     <!-- <Footer /> -->
+    </v-card>
   </div>
 </template>
 <script lang="ts">

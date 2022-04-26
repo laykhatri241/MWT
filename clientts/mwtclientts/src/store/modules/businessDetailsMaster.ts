@@ -24,10 +24,10 @@ class BusinessDetails extends VuexModule {
         // this.context.commit("createBusiness", response.data.data);
         console.log(response);
 
-        return true;
+        return response;
       })
-      .catch(() => {
-        return false;
+      .catch((err) => {
+        return err;
       });
   }
   @Action
@@ -40,10 +40,26 @@ class BusinessDetails extends VuexModule {
         // this.context.commit("createBusiness", response.data.data);
         console.log(response);
 
-        return true;
+        return response;
       })
-      .catch(() => {
-        return false;
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async GetBusinessDetails(data: BusinessDetailsMaster): Promise<boolean> {
+    data.UserID = Number(localStorage.getItem("UserID"));
+    return callAPI
+      .AsyncGET("Business/GetBusinessDetail/" + localStorage.getItem("UserID"))
+      .then((response) => {
+        // response.data.data.id = response.data.id;
+        // this.context.commit("createBusiness", response.data.data);
+        console.log(response);
+
+        return response;
+      })
+      .catch((err) => {
+        return err;
       });
   }
 }

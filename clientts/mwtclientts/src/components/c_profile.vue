@@ -1,19 +1,16 @@
 <template>
   <div>
-    <Navbar />
     <v-container id="user-profile" fluid tag="section">
       <v-row justify="center">
         <v-col cols="12" md="6">
-          <v-card>
+          <v-card class="mx-auto">
             <v-form>
               <v-container class="py-0">
                 <v-row class="justify-center">
                   <v-avatar size="200px">
-                    
-                      <v-img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiGcFYBKGruads8sUVAfUBlX8orSdEwuSSTg&usqp=CAU"
-                      />
-                  
+                    <v-img
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiGcFYBKGruads8sUVAfUBlX8orSdEwuSSTg&usqp=CAU"
+                    />
                   </v-avatar>
                 </v-row>
                 <v-row>
@@ -73,40 +70,6 @@
             </v-form>
           </v-card>
         </v-col>
-
-        <v-col cols="12" md="6">
-          <v-card class="v-card-profile">
-            <v-card-text class="text-center">
-              <v-col cols="12" md="12">
-                <v-text-field
-                  class="purple-input"
-                  v-model="updatePassword.OldPass"
-                  label="Old Password"
-                />
-              </v-col>
-              <v-col cols="12" md="12">
-                <v-text-field
-                  class="purple-input"
-                  :rules="passwordRules"
-                  v-model="updatePassword.NewPass"
-                  label="New Password"
-                />
-              </v-col>
-              <v-col cols="12" md="12">
-                <v-text-field
-                  class="purple-input"
-                  :rules="confirmPasswordRules"
-                  label="Confirm Password"
-                />
-              </v-col>
-              <v-col class="text-right">
-                <v-btn color="success" @click="updatepasssword()" class="mr-0">
-                  Update Password!!
-                </v-btn>
-              </v-col>
-            </v-card-text>
-          </v-card>
-        </v-col>
       </v-row>
     </v-container>
   </div>
@@ -121,11 +84,7 @@ import Address from "@/interfaces/address";
 import { namespace } from "vuex-class";
 import moment from "moment";
 const users = namespace("user");
-@Component({
-  components: {
-    Navbar,
-  },
-})
+@Component({})
 export default class UpdateProfile extends Vue {
   private message: string = "";
   currentuser = new User();
@@ -149,8 +108,7 @@ export default class UpdateProfile extends Vue {
   public GetMyUser!: (data: User) => Promise<any>;
   @users.Action
   public UpdateUser!: (data: User) => Promise<any>;
-  @users.Action
-  public UpdatePassword!: (data: UpdatePassword) => Promise<any>;
+
   @users.Action
   public UpdateProfile!: (data: any) => Promise<any>;
 
@@ -161,9 +119,6 @@ export default class UpdateProfile extends Vue {
 
       // this.message = "Succesfully Update!!";
     });
-  }
-  public updatepasssword(): void {
-    this.UpdatePassword(this.updatePassword);
   }
 
   public uploadimage(): void {
@@ -184,7 +139,7 @@ export default class UpdateProfile extends Vue {
       this.currentuser.DateOfBirth = moment(String(jdata.DateOfBirth)).format(
         "yyyy-MM-DD"
       );
-      this.currentuser.Avatar = jdata.Avatar
+      this.currentuser.Avatar = jdata.Avatar;
     });
   }
 }

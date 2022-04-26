@@ -142,8 +142,8 @@
                         />
                         <v-text-field
                           id="confirm_password"
-                          :append-icon="value ? 'visibility' : 'visibility_off'"
-                          @click:append="() => (value = !value)"
+                            :append-icon="value ? 'visibility' : 'visibility_off'"
+                            @click:append="() => (value = !value)"
                           :rules="confirmPasswordRules"
                           label="Confirm_password"
                           name="confirm_password"
