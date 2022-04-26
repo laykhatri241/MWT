@@ -5,7 +5,7 @@ import Login from '@/components/Login'
 import Layout from '@/components/Layout'
 import updateuserprofile from '@/components/updateuserprofile'
 import companyregister from '@/components/companyregister'
-import newupdate from '@/components/newupdate'
+import resetpassword from'@/components/resetpassword'
 Vue.use(Router)
 
 export default new Router({
@@ -35,11 +35,11 @@ export default new Router({
         name:'companyregister',
       },
       {
-        path:'/newupdate',
-        component:newupdate,
-        name:'newupdate',
+        path:'/resetpassword',
+        component:resetpassword,
+        name:'resetpassword',
       },
-
+     
         
       ]
 

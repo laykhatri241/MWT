@@ -35,6 +35,15 @@ class callAPI {
       await axios.post(this.baseURL + url, payload, new callAPI().getAuth())
     ).data;
   }
+  static async Asyncfileupload(url ,file){
+    let formData = new FormData();
+    formData.append("file",file);
+    
+    return await(
+      await axios.post(this.baseURL + url,formData,new callAPI().getAuth() )
+    ).data;
+  }
+ 
 }
 
 export default callAPI;
