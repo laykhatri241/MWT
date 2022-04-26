@@ -59,7 +59,7 @@ namespace MWTWebApi.Controllers
         [Route("SignUp")]
         [HttpPost]
         public HttpAPIResponse SignUp(User usr)
-        
+
         {
             if (!_accountService.checkUsername(usr.Username).Result)
             {
@@ -178,8 +178,35 @@ namespace MWTWebApi.Controllers
         #region UpdateUser
         [Authorize(Roles = "1,2,3,")]
         [HttpPost("UpdateUser")]
-        public HttpAPIResponse UpdateUser(UpdateUser user)
+        public HttpAPIResponse UpdateUser()
         {
+            var formCollection = Request.ReadFormAsync().Result;
+            var file = formCollection.Files.First();
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Images", "Avatar"));
+            var fileExt = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+            var fileName = Guid.NewGuid().ToString("N");
+
+            try
+            {
+                using (var stream = new FileStream(Path.Combine(pathToSave, fileName + fileExt), FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+            }
+            catch(Exception ex)
+            {
+                return new HttpAPIResponse()
+                {
+                    Content = JsonConvert.SerializeObject(null),
+                    StatusCode = HttpStatusCode.OK,
+                    Timestamp = DateTime.Now
+                };
+            }
+
+            var user = JsonConvert.DeserializeObject<UpdateUser>(formCollection.First().Value);
+
+            user.Avatar = fileName + fileExt;
+
             var status = _accountService.UpdateUser(user).Result;
 
             return new HttpAPIResponse()
@@ -190,32 +217,8 @@ namespace MWTWebApi.Controllers
             };
         }
         #endregion
-        #region UploadAvatar
-        [Authorize(Roles = "2,3")]
-        [HttpPost("UploadAvatar")]
-        public HttpAPIResponse UploadAvatar()
-        {
-            var formCollection = Request.ReadFormAsync().Result;
-            var file = formCollection.Files.First();
-            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Images", "Avatar"));
-            var fileExt = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
-            var fileName = Guid.NewGuid().ToString("N");
-
-            using(var stream = new FileStream(Path.Combine(pathToSave,fileName+fileExt),FileMode.Create))
-            {
-                file.CopyTo(stream);
-            }
 
 
-            return new HttpAPIResponse()
-            {
-                Content = fileName + fileExt,
-                StatusCode = HttpStatusCode.OK,
-
-            };
-
-        }
-        #endregion
 
     }
 }
