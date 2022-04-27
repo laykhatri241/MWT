@@ -151,7 +151,7 @@
                           color="blue accent-3"
                         />
                         <!-- DropDown list for choose use  -->
-                        <!-- <v-col class="d-flex" cols="12" sm="12">
+                        <v-col class="d-flex" cols="12" sm="12">
                           <v-select
                             :items="Roles"
                             :rules="nameRules"
@@ -160,7 +160,7 @@
                             item-value="Did"
                             label="Role Type"
                           ></v-select>
-                        </v-col> -->
+                        </v-col>
                       </v-form>
                     </v-card-text>
                     <div class="text-center mt-n5">
