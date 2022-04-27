@@ -107,14 +107,18 @@ export default class UpdateProfile extends Vue {
   @users.Action
   public GetMyUser!: (data: User) => Promise<any>;
   @users.Action
-  public UpdateUser!: (data: User) => Promise<any>;
+  public UpdateUser!: (data: any) => Promise<any>;
 
   @users.Action
   public UpdateProfile!: (data: any) => Promise<any>;
 
   public submitForm(): void {
+    const formData = new FormData();
+    // formData.append("file", this.currentuser.Avatar);
+    formData.append("prod", JSON.stringify(this.currentuser));
+    this.currentuser.id = Number(localStorage.getItem("UserID"));
     // this.currentuser.Avatar =
-    this.UpdateUser(this.currentuser).then((res) => {
+    this.UpdateUser(formData).then((res) => {
       console.log("hhhhhhh", this.currentuser);
 
       // this.message = "Succesfully Update!!";
