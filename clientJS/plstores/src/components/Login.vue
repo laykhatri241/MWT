@@ -45,18 +45,24 @@
                           @click:append="show1 = !show1"
                         ></v-text-field>
                       </v-col>
+                       
                       <v-col class="d-flex" cols="12" sm="6" xsm="12"> </v-col>
                       <v-spacer></v-spacer>
+                      
                       <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
+                         
                         <v-btn
                           large
                           block
                           :disabled="!valid"
                           color="success"
-                          @click="validate()" 
+                          @click="validate()"
                         >
                           Login
                         </v-btn>
+                        
+
+                        
                       </v-col>
                       <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
                         <v-btn large color="success" @click="showpopup">
@@ -118,6 +124,9 @@
                         ></v-text-field>
                       </v-col>
                       <v-spacer></v-spacer>
+                      <router-link to="/companyregister"
+                          >Register your company here</router-link
+                        >
                       <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
                         <v-btn x-large color="success" @click="validatesignup()"
                           >Register</v-btn
@@ -141,7 +150,7 @@
 </template>
 <script>
 import axios from "axios";
-import callApi from "@/apihelper/api"
+import callApi from "@/apihelper/api";
 export default {
   computed: {
     passwordMatch() {
@@ -151,25 +160,25 @@ export default {
   methods: {
     async validate() {
       if (this.$refs.loginForm.validate()) {
-      callApi
+        callApi
           .AsyncPOST("Account/Login", {
             Username: this.loginusername,
             Password: this.loginPassword,
           })
           .then((data) => {
-            console.log(data)
+            console.log(data);
             const log = JSON.parse(data.content);
-            
+
             // console.log(log);
             const logintoken = log.Password;
-            const userid=log.id;
+            const userid = log.id;
 
             // console.log(logintoken);
             localStorage.setItem("logintoken", logintoken);
-             localStorage.setItem("userid", userid);
+            localStorage.setItem("userid", userid);
             console.log(localStorage.getItem("logintoken"));
             var getdata = JSON.stringify(localStorage.getItem("logintoken"));
-            this.$router.push("/updateuserprofile")
+            this.$router.push("/updateuserprofile");
             console.log(getdata);
             // console.log(getdata)
           });
@@ -177,20 +186,16 @@ export default {
     },
 
     async validatesignup() {
-      console.log("hello");
       if (this.$refs.registerForm.validate()) {
         // submit form to server/API here...
         callApi
-        .AsyncPOST(
-          "Account/SignUp",
-          {
+          .AsyncPOST("Account/SignUp", {
             Fullname: this.fullName,
             Username: this.userName,
             Password: this.password,
             Role: 3,
-          }
-        );
-        console.log(signup);
+          })
+          .then((resp) => console.log(resp));
       }
     },
     showpopup() {

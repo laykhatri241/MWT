@@ -6,6 +6,7 @@ import Layout from '@/components/Layout'
 import updateuserprofile from '@/components/updateuserprofile'
 import companyregister from '@/components/companyregister'
 import resetpassword from'@/components/resetpassword'
+import companydashboard from'@/components/companydashboard'
 Vue.use(Router)
 
 export default new Router({
@@ -38,6 +39,11 @@ export default new Router({
         path:'/resetpassword',
         component:resetpassword,
         name:'resetpassword',
+      },
+      {
+        path:'/companydashboard',
+        component:companydashboard,
+        name:'companydashboard',
       },
      
         
