@@ -4,14 +4,16 @@ using MWTDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MWTDbContext.Migrations
 {
     [DbContext(typeof(StoreAppDbCon))]
-    partial class StoreAppDbConModelSnapshot : ModelSnapshot
+    [Migration("20220427045852_A_TCartMaster")]
+    partial class A_TCartMaster
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,27 +85,6 @@ namespace MWTDbContext.Migrations
                     b.HasKey("id");
 
                     b.ToTable("businessDetailsMasters");
-                });
-
-            modelBuilder.Entity("MWTDbContext.Models.CartItem", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CartID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("createdAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("id");
-
-                    b.ToTable("cartItems");
                 });
 
             modelBuilder.Entity("MWTDbContext.Models.CartMaster", b =>

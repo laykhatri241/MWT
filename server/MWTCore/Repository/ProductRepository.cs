@@ -31,12 +31,17 @@ namespace MWTCore.Repository
             product.updatedAt = DateTime.Now;
             product.createdAt = DateTime.Now;
             _context.productMasters.Add(product);
-            return await _context.SaveChangesAsync() == 1 ? product.id : 0;
+            _context.stockMasters.Add(new StockMaster() { ProductID = product.id,
+            Stock=0,
+            createdAt = DateTime.Now,
+            updatedAt = DateTime.Now,
+            });
+            return await _context.SaveChangesAsync() == 2 ? product.id : 0;
         }
 
         public async Task<int> CreateStock(StockMaster stock)
         {
-            
+
             stock.createdAt = DateTime.Now;
             stock.updatedAt = DateTime.Now;
             _context.stockMasters.Add(stock);

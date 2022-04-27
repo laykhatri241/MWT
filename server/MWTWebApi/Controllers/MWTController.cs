@@ -30,12 +30,13 @@ namespace MWTWebApi.Controllers
         #region DI
         private readonly IAccountService _accountService;
         private readonly IAuthentication _authentication;
+        private readonly IOrderService _orderService;
 
-        public MWTController(IAccountService accountService, IAuthentication authentication)
+        public MWTController(IAccountService accountService, IAuthentication authentication, IOrderService orderService)
         {
             _accountService = accountService;
-
             _authentication = authentication;
+            _orderService = orderService;
         }
         #endregion
 
@@ -109,6 +110,19 @@ namespace MWTWebApi.Controllers
             if (_user != null)
             {
                 _user.Password = _authentication.AuthenticateData(_user.Username, _user.Role);
+                if(!_orderService.isCartAvailable(_user.id).Result)
+                {
+                    if(_orderService.AddCart(_user.id).Result == 0)
+                    {
+                        return new HttpAPIResponse()
+                        {
+                            Content = JsonConvert.SerializeObject(_user),
+                            Timestamp = DateTime.Now,
+                            StatusCode = HttpStatusCode.OK,
+                            ErrorMessage = "Failed to Create Cart"
+                        };
+                    }
+                }
             }
 
             return new HttpAPIResponse()
@@ -220,8 +234,64 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
+        #region GetMyCart
+        [Authorize(Roles = "3")]
+        [HttpGet("GetMyCart/{id}")]
+        public HttpAPIResponse GetMyCart(int id)
+        {
+            var cart = _orderService.GetCart(id).Result;
 
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(cart),
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+        #endregion
 
+        #region AddToCart
+        [Authorize(Roles = "3")]
+        [HttpPost("AddToCart")]
+        public HttpAPIResponse AddToCart(CartItem cartItem)
+        {
+            var status = _orderService.AddToCart(cartItem).Result;
+
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(status),
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+        #endregion
+
+        #region CartCheckout
+        [Authorize(Roles = "3")]
+        [HttpGet("CartCheckout/{id}")]
+        public HttpAPIResponse CartCheckout(int id)
+        {
+            var checkout = _orderService.cartCheckout(id).Result;
+
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(checkout),
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+        #endregion
+
+        #region PaymentSuccess
+        [Authorize(Roles = "3")]
+        [HttpGet("PaymentSuccess/{id}")]
+        public HttpAPIResponse PaymentSuccess(int id)
+        {
+            var status = _orderService.PurchaseSuccess(id).Result;
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(status),
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+        #endregion
     }
 }
 
