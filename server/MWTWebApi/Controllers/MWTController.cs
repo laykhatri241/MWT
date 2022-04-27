@@ -181,31 +181,33 @@ namespace MWTWebApi.Controllers
         public HttpAPIResponse UpdateUser()
         {
             var formCollection = Request.ReadFormAsync().Result;
-            var file = formCollection.Files.First();
-            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Images", "Avatar"));
-            var fileExt = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
-            var fileName = Guid.NewGuid().ToString("N");
-
-            try
-            {
-                using (var stream = new FileStream(Path.Combine(pathToSave, fileName + fileExt), FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
-            }
-            catch(Exception ex)
-            {
-                return new HttpAPIResponse()
-                {
-                    Content = JsonConvert.SerializeObject(null),
-                    StatusCode = HttpStatusCode.OK,
-                    Timestamp = DateTime.Now
-                };
-            }
-
             var user = JsonConvert.DeserializeObject<UpdateUser>(formCollection.First().Value);
+            if (formCollection.Files.Any())
+            {
+                var file = formCollection.Files.First();
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Images", "Avatar"));
+                var fileExt = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+                var fileName = Guid.NewGuid().ToString("N");
 
-            user.Avatar = fileName + fileExt;
+                try
+                {
+                    using (var stream = new FileStream(Path.Combine(pathToSave, fileName + fileExt), FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return new HttpAPIResponse()
+                    {
+                        Content = JsonConvert.SerializeObject(null),
+                        StatusCode = HttpStatusCode.OK,
+                        Timestamp = DateTime.Now
+                    };
+                }
+
+                user.Avatar = fileName + fileExt;
+            }
 
             var status = _accountService.UpdateUser(user).Result;
 
