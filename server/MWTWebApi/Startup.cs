@@ -40,6 +40,8 @@ namespace MWTWebApi
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddSwaggerGen();
             services.AuthenticateConfig();
             services.AddCors(c =>

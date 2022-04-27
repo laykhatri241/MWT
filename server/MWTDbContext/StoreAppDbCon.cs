@@ -22,5 +22,8 @@ namespace MWTDbContext
 
         public DbSet<StockMaster> stockMasters { get; set; }
 
+        public DbSet<CartMaster> cartMasters { get; set; }
+
+        public DbSet<CartItem> cartItems { get; set; }
     }
 }
