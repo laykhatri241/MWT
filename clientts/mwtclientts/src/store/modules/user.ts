@@ -4,17 +4,17 @@ import callApi from "@/api/callApi"
 import User from "@/interfaces/user";
 import call from "@/api";
 
-@Module({ namespaced: true })
-class Users extends VuexModule {
-  public user: User = {
-    Fullname: "",
-    id: 0,
-    Username: "",
-    Password: "",
-    DateOfBirth:"",
-    Role: 0,
-    Avatar :"",
-  };
+  @Module({ namespaced: true })
+  class Users extends VuexModule {
+    public user: User = {
+      Fullname: "",
+      id: 0,
+      Username: "",
+      Password: "",
+      DateOfBirth:"",
+      Role: 0,
+      Avatar :"",
+    };
 
   @Action
   public async createUser(data: User): Promise<any> {

@@ -52,7 +52,7 @@
             :append-icon="value ? 'visibility' : 'visibility_off'"
             @click:append="() => (value = !value)"
             :rules="confirmPasswordRules"
-            label="Confirm_password"
+            label="Confirm Password"
             name="confirm_password"
             :type="value ? 'password' : 'text'"
             color="blue accent-3"
