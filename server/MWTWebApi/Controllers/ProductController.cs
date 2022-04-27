@@ -63,31 +63,32 @@ namespace MWTWebApi.Controllers
         public HttpAPIResponse AddProduct()
         {
             var formCollection = Request.ReadFormAsync().Result;
-            var file = formCollection.Files.First();
-            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Images", "Product"));
-            var fileExt = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
-            var fileName = Guid.NewGuid().ToString("N");
-
-            try
-            {
-
-                using (var stream = new FileStream(Path.Combine(pathToSave, fileName + fileExt), FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
-            }
-            catch (Exception ex)
-            {
-                return new HttpAPIResponse()
-                {
-                    Content = null,
-                    StatusCode = HttpStatusCode.OK
-                };
-            }
-
             var product = JsonConvert.DeserializeObject<ProductMaster>(formCollection.First().Value);
-            product.ProdImage = fileName + fileExt;
 
+            if (formCollection.Files.Any())
+            {
+                var file = formCollection.Files.First();
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Images", "Product"));
+                var fileExt = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+                var fileName = Guid.NewGuid().ToString("N");
+
+                try
+                {
+                    using (var stream = new FileStream(Path.Combine(pathToSave, fileName + fileExt), FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return new HttpAPIResponse()
+                    {
+                        Content = null,
+                        StatusCode = HttpStatusCode.OK
+                    };
+                }
+                product.ProdImage = fileName + fileExt;
+            }
 
             var status = _productService.AddProduct(product).Result;
             return new HttpAPIResponse()
@@ -195,41 +196,5 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-        #region UploadImage
-        [Authorize(Roles = "2")]
-        [HttpPost("UploadProductImage")]
-        public HttpAPIResponse UploadProductImage()
-        {
-            var formCollection = Request.ReadFormAsync().Result;
-            var file = formCollection.Files.First();
-            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Images", "Product"));
-            var fileExt = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
-            var fileName = Guid.NewGuid().ToString("N");
-
-            try
-            {
-
-                using (var stream = new FileStream(Path.Combine(pathToSave, fileName + fileExt), FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
-            }
-            catch(Exception ex)
-            {
-                return new HttpAPIResponse()
-                {
-                    Content = null,
-                    StatusCode = HttpStatusCode.OK
-                };
-            }
-
-            return new HttpAPIResponse()
-            {
-                Content = fileName + fileExt,
-                StatusCode = HttpStatusCode.OK,
-
-            };
-        }
-        #endregion
     }
 }
