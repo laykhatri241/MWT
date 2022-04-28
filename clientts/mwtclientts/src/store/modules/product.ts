@@ -14,10 +14,8 @@ class Products extends VuexModule {
     return callApi
       .AsyncPOST("Product/AddProduct", data)
       .then((response) => {
-        console.log("console",response);
+        console.log("console", response);
 
-        // response.data.data.id = response.data.id;
-        // this.context.commit("create", response.data.data);
         return response;
       })
       .catch((err) => {
@@ -31,7 +29,20 @@ class Products extends VuexModule {
       .AsyncPOST("Product/UpdateProduct", data)
       .then((response) => {
         console.log(response);
-        //localStorage.getItem('Token')
+
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async DeleteProduct(id: any): Promise<any> {
+    return callApi
+      .AsyncGET(`Product/DeleteProduct/${id}`)
+      .then((response) => {
+        console.log(response);
+
         return response;
       })
       .catch((err) => {
@@ -40,11 +51,10 @@ class Products extends VuexModule {
   }
   @Action
   public async Getcategory(data: any): Promise<any> {
-    // data.id = Number(localStorage.getItem("UserID"));
     return callApi
-      .AsyncPOST("Product/GetCategories",data)
+      .AsyncPOST("Product/GetCategories", data)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         //localStorage.getItem('Token')
         return response;
       })
@@ -52,7 +62,32 @@ class Products extends VuexModule {
         return err;
       });
   }
-  
+  @Action
+  public async GetAllProducts(data: any): Promise<any> {
+    return callApi
+      .AsyncGET("Product/GetMyProducts/" + localStorage.getItem("UserID"))
+      .then((response) => {
+        // console.log(response);
+
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async GetProducts(id: any): Promise<any> {
+    return callApi
+      .AsyncGET(`Product/GetProduct/${id}` )
+      .then((response) => {
+        // console.log(response);
+
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
 }
 
 export default Products;

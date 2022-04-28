@@ -53,6 +53,16 @@ namespace MWTCore.Services
             return await _productRepository.RetrieveProduct(id);
         }
 
+        public async Task<List<ProductMaster>> GetProductByCategory(int CategoryID)
+        {
+            return await _productRepository.RetrieveByCategory(CategoryID);
+        }
+
+        public async Task<List<ProductMaster>> GetRandomProducts(int Count)
+        {
+            return await _productRepository.RetrieveRandom(Count);
+        }
+
         public async Task<StockMaster> GetStock(int id)
         {
             return await _productRepository.RetrieveStock(id);

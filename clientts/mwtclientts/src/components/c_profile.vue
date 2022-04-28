@@ -14,8 +14,10 @@
                   </v-avatar>
                 </v-row>
                 <v-row>
-                  <v-file-input v-model="currentuser.Avatar"></v-file-input>
-                  <v-btn @click="uploadimage()">upload image </v-btn>
+                  <v-file-input
+                    label="Choose Profile Image"
+                    @change="handleChange"
+                  ></v-file-input>
                 </v-row>
                 <v-row>
                   <v-col cols="12" md="6">
@@ -34,18 +36,9 @@
                       disabled
                     />
                   </v-col>
-
-                  <!-- <v-col cols="12" md="6">
-                    <v-text-field label="Address1" class="purple-input" />
-                  </v-col>
-
-                  <v-col cols="12" md="6">
-                    <v-text-field label="Address2" class="purple-input" />
-                  </v-col> -->
-
                   <v-col cols="12" md="12">
                     <v-text-field
-                      label="Date OF Birth"
+                      label="Date OF Foundation"
                       type="date"
                       outlined
                       v-model="currentuser.DateOfBirth"
@@ -56,10 +49,6 @@
                   <h3 style="color: green" class="text-center mt-4">
                     {{ message }}
                   </h3>
-                  <!-- <v-col cols="12" md="12">
-                    <v-text-field label="Pincode" class="purple-input" />
-                  </v-col> -->
-
                   <v-col cols="12" class="text-right">
                     <v-btn color="success" @click="submitForm()" class="mr-0">
                       Update Profile!!</v-btn
@@ -90,7 +79,7 @@ export default class UpdateProfile extends Vue {
   currentuser = new User();
   address = new Address();
   updatePassword = new UpdatePassword();
-
+  currentFile = "undefined";
   passwordRules = [
     (v: any) => !!v || "Password is required",
     (v: string) =>
@@ -109,27 +98,14 @@ export default class UpdateProfile extends Vue {
   @users.Action
   public UpdateUser!: (data: any) => Promise<any>;
 
-  @users.Action
-  public UpdateProfile!: (data: any) => Promise<any>;
-
   public submitForm(): void {
     const formData = new FormData();
-    // formData.append("file", this.currentuser.Avatar);
+    formData.append("file", this.currentFile);
     formData.append("prod", JSON.stringify(this.currentuser));
     this.currentuser.id = Number(localStorage.getItem("UserID"));
-    // this.currentuser.Avatar =
+
     this.UpdateUser(formData).then((res) => {
-      console.log("hhhhhhh", this.currentuser);
-
-      // this.message = "Succesfully Update!!";
-    });
-  }
-
-  public uploadimage(): void {
-    const formData = new FormData();
-    formData.append("file", this.currentuser.Avatar);
-    this.UpdateProfile(formData).then((data) => {
-      this.currentuser.Avatar = data.content;
+      // console.log("hhhhhhh", this.currentuser);
     });
   }
 
@@ -145,6 +121,9 @@ export default class UpdateProfile extends Vue {
       );
       this.currentuser.Avatar = jdata.Avatar;
     });
+  }
+  handleChange(file: any) {
+    this.currentFile = file;
   }
 }
 </script>
