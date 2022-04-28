@@ -1,17 +1,17 @@
 <template>
   <div>
     <v-app id="inspire">
-      <Sidebar :drawer="drawer" />
+      <Sidebar :drawer.sync="drawer" />
       <Topbar @drawerEvent="drawer = !drawer" />
       <main class="v-main" data-booted="true">
         <v-container class="mx-auto" style="padding: inherit">
-            <v-spacer></v-spacer>
-        <h1>Welcome {{ Username }}</h1>
-        <router-view></router-view>
+          <v-spacer></v-spacer>
+          <h1>Welcome {{ Username }}</h1>
+          <router-view></router-view>
         </v-container>
       </main>
     </v-app>
-  </div> 
+  </div>
 </template>
 
 <script lang="ts">
@@ -28,6 +28,7 @@ import callAPI from "@/api/callApi";
 export default class CompanyDashboard extends Vue {
   Username = localStorage.getItem("UserFullName");
   drawer = null;
+
   created(): void {
     callAPI
       .AsyncGET("Business/IsBusinessDetail/" + localStorage.getItem("UserID"))

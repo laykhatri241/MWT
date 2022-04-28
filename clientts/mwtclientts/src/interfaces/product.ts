@@ -7,6 +7,7 @@ class Product {
     ProdImage !:string;
     ProdPrice !: number;
     CategoryID !: number;
+  filter: any;
   }
 
   export default  Product 
