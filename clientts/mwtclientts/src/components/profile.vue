@@ -9,16 +9,16 @@
               <v-container class="py-0">
                 <v-row class="justify-center">
                   <v-avatar size="200px">
-                    
-                      <v-img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiGcFYBKGruads8sUVAfUBlX8orSdEwuSSTg&usqp=CAU"
-                      />
-                  
+                    <v-img
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiGcFYBKGruads8sUVAfUBlX8orSdEwuSSTg&usqp=CAU"
+                    />
                   </v-avatar>
                 </v-row>
                 <v-row>
-                  <v-file-input v-model="currentuser.Avatar"></v-file-input>
-                  <v-btn @click="uploadimage()">upload image </v-btn>
+                  <v-file-input
+                    label="Choose Profile Image"
+                    @change="handleChange"
+                  ></v-file-input>
                 </v-row>
                 <v-row>
                   <v-col cols="12" md="6">
@@ -131,6 +131,7 @@ export default class UpdateProfile extends Vue {
   currentuser = new User();
   address = new Address();
   updatePassword = new UpdatePassword();
+  currentFile = "undefined";
 
   passwordRules = [
     (v: any) => !!v || "Password is required",
@@ -148,15 +149,18 @@ export default class UpdateProfile extends Vue {
   @users.Action
   public GetMyUser!: (data: User) => Promise<any>;
   @users.Action
-  public UpdateUser!: (data: User) => Promise<any>;
+  public UpdateUser!: (data: any) => Promise<any>;
   @users.Action
   public UpdatePassword!: (data: UpdatePassword) => Promise<any>;
   @users.Action
   public UpdateProfile!: (data: any) => Promise<any>;
 
   public submitForm(): void {
-    // this.currentuser.Avatar =
-    this.UpdateUser(this.currentuser).then((res) => {
+    this.currentuser.id = Number(localStorage.getItem("UserID"));
+    const formData = new FormData();
+    formData.append("file", this.currentFile);
+    formData.append("prod", JSON.stringify(this.currentuser));
+    this.UpdateUser(formData).then((res) => {
       console.log("hhhhhhh", this.currentuser);
 
       // this.message = "Succesfully Update!!";
@@ -184,8 +188,11 @@ export default class UpdateProfile extends Vue {
       this.currentuser.DateOfBirth = moment(String(jdata.DateOfBirth)).format(
         "yyyy-MM-DD"
       );
-      this.currentuser.Avatar = jdata.Avatar
+      this.currentuser.Avatar = jdata.Avatar;
     });
+  }
+  handleChange(file: any) {
+    this.currentFile = file;
   }
 }
 </script>

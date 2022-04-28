@@ -35,7 +35,7 @@
           <v-list-item-title>Update Profile</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link to="addproduct">
+      <v-list-item link to="productlist">
         <v-list-item-icon>
           <v-icon>mdi-clipboard-list-outline</v-icon>
         </v-list-item-icon>
@@ -45,7 +45,7 @@
         </v-list-item-content>
         
       </v-list-item>
-      <v-list-item link to="addcategory">
+      <!-- <v-list-item link >
         <v-list-item-icon>
           <v-icon>mdi-clipboard-list-outline</v-icon>
         </v-list-item-icon>
@@ -54,7 +54,7 @@
           <v-list-item-title>Category</v-list-item-title>
         </v-list-item-content>
         
-      </v-list-item>
+      </v-list-item> -->
       <v-list-item link>
         <v-list-item-icon>
           <v-icon>mdi-card-account-details-outline</v-icon>
