@@ -110,7 +110,7 @@ namespace MWTWebApi.Controllers
             if (_user != null)
             {
                 _user.Password = _authentication.AuthenticateData(_user.Username, _user.Role);
-                if(!_orderService.isCartAvailable(_user.id).Result)
+                if(!_orderService.isCartAvailable(_user.id).Result && _user.Role==3)
                 {
                     if(_orderService.AddCart(_user.id).Result == 0)
                     {

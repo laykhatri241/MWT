@@ -113,7 +113,7 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-        #region GetProducts
+        #region GetProduct
         [HttpGet("GetProduct/{id}")]
         public HttpAPIResponse GetProduct(int id)
         {
@@ -131,6 +131,35 @@ namespace MWTWebApi.Controllers
         [HttpPost("UpdateProduct")]
         public HttpAPIResponse UpdateProduct(ProductModel product)
         {
+            var formCollection = Request.ReadFormAsync().Result;
+            var prod = JsonConvert.DeserializeObject<ProductMaster>(formCollection.First().Value);
+
+            if (formCollection.Files.Any())
+            {
+                var file = formCollection.Files.First();
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Images", "Product"));
+                var fileExt = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+                var fileName = Guid.NewGuid().ToString("N");
+
+                try
+                {
+                    using (var stream = new FileStream(Path.Combine(pathToSave, fileName + fileExt), FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return new HttpAPIResponse()
+                    {
+                        Content = null,
+                        StatusCode = HttpStatusCode.OK
+                    };
+                }
+                product.ProdImage = fileName + fileExt;
+            }
+
+
             var status = _productService.UpdateProduct(product).Result;
             return new HttpAPIResponse()
             {
@@ -187,10 +216,40 @@ namespace MWTWebApi.Controllers
         [HttpPost("UpdateStock")]
         public HttpAPIResponse UpdateStock(StockModel stock)
         {
+            
             var status = _productService.UpdateStock(stock).Result;
             return new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject(status),
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+        #endregion
+
+        #region GetProductsByCategory
+        [Authorize (Roles = "3")]
+        [HttpGet("GetProductsByCategory/{id}")]
+        public HttpAPIResponse GetProductsByCategory(int id)
+        {
+            var prodByCategory = _productService.GetProductByCategory(id).Result;
+
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(prodByCategory),
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+        #endregion
+
+        #region GetRandomProducts
+        [Authorize(Roles = "3")]
+        [HttpGet("GetRandomProducts/{id}")]
+        public HttpAPIResponse GetRandomProducts(int id)
+        {
+            var prods = _productService.GetRandomProducts(id).Result;
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(prods),
                 StatusCode = HttpStatusCode.OK
             };
         }
