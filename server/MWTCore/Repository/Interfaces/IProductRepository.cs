@@ -28,5 +28,9 @@ namespace MWTCore.Repository.Interfaces
         public Task<StockMaster> RetrieveStock(int id);
 
         public Task<bool> UpdateStock(StockModel stock);
+
+        public Task<List<ProductMaster>> RetrieveByCategory(int categoryID);
+
+        public Task<List<ProductMaster>> RetrieveRandom(int count);
     }
 }

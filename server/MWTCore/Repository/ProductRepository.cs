@@ -31,12 +31,13 @@ namespace MWTCore.Repository
             product.updatedAt = DateTime.Now;
             product.createdAt = DateTime.Now;
             _context.productMasters.Add(product);
+            var AddProduct = _context.SaveChanges();
             _context.stockMasters.Add(new StockMaster() { ProductID = product.id,
             Stock=0,
             createdAt = DateTime.Now,
             updatedAt = DateTime.Now,
             });
-            return await _context.SaveChangesAsync() == 2 ? product.id : 0;
+            return await _context.SaveChangesAsync() == 1 && AddProduct ==1 ? product.id : 0;
         }
 
         public async Task<int> CreateStock(StockMaster stock)
@@ -62,6 +63,12 @@ namespace MWTCore.Repository
             return await _context.SaveChangesAsync() == 2 ? true : false;
         }
 
+        public async Task<List<ProductMaster>> RetrieveByCategory(int categoryID)
+        {
+            var prods = await _context.productMasters.Where(pm => pm.CategoryID == categoryID).ToListAsync();
+            return prods;
+        }
+
         public async Task<List<ProductMaster>> RetrieveMyProduct(int id)
         {
             var prods = await _context.productMasters.AsNoTracking().Where(pd => pd.SellerID == id).ToListAsync();
@@ -72,6 +79,21 @@ namespace MWTCore.Repository
         public async Task<ProductMaster> RetrieveProduct(int id)
         {
             return await _context.productMasters.AsNoTracking().FirstOrDefaultAsync(pd => pd.id == id);
+        }
+
+        public async Task<List<ProductMaster>> RetrieveRandom(int count)
+        {
+            var prodList = new List<ProductMaster>();
+            for(int i =0;i<count;i++)
+            {
+                var prod = await _context.productMasters.OrderBy(r => Guid.NewGuid()).Take(1).FirstAsync();
+                if(!prodList.Contains(prod))
+                {
+                    prodList.Add(prod);
+
+                }
+            }
+            return prodList;
         }
 
         public async Task<StockMaster> RetrieveStock(int id)
