@@ -7,6 +7,8 @@ import updateuserprofile from '@/components/updateuserprofile'
 import companyregister from '@/components/companyregister'
 import resetpassword from'@/components/resetpassword'
 import companydashboard from'@/components/companydashboard'
+import addproduct from '@/components/addproduct'
+import displayproducts from'@/components/displayproducts'
 Vue.use(Router)
 
 export default new Router({
@@ -44,8 +46,18 @@ export default new Router({
         path:'/companydashboard',
         component:companydashboard,
         name:'companydashboard',
+       
       },
-     
+      {
+        path:'/addproduct',
+        component:addproduct,
+        name:'addproduct',
+      },
+      {
+        path:'/displayproducts',
+        component:displayproducts,
+        name:'displayproducts',
+      },
         
       ]
 
