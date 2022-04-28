@@ -24,7 +24,6 @@
               filled
               prepend-icon="mdi-camera"
               @change="onFileChange"
-             
             ></v-file-input>
             <i class="fa fa-link"></i>
           </div>
@@ -394,32 +393,33 @@ export default {
   name: "upload-files",
   methods: {
     async onFileChange(file) {
-      callAPI
-     .Asyncfileupload("Account/UploadAvatar",file
-
-     ).then(data=>console.log(data));
+      this.userimage=file
     },
-    async updateuser() {
-      callAPI
-        .AsyncPOST("Account/UpdateUser", {
-          id: localStorage.getItem("userid"),
+    async updateuser() 
+    {
+      let formData = new FormData();
+    formData.append("file",this.userimage);
+    formData.append("user",JSON.stringify( {id: localStorage.getItem("userid"),
           Fullname: this.Fullname,
-          DateOfBirth: this.DateOfBirth,
-          Avatar: this.Avatar,
-        })
+          DateOfBirth: this.DateOfBirth}));
+      callAPI
+        .AsyncPOST("Account/UpdateUser", formData )
+          
+        
         .then((data) => console.log(data));
     },
   },
-  async addavatar() {
-    uploadimg.AsyncPOST("Account/Avatar", {
-      id: localStorage.getItem("userid"),
-      Avatar: this.Avatar,
-    });
-  },
+  // async addavatar() {
+  //   uploadimg.AsyncPOST("Account/Avatar", {
+  //     id: localStorage.getItem("userid"),
+  //     Avatar: this.Avatar,
+  //   });
+  // },
   data: () => ({
     Fullname: "",
     DateOfBirth: "",
     Avatar: "",
+   userimage:undefined,
   }),
 };
 </script>
