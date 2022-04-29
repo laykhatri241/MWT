@@ -73,7 +73,7 @@
         <h4>Thank you!</h4>
         <p><small>Your message has been successfully sent.</small></p>
       </div>
-    </v-card>
+    </v-card> 
   </div>
 </template>
 <style scoped>
