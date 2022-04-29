@@ -57,8 +57,10 @@
                   <h3 style="color: green" class="text-center mt-4">
                     {{ message }}
                   </h3>
-
                   <v-col cols="12" class="text-right">
+                    <v-btn color="primary" class="mr-0" to="/productlist">
+                      Back to list!!</v-btn
+                    >
                     <v-btn color="success" class="mr-0" @click="submitForm()">
                       Add Product!!</v-btn
                     >
@@ -88,7 +90,7 @@ export default class AddProducts extends Vue {
   Cid = [];
   CName = [];
 
-  currentFile = "undefined" ;
+  currentFile = "undefined";
 
   @Products.Action
   public Getcategory!: (data: any) => Promise<any>;

@@ -43,7 +43,7 @@
                     <v-col cols="12" md="12">
                       <v-text-field
                         label="Product Price"
-                        v-model="product.ProdPrice"
+                        v-model.number="product.ProdPrice"
                         class="purple-input"
                       />
                     </v-col>
@@ -120,11 +120,11 @@ export default class AddProducts extends Vue {
     this.product.SellerID = Number(localStorage.getItem("UserID"));
     this.product.id = this.productid;
     const formData = new FormData();
-    formData.append("file", this.currentFile);
+    if (this.currentFile != "undefined") {
+      formData.append("file", this.currentFile);
+    }
     formData.append("product", JSON.stringify(this.product));
-
-    this.UpdateProduct(this.product).then((res) => {
-      console.log(res);
+    this.UpdateProduct(formData).then((res) => {
       if (res.content == "true") {
         this.message = "Succesfully Updated!!";
         this.dialog = false;

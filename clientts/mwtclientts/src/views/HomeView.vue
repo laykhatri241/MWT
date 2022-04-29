@@ -1,7 +1,7 @@
 <template>
   <v-app :style="{ background: $vuetify.theme.themes.dark.background }">
-    <SideBar :drawer="drawer" />
-    <RightSideBar />
+    <SideBar :drawer.sync="drawer" />
+    <RightSideBar :drawer.sync="drawer" />
     <v-container>
       <v-toolbar flat color="rgba(0,0,0,0)">
         <v-btn
@@ -14,7 +14,7 @@
         </v-btn>
         <v-spacer></v-spacer>
         <v-text-field
-          label="Search on maufarm"
+          label="Search"
           class="pt-5 d-none d-sm-flex"
           dark
           filled
@@ -35,7 +35,7 @@
           Export
         </v-btn>
       </v-toolbar>
-      <h1 class="white--text">SALES</h1>
+      <h1 class="white--text">Welcome {{ Username }}</h1>
       <p class="grey--text">
         A Great Way To Generate All The Motivation You Need To Get Fit
       </p>
@@ -259,6 +259,7 @@ export default {
   data: () => ({
     selection: 1,
     drawer: true,
+    Username : localStorage.getItem("UserFullName"),
     shoes: [
       {
         image: "3.jpg",

@@ -100,11 +100,19 @@ export default class UpdateProfile extends Vue {
 
   public submitForm(): void {
     const formData = new FormData();
-    formData.append("file", this.currentFile);
-    formData.append("prod", JSON.stringify(this.currentuser));
+    if(this.currentFile != "undefined")
+    {
+
+      formData.append("file", this.currentFile);
+    }
     this.currentuser.id = Number(localStorage.getItem("UserID"));
+    console.log(JSON.stringify(this.currentuser));
+    
+    formData.append("prod", JSON.stringify(this.currentuser));
 
     this.UpdateUser(formData).then((res) => {
+      console.log(res);
+
       // console.log("hhhhhhh", this.currentuser);
     });
   }
