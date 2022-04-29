@@ -129,10 +129,10 @@ namespace MWTWebApi.Controllers
         #region EditProduct
         [Authorize(Roles = "2")]
         [HttpPost("UpdateProduct")]
-        public HttpAPIResponse UpdateProduct(ProductModel product)
+        public HttpAPIResponse UpdateProduct()
         {
             var formCollection = Request.ReadFormAsync().Result;
-            var prod = JsonConvert.DeserializeObject<ProductMaster>(formCollection.First().Value);
+            var product = JsonConvert.DeserializeObject<ProductModel>(formCollection.First().Value);
 
             if (formCollection.Files.Any())
             {
