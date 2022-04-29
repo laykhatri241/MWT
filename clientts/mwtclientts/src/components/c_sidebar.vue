@@ -9,7 +9,7 @@
         <v-avatar class="mb-4" color="grey darken-1" size="64">
           <v-img
             aspect-ratio="30"
-            src="https://yt3.ggpht.com/esazPAO03T0f0vKdByJvkDy6MSwjyG5f-c_2S2CJapszQ3KPQyZarpoqvgv0Us0atUbILytj=s88-c-k-c0x00ffffff-no-rj"
+            src="https://va-demo.okami101.io/admin/img/logo.bad423a5.svg"
           />
         </v-avatar>
         <h2 class="white--text">PNL Store</h2>

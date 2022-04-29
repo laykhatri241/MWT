@@ -98,7 +98,7 @@ export default class AddProducts extends Vue {
 
   public submitForm(): void {
     const formData = new FormData();
-
+    
     this.product.SellerID = Number(localStorage.getItem("UserID"));
     formData.append("file", this.currentFile);
     formData.append("prod", JSON.stringify(this.product));
