@@ -24,7 +24,6 @@ class Products extends VuexModule {
   }
   @Action
   public async UpdateProduct(data: any): Promise<any> {
-    data.SellerID = Number(localStorage.getItem("UserID"));
     return callApi
       .AsyncPOST("Product/UpdateProduct", data)
       .then((response) => {
@@ -54,8 +53,6 @@ class Products extends VuexModule {
     return callApi
       .AsyncPOST("Product/GetCategories", data)
       .then((response) => {
-        // console.log(response);
-        //localStorage.getItem('Token')
         return response;
       })
       .catch((err) => {
@@ -67,8 +64,6 @@ class Products extends VuexModule {
     return callApi
       .AsyncGET("Product/GetMyProducts/" + localStorage.getItem("UserID"))
       .then((response) => {
-        // console.log(response);
-
         return response;
       })
       .catch((err) => {
@@ -78,7 +73,7 @@ class Products extends VuexModule {
   @Action
   public async GetProducts(id: any): Promise<any> {
     return callApi
-      .AsyncGET(`Product/GetProduct/${id}` )
+      .AsyncGET(`Product/GetProduct/${id}`)
       .then((response) => {
         // console.log(response);
 

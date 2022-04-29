@@ -1,5 +1,6 @@
 <template>
   <div>
+        <Navbar />
     <v-container id="user-profile" fluid tag="section">
       <v-row justify="center">
         <v-col cols="12" md="6">
@@ -15,10 +16,8 @@
               <v-col cols="12" md="12">
                 <v-text-field
                   class="purple-input"
-                 
                   :append-icon="value ? 'visibility' : 'visibility_off'"
                   @click:append="() => (value = !value)"
-                  :type="value ? 'password' : 'text'"
                   :rules="passwordRules"
                   v-model="updatePassword.NewPass"
                   label="New Password"
@@ -28,7 +27,6 @@
                 <v-text-field
                   class="purple-input"
                   :append-icon="value ? 'visibility' : 'visibility_off'"
-                  :type="value ? 'password' : 'text'"
                   @click:append="() => (value = !value)"
                   :rules="confirmPasswordRules"
                   label="Confirm Password"
@@ -59,7 +57,11 @@ import Address from "@/interfaces/address";
 import { namespace } from "vuex-class";
 import moment from "moment";
 const users = namespace("user");
-@Component({})
+@Component({
+  components: {
+    Navbar,
+  },
+})
 export default class UpdateProfile extends Vue {
   private message: string = "";
   currentuser = new User();

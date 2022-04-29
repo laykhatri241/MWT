@@ -35,7 +35,7 @@ export default class CompanyDashboard extends Vue {
       .then((resp) => {
         if (resp.content == "false") {
           this.$router.push("/companyDetails");
-        }
+        } 
       });
   }
 }

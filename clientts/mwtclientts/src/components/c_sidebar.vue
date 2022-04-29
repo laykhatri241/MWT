@@ -6,7 +6,7 @@
       src="https://images.unsplash.com/photo-1553095066-5014bc7b7f2d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8d2FsbCUyMGJhY2tncm91bmR8ZW58MHx8MHx8&w=1000&q=80"
     >
       <div class="text-center">
-        <v-avatar class="mb-4" color="grey darken-1" size="64">
+        <v-avatar class="mb-4"  size="64">
           <v-img
             aspect-ratio="30"
             src="https://va-demo.okami101.io/admin/img/logo.bad423a5.svg"
