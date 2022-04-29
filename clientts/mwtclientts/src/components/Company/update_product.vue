@@ -120,15 +120,14 @@ export default class AddProducts extends Vue {
     this.product.SellerID = Number(localStorage.getItem("UserID"));
     this.product.id = this.productid;
     const formData = new FormData();
-    formData.append("file", this.currentFile);
+    if (this.currentFile != "undefined") {
+      formData.append("file", this.currentFile);
+    }
     formData.append("product", JSON.stringify(this.product));
-    console.log(formData.append("product", JSON.stringify(this.product)));
-  
     this.UpdateProduct(formData).then((res) => {
-      // console.log(res);
       if (res.content == "true") {
         this.message = "Succesfully Updated!!";
-        // this.dialog = false;
+        this.dialog = false;
       } else {
         this.warning = "Retry!!";
       }

@@ -31,6 +31,12 @@ const routes = [
     component: () => import("../components/profile.vue"),
   },
   {
+    path: "/changepassword",
+    name: "changepassword",
+
+    component: () => import("@/components/change_password.vue"),
+  },
+  {
     path: "/companyDashboard",
     name: "companyDashboard",
     component: () => import("@/components/c_dashboard.vue"),
@@ -70,8 +76,7 @@ const routes = [
         name: "updateproduct",
 
         component: () => import("@/components/Company/update_product.vue"),
-      },
-      
+      },     
     ],
   },
   {
