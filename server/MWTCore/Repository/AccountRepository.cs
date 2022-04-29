@@ -155,5 +155,30 @@ namespace MWTCore.Repository
 
             return await _context.SaveChangesAsync() == 1 ? true : false;
         }
+
+        public async Task<bool> isInit()
+        {
+            var users = await _context.users.AsNoTracking().ToListAsync();
+
+            int userCount = 0;
+
+            foreach(var user in users)
+            {
+                if(user.Username.Equals("Admin"))
+                {
+                    userCount++;
+                }
+                else if(user.Username.Equals("Company"))
+                {
+                    userCount++;
+                }
+                else if(user.Username.Equals("User"))
+                {
+                    userCount++;
+                }
+            }
+
+            return userCount == 3 ? true : false;
+        }
     }
 }

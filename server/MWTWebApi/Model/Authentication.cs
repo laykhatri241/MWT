@@ -26,7 +26,7 @@ namespace MWTWebApi.Model
                         new Claim(ClaimTypes.Name, username),
                         new Claim(ClaimTypes.Role, role.ToString())
                     }),
-                Expires = DateTime.Now.AddMinutes(30),
+                Expires = DateTime.Now.AddHours(8),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature
                     )
