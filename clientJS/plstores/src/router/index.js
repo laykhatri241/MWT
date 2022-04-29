@@ -9,6 +9,7 @@ import resetpassword from'@/components/resetpassword'
 import companydashboard from'@/components/companydashboard'
 import addproduct from '@/components/addproduct'
 import displayproducts from'@/components/displayproducts'
+import editproducts from'@/components/editproducts'
 Vue.use(Router)
 
 export default new Router({
@@ -57,6 +58,11 @@ export default new Router({
         path:'/displayproducts',
         component:displayproducts,
         name:'displayproducts',
+      },
+      {
+        path:'/editproducts',
+        component:editproducts,
+        name:'editproducts',
       },
         
       ]
