@@ -10,6 +10,8 @@ namespace MWTCore.Repository.Interfaces
 {
     public interface IAccountRepository
     {
+        public Task<bool> isInit();
+
         public Task<int> InsertUser(User usr);
 
         public Task<bool> RetrieveUsername(string username);

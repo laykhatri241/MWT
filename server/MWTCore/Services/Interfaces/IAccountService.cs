@@ -10,6 +10,11 @@ namespace MWTCore.Services.Interfaces
 {
     public interface IAccountService
     {
+
+        public Task<bool> isInit();
+
+        public Task<bool> Init();
+
         public Task<int> CreateUser(User usr);
 
         public Task<bool> checkUsername(string username);

@@ -33,6 +33,7 @@ namespace MWTCore.Repository
             var productList = await _context.cartItems.Where(ci => ci.CartID == cartID).ToListAsync();
             
             var prodlist = new List<ProductModel>();
+            var stockList = new List<StockModel>();
             var prodCount = new List<int>();
             int totalCost = 0;
             for(int i =0;i<productList.Count();i++)
