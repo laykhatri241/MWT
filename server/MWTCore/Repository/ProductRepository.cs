@@ -32,12 +32,14 @@ namespace MWTCore.Repository
             product.createdAt = DateTime.Now;
             _context.productMasters.Add(product);
             var AddProduct = _context.SaveChanges();
-            _context.stockMasters.Add(new StockMaster() { ProductID = product.id,
-            Stock=0,
-            createdAt = DateTime.Now,
-            updatedAt = DateTime.Now,
+            _context.stockMasters.Add(new StockMaster()
+            {
+                ProductID = product.id,
+                Stock = 0,
+                createdAt = DateTime.Now,
+                updatedAt = DateTime.Now,
             });
-            return await _context.SaveChangesAsync() == 1 && AddProduct ==1 ? product.id : 0;
+            return await _context.SaveChangesAsync() == 1 && AddProduct == 1 ? product.id : 0;
         }
 
         public async Task<int> CreateStock(StockMaster stock)
@@ -84,13 +86,16 @@ namespace MWTCore.Repository
         public async Task<List<ProductMaster>> RetrieveRandom(int count)
         {
             var prodList = new List<ProductMaster>();
-            for(int i =0;i<count;i++)
+            if (_context.productMasters.ToList().Count() > 3)
             {
-                var prod = await _context.productMasters.OrderBy(r => Guid.NewGuid()).Take(1).FirstAsync();
-                if(!prodList.Contains(prod))
+                while(prodList.Count < count)
                 {
-                    prodList.Add(prod);
+                    var prod = await _context.productMasters.OrderBy(r => Guid.NewGuid()).Take(1).FirstAsync();
+                    if (!prodList.Contains(prod))
+                    {
+                        prodList.Add(prod);
 
+                    }
                 }
             }
             return prodList;
