@@ -102,57 +102,6 @@ namespace MWTCore.Services
         public async Task<bool> UpdateBusinessDetail(BusinessDetailModel businessDetail)
         => await _accountRepository.UpdateBusinessDetail(businessDetail);
 
-        public async Task<bool> isInit()
-        {
-            return await _accountRepository.isInit();
-        }
-
-        public async Task<bool> Init()
-        {
-            var users = new List<User>()
-            {
-                new User()
-                {
-                    Role = 1,
-                    Fullname = "Admin",
-                    Username = "Admin",
-                    Password = ComputeSha256Hash("Admin"),
-                    isActive = true,
-                },
-                new User()
-                {
-                    Role = 2,
-                    Fullname = "Company",
-                    Username = "Company",
-                    Password = ComputeSha256Hash("Company"),
-                    isActive = true,
-                },new User()
-                {
-                    Role = 3,
-                    Fullname = "User",
-                    Username = "User",
-                    Password = ComputeSha256Hash("User"),
-                    isActive = true,
-                },
-            };
-
-            int userCount = 0;
-            foreach(var user in users)
-            {
-                if(await CreateUser(user)>0)
-                {
-                    userCount++;
-                }
-            }
-
-            if(userCount == 3)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+      
     }
 }

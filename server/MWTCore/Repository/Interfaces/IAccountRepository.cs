@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace MWTCore.Repository.Interfaces
 {
     public interface IAccountRepository
-    {
-        public Task<bool> isInit();
+    { 
 
         public Task<int> InsertUser(User usr);
 
@@ -43,5 +42,6 @@ namespace MWTCore.Repository.Interfaces
         public Task<BusinessDetailsMaster> RetrieveBusinessDetail(int id);
 
         public Task<bool> UpdateBusinessDetail(BusinessDetailModel businessDetail);
+
     }
 }

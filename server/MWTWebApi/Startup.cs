@@ -44,6 +44,7 @@ namespace MWTWebApi
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddSwaggerGen();
             services.AuthenticateConfig();
+            services.DatabaseInitialize(Configuration);
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => {

@@ -31,7 +31,7 @@ namespace MWTWebApi.Controllers
         #endregion
 
         #region GetCategorires
-        [HttpPost("GetCategories")]
+        [HttpGet("GetCategories")]
         public HttpAPIResponse GetCategories()
         {
             var categories = _productService.GetCategoryMasters().Result;
