@@ -2,31 +2,41 @@
   <div>
     <v-col class="d-flex flex-row">
       <v-text-field v-model="search" label="Search" class="mx-4"></v-text-field>
-      <v-btn to="addproduct" class="mt-3" color="success">Add Product!!</v-btn>
+      <v-btn to="addproduct" class="mt-3" color="success">Add Product</v-btn>
     </v-col>
 
     <table class="fl-table">
       <thead>
         <tr>
+          <th>Id</th>
           <th>Company</th>
           <th>Name</th>
           <th>Details</th>
           <th>Price</th>
-          <th>Action</th>
+          <th>Image</th>
+          <th>Delete</th>
+          <th>Update</th>
+          <th>UpdateStock</th>
         </tr>
       </thead>
+
       <tr v-for="item in filteredList" v-bind:key="item.id">
+        <td>{{ item.id }}</td>
         <td>{{ item.ProdCompanyName }}</td>
         <td>{{ item.ProdName }}</td>
         <td>{{ item.ProdDetails }}</td>
         <td>{{ item.ProdPrice }}</td>
+        <td><img src="" /></td>
 
-        <td class="d-flex">
-          <v-btn color="red" class="mt-2" @click="delProduct(item.id)"
-            >Delete!!</v-btn
+        <td>
+          <v-btn color="red" class="mt-3" @click="delProduct(item.id)"
+            >Delete</v-btn
           >
+        </td>
+        <td>
           <UpdateProduct :productid="item.id" class="mt-3" />
         </td>
+        <td><UpdateStock :productid="item.id" class="mt-3" /></td>
       </tr>
     </table>
   </div>
@@ -37,10 +47,12 @@ import { namespace } from "vuex-class";
 import Category from "@/interfaces/category";
 import Product from "@/interfaces/product";
 import UpdateProduct from "@/components/Company/update_product.vue";
+import UpdateStock from "@/components/Company/updatestock.vue";
 const Products = namespace("product");
 @Component({
   components: {
     UpdateProduct,
+    UpdateStock,
   },
 })
 export default class ProductList extends Vue {
@@ -59,18 +71,21 @@ export default class ProductList extends Vue {
     this.GetAllProducts(this.product).then((data) => {
       var jdata = JSON.parse(data.content);
       this.product = jdata;
+      
     });
   }
   public delProduct(id: any): void {
-    console.log(id);
+    // console.log(id);
 
     this.DeleteProduct(id).then((res) => {
       console.log("data", res.data);
+      location.reload();
     });
   }
 
   mounted() {
     this.retrieveProduct();
+    
   }
 
   get filteredList() {

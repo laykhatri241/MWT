@@ -57,6 +57,7 @@
                       </v-select>
                     </v-col>
                     <v-col cols="12" md="12">
+                      <!-- <img :src="'file:///D:/Nikunj_workspace/MWTProject/MWT/server/MWTWebApi/Images/Product/bd900f94b2344fc8a69fbd6d3b680fe4.png'"> -->
                       <v-file-input
                         @change="handleChange"
                         label="Choose Product Image"
@@ -147,9 +148,8 @@ export default class AddProducts extends Vue {
       this.product.ProdName = jdata.ProdName;
       this.product.ProdDetails = jdata.ProdDetails;
       this.product.ProdPrice = jdata.ProdPrice;
-      //   this.product.CategoryID = jdata.CategoryID;
-      //   this.product.ProdImage = jdata.ProdImage
-      //   console.log(jdata);
+      this.product.ProdImage = jdata.ProdImage;
+      this.product.CategoryID = jdata.CategoryID;
     });
   }
   handleChange(file: any) {

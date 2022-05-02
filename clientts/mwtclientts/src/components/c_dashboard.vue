@@ -35,7 +35,10 @@ export default class CompanyDashboard extends Vue {
       .then((resp) => {
         if (resp.content == "false") {
           this.$router.push("/companyDetails");
-        } 
+          // const path =
+          //   "Business/IsBusinessDetail/" + localStorage.getItem("UserID");
+          // if (this.$route.path !== path) this.$router.push("/companyDetails");
+        }
       });
   }
 }

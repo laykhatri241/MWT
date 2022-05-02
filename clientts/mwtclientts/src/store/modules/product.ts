@@ -2,11 +2,12 @@ import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
 import callApi from "@/api/callApi";
 import Product from "@/interfaces/product";
 import Category from "@/interfaces/category";
-
+import UpdateStock from "@/interfaces/updatestock";
 @Module({ namespaced: true })
 class Products extends VuexModule {
   products = new Product();
   categories = new Category();
+  updateStock = new UpdateStock();
 
   @Action
   public async AddProduct(data: Product): Promise<any> {
@@ -74,6 +75,32 @@ class Products extends VuexModule {
   public async GetProducts(id: any): Promise<any> {
     return callApi
       .AsyncGET(`Product/GetProduct/${id}`)
+      .then((response) => {
+        // console.log(response);
+
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async UpdateStock(data: any): Promise<any> {
+    return callApi
+      .AsyncPOST(`Product/UpdateStock`, data)
+      .then((response) => {
+        // console.log(response);
+
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async GetStock(id: any): Promise<any> {
+    return callApi
+      .AsyncGET(`Product/GetStock/${id}`)
       .then((response) => {
         // console.log(response);
 
