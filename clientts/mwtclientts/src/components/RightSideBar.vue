@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer
-    v-model="drawer"
+    v-model="drawer1"
     app
     color="#000000"
     mini-variant
@@ -104,7 +104,7 @@ const users = namespace("user");
 export default class RightSideBar extends Vue {
   Username = localStorage.getItem("UserFullName");
   selectedItem = 0;
-  drawer = null;
+  drawer1 = null;
   @users.Action
   public GetMyUser!: (data: any) => Promise<any>;
 
