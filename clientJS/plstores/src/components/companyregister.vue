@@ -60,13 +60,11 @@
       <v-btn text @click="e6 = 5"> Next </v-btn>
     </v-stepper-content>
 
-    <v-stepper-step step="5"> View setup instructions </v-stepper-step>
-    <v-text-field>CHANGES ARE NOT APPLICABLE AFTER THIS</v-text-field>
-    <v-stepper-content step="5">
-      <v-card color="" class="mb-12" height="200px"></v-card>
+   
+    <v-card color="" class="mb-12" height="200px"></v-card>
       <v-btn color="primary" href="companydashboard"> SUBMIT </v-btn>
       <v-btn text> Cancel </v-btn>
-    </v-stepper-content>
+    
   </v-stepper>
 </template>
 <script>
@@ -78,6 +76,7 @@ export default {
     return {
       e6: 1,
       userName: "",
+      
       password: "",
       Address1: "",
       Address2: "",

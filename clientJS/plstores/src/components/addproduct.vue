@@ -37,7 +37,6 @@
               <v-autocomplete
                 ref="Product"
                 :items="categoryname"
-                
                 label="Product"
                 required
                 @change="dropdownclick"
@@ -50,7 +49,12 @@
               <v-slide-x-reverse-transition>
                 <v-tooltip> </v-tooltip>
               </v-slide-x-reverse-transition>
-              <v-btn color="primary" @click="addproduct()" href="displayproducts">Submit</v-btn>
+              <v-btn
+                color="primary"
+                @click="addproduct()"
+                href="displayproducts"
+                >Submit</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -63,7 +67,7 @@ import callAPI from "@/apihelper/api";
 
 export default {
   created() {
-    callAPI.AsyncPOST("Product/GetCategories").then((data) => {
+    callAPI.AsyncGET("Product/GetCategories").then((data) => {
       console.log(data.content);
       const dropdown = JSON.parse(data.content);
       this.categoryname = dropdown.map((x) => x.categoryName);
@@ -74,7 +78,7 @@ export default {
   },
   data: () => ({
     categoryid: [],
-    categoryname:[],
+    categoryname: [],
     //categoryname: ['mobile','laptop','smartwatch','mouse','keyboard'],
     Product: "",
     ProdCompanyName: "",
@@ -89,34 +93,33 @@ export default {
     async onFileChange(file) {
       this.userimage = file;
     },
-    dropdownclick(value){
-        // alert(value)
-        this.CategoryID =
-        this.categoryname.findIndex(item=> item == value) + 1;
-        
+    dropdownclick(value) {
+      // alert(value)
+      this.CategoryID =
+        this.categoryname.findIndex((item) => item == value) + 1;
     },
     addproduct() {
-      let formData = new FormData();
-      if(this.userimage != null)
-      {
-
-          formData.append("file", this.userimage);
+      const formData = new FormData();
+      if (this.userimage != null) {
+        formData.append("file", this.userimage);
       }
       formData.append(
         "product",
         JSON.stringify({
           SellerID: localStorage.getItem("userid"),
-        //   SellerID:id,
-            ProdCompanyName:this.ProdCompanyName,
+          ProdCompanyName: this.ProdCompanyName,
           ProdName: this.ProdName,
           ProdDetails: this.ProdDetails,
           ProdImage: this.ProdImage,
           ProdPrice: this.ProdPrice,
           CategoryID: this.CategoryID,
         })
-        );
-        
-       callAPI.AsyncPOST("Product/AddProduct",formData)/then(resp => console.log(resp));
+      );
+
+      callAPI
+        .AsyncPOST("Product/AddProduct", formData)
+        .then((resp) => console.log(resp));
+      this.$router.push("/updateuserprofile");
     },
   },
 };

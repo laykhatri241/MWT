@@ -14,10 +14,7 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      path: '/',
-      component: Layout,
-      children:[
+  
         {
           path:'/',
           component:Home,
@@ -67,9 +64,12 @@ export default new Router({
         
       ]
 
-    }
-  ],
+    },
+  
+  {
     mode:'history'
-},
+  }
+   
+
 
   )
