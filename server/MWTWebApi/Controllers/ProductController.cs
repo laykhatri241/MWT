@@ -198,7 +198,7 @@ namespace MWTWebApi.Controllers
         #endregion
 
         #region GetStock
-        [Authorize(Roles = "2")]
+        [Authorize(Roles = "2,3")]
         [HttpGet("GetStock/{id}")]
         public HttpAPIResponse GetStock(int id)
         {

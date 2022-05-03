@@ -253,7 +253,7 @@ namespace MWTWebApi.Controllers
         #region AddToCart
         [Authorize(Roles = "3")]
         [HttpPost("AddToCart")]
-        public HttpAPIResponse AddToCart(CartItem cartItem)
+        public HttpAPIResponse AddToCart(CartItemModel cartItem)
         {
             var status = _orderService.AddToCart(cartItem).Result;
 
