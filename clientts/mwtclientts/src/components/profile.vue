@@ -10,9 +10,7 @@
                 <v-container class="py-0">
                   <v-row class="justify-center">
                     <v-avatar size="200px">
-                      <v-img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiGcFYBKGruads8sUVAfUBlX8orSdEwuSSTg&usqp=CAU"
-                      />
+                      <img v-if="currentuser.Avatar" :src="imagepath" />
                     </v-avatar>
                   </v-row>
                   <v-row>
@@ -39,14 +37,6 @@
                       />
                     </v-col>
 
-                    <!-- <v-col cols="12" md="6">
-                    <v-text-field label="Address1" class="purple-input" />
-                  </v-col>
-
-                  <v-col cols="12" md="6">
-                    <v-text-field label="Address2" class="purple-input" />
-                  </v-col> -->
-
                     <v-col cols="12" md="12">
                       <v-text-field
                         label="Date OF Birth"
@@ -60,13 +50,13 @@
                     <h3 style="color: green" class="text-center mt-4">
                       {{ message }}
                     </h3>
-                    <!-- <v-col cols="12" md="12">
-                    <v-text-field label="Pincode" class="purple-input" />
-                  </v-col> -->
+                    <h3 style="color: red" class="text-center mt-4">
+                      {{ warning }}
+                    </h3>
 
                     <v-col cols="12" class="text-right">
                       <v-btn color="success" @click="submitForm()" class="mr-0">
-                        Update Profile!!</v-btn
+                        Update Profile</v-btn
                       >
                     </v-col>
                   </v-row>
@@ -83,7 +73,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/footer.vue";
 import User from "@/interfaces/user";
@@ -100,11 +90,13 @@ const users = namespace("user");
 })
 export default class UpdateProfile extends Vue {
   private message: string = "";
+  private warning: string = "";
+
   currentuser = new User();
   address = new Address();
   updatePassword = new UpdatePassword();
   currentFile = "undefined";
-
+  imagepath = "";
   passwordRules = [
     (v: any) => !!v || "Password is required",
     (v: string) =>
@@ -122,10 +114,6 @@ export default class UpdateProfile extends Vue {
   public GetMyUser!: (data: User) => Promise<any>;
   @users.Action
   public UpdateUser!: (data: any) => Promise<any>;
-  @users.Action
-  public UpdatePassword!: (data: UpdatePassword) => Promise<any>;
-  @users.Action
-  public UpdateProfile!: (data: any) => Promise<any>;
 
   public submitForm(): void {
     this.currentuser.id = Number(localStorage.getItem("UserID"));
@@ -136,20 +124,14 @@ export default class UpdateProfile extends Vue {
 
     formData.append("prod", JSON.stringify(this.currentuser));
     this.UpdateUser(formData).then((res) => {
-      console.log("hhhhhhh", this.currentuser);
-
+      // console.log("hhhhhhh", this.currentuser);
+      if (res.content == "true") {
+        this.message = "Succesfully Updated";
+        // this.$router.push("/companyDashboard");
+      } else {
+        this.warning = "Failed To Update";
+      }
       // this.message = "Succesfully Update!!";
-    });
-  }
-  public updatepasssword(): void {
-    this.UpdatePassword(this.updatePassword);
-  }
-
-  public uploadimage(): void {
-    const formData = new FormData();
-    formData.append("file", this.currentuser.Avatar);
-    this.UpdateProfile(formData).then((data) => {
-      this.currentuser.Avatar = data.content;
     });
   }
 
@@ -168,6 +150,17 @@ export default class UpdateProfile extends Vue {
   }
   handleChange(file: any) {
     this.currentFile = file;
+  }
+  @Watch("currentuser.Avatar")
+  onimagechage() {
+    if (this.currentuser.Avatar == null) {
+      this.imagepath =
+        "https://localhost:44301/StaticImages/Avatar/DefaultProfile.jpeg";
+    } else {
+      this.imagepath =
+        "https://localhost:44301/StaticImages/Avatar/" +
+        this.currentuser.Avatar;
+    }
   }
 }
 </script>

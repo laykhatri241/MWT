@@ -31,6 +31,12 @@ const routes = [
     component: () => import("../components/profile.vue"),
   },
   {
+    path: "/AddAddress",
+    name: "AddAddress",
+
+    component: () => import("../components/user_address.vue"),
+  },
+  {
     path: "/changepassword",
     name: "changepassword",
 
@@ -46,6 +52,12 @@ const routes = [
         name: "companyDetails",
 
         component: () => import("../components/companyRegister.vue"),
+      },
+      {
+        path: "/UpdatecompanyDetails",
+        name: "UpdatecompanyDetails",
+
+        component: () => import("@/components/Company/Update_comapnydetails.vue"),
       },
       {
         path: "/CompanyProfile",

@@ -13,7 +13,7 @@
           <th>Name</th>
           <th>Details</th>
           <th>Price</th>
-          <th>Image</th>
+          <!-- <th>Image</th> -->
           <th>Delete</th>
           <th>Update</th>
           <th>UpdateStock</th>
@@ -26,7 +26,9 @@
         <td>{{ item.ProdName }}</td>
         <td>{{ item.ProdDetails }}</td>
         <td>{{ item.ProdPrice }}</td>
-        <td><img src="" /></td>
+        <!-- <td>
+          <img v-if="item.ProdImage" :src="imagepath" />
+        </td> -->
 
         <td>
           <v-btn color="red" class="mt-3" @click="delProduct(item.id)"
@@ -42,12 +44,13 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import Category from "@/interfaces/category";
 import Product from "@/interfaces/product";
 import UpdateProduct from "@/components/Company/update_product.vue";
 import UpdateStock from "@/components/Company/updatestock.vue";
+import { locales } from "moment";
 const Products = namespace("product");
 @Component({
   components: {
@@ -57,7 +60,8 @@ const Products = namespace("product");
 })
 export default class ProductList extends Vue {
   category = new Category();
-  public product: Product[] = [];
+
+  public product = [ ] as Product[];
   pro = new Product();
   @Prop(Number)
   productid!: number | null;
@@ -67,11 +71,20 @@ export default class ProductList extends Vue {
   @Products.Action
   public DeleteProduct!: (data: any) => Promise<any>;
   search = "";
+  imagepath = "";
+
   public retrieveProduct(): void {
     this.GetAllProducts(this.product).then((data) => {
       var jdata = JSON.parse(data.content);
+
+      if (jdata.ProdImage != null) {
+        this.imagepath =
+          "https://localhost:44301/StaticImages/Product/DefaultProduct.png";
+      } else {
+        this.imagepath =
+          "https://localhost:44301/StaticImages/Product/" + this.pro.ProdImage;
+      }
       this.product = jdata;
-      
     });
   }
   public delProduct(id: any): void {
@@ -85,7 +98,6 @@ export default class ProductList extends Vue {
 
   mounted() {
     this.retrieveProduct();
-    
   }
 
   get filteredList() {
@@ -97,6 +109,16 @@ export default class ProductList extends Vue {
       );
     });
   }
+  // @Watch("product.ProdImage")
+  // onimagechage() {
+  //   if (this.product == null) {
+  //     this.imagepath =
+  //       "https://localhost:44301/StaticImages/Product/DefaultProduct.png";
+  //   } else {
+  //     this.imagepath =
+  //       "https://localhost:44301/StaticImages/Product/" + this.pro.ProdImage;
+  //   }
+  // }
 }
 </script>
 <style scoped>

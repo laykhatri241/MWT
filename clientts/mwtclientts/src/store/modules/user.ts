@@ -1,30 +1,18 @@
 import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
 import api from "@/api";
-import callApi from "@/api/callApi"
+import callApi from "@/api/callApi";
 import User from "@/interfaces/user";
 import call from "@/api";
 
-  @Module({ namespaced: true })
-  class Users extends VuexModule {
-    public user: User = {
-      Fullname: "",
-      id: 0,
-      Username: "",
-      Password: "",
-      DateOfBirth:"",
-      Role: 0,
-      Avatar :"",
-    };
-
+@Module({ namespaced: true })
+class Users extends VuexModule {
+  user = new User();
   @Action
   public async createUser(data: User): Promise<any> {
     return callApi
       .AsyncPOST("Account/SignUp", data)
-      .then((response ) => {
+      .then((response) => {
         console.log(response);
-        
-        // response.data.data.id = response.data.id;
-        // this.context.commit("create", response.data.data);
         return response;
       })
       .catch((err) => {
@@ -35,7 +23,7 @@ import call from "@/api";
   public async login(data: any): Promise<any> {
     return callApi
       .AsyncPOST("Account/Login", data)
-      .then((response : any) => {
+      .then((response: any) => {
         return response;
       })
       .catch((err) => {
@@ -49,7 +37,6 @@ import call from "@/api";
       .then((response) => {
         console.log(response);
 
-        
         //this.context.commit("CheckUsername", response.data.data);
         return response;
       })
@@ -88,31 +75,14 @@ import call from "@/api";
   public async UpdatePassword(data: any): Promise<any> {
     data.id = Number(localStorage.getItem("UserID"));
     return callApi
-      .AsyncPOST("Account/ChangePassword",data)
+      .AsyncPOST("Account/ChangePassword", data)
       .then((response) => {
-      
-        this.context.commit('UpdatePasswoed', data)
-        return response
+        this.context.commit("UpdatePasswoed", data);
+        return response;
       })
       .catch((err) => {
-       
-        return err
-      })
-  }
-  @Action
-  public async UpdateProfile(data: any): Promise<any> {
-    // data.id = Number(localStorage.getItem("UserID"));
-    return callApi
-      .AsyncPOST("Account/UploadAvatar",data)
-      .then((res) => {
-        console.log(res);
-        return res
-        
-        
-      })
-      .catch((err) => {       
-        return err
-      })
+        return err;
+      });
   }
 }
 export default Users;

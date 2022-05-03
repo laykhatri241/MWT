@@ -138,7 +138,7 @@ export default class AddUser extends Vue {
     if (this.isNew) {
       this.createUser(this.user).then((data) => {
         // this.submitted = true;
-        console.log("idhfdsifhfdigh",data);
+        // console.log("idhfdsifhfdigh",data);
        
         if (data.content == "UsernameExists") {
           this.warning = "Username Exits!!";

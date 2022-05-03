@@ -6,7 +6,7 @@
       <main class="v-main" data-booted="true">
         <v-container class="mx-auto" style="padding: inherit">
           <v-spacer></v-spacer>
-          <h1>Welcome {{ Username }}</h1>
+          <h3>Welcome {{ Username }}</h3>
           <router-view></router-view>
         </v-container>
       </main>
@@ -35,9 +35,6 @@ export default class CompanyDashboard extends Vue {
       .then((resp) => {
         if (resp.content == "false") {
           this.$router.push("/companyDetails");
-          // const path =
-          //   "Business/IsBusinessDetail/" + localStorage.getItem("UserID");
-          // if (this.$route.path !== path) this.$router.push("/companyDetails");
         }
       });
   }

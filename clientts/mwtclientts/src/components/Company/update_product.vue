@@ -53,11 +53,14 @@
                         label="Category Name"
                         :items="CName"
                         @change="onchange"
+                        :value="CName[product.CategoryID -1]"                        
                       >
                       </v-select>
                     </v-col>
                     <v-col cols="12" md="12">
-                      <!-- <img :src="'file:///D:/Nikunj_workspace/MWTProject/MWT/server/MWTWebApi/Images/Product/bd900f94b2344fc8a69fbd6d3b680fe4.png'"> -->
+                      <v-avatar size="280px">
+                        <img v-if="product.ProdImage" :src="imagepath" />
+                      </v-avatar>
                       <v-file-input
                         @change="handleChange"
                         label="Choose Product Image"
@@ -86,8 +89,8 @@
   </v-row>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import { namespace } from "vuex-class";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Action, namespace } from "vuex-class";
 import Category from "@/interfaces/category";
 import Product from "@/interfaces/product";
 import moment, { locales } from "moment";
@@ -102,7 +105,7 @@ export default class AddProducts extends Vue {
   dialog = false;
   Cid = [];
   CName = [];
-
+  imagepath = "";
   currentFile = "undefined";
 
   @Products.Action
@@ -142,14 +145,13 @@ export default class AddProducts extends Vue {
       this.Cid = jdata.map((x: any) => x.id);
     });
     this.GetProducts(this.productid).then((data) => {
-      // console.log("data",data);
       var jdata = JSON.parse(data.content);
       this.product.ProdCompanyName = jdata.ProdCompanyName;
       this.product.ProdName = jdata.ProdName;
       this.product.ProdDetails = jdata.ProdDetails;
       this.product.ProdPrice = jdata.ProdPrice;
-      this.product.ProdImage = jdata.ProdImage;
-      this.product.CategoryID = jdata.CategoryID;
+      // this.product.ProdImage = jdata.ProdImage;
+      // this.product.CategoryID = jdata.CategoryID;
     });
   }
   handleChange(file: any) {
@@ -158,6 +160,18 @@ export default class AddProducts extends Vue {
   onchange(value: any) {
     this.product.CategoryID =
       this.CName.findIndex((cn: any) => cn == value) + 1;
+  }
+
+  @Watch("product.ProdImage")
+  onimagechage() {
+    if (this.product.ProdImage == null) {
+      this.imagepath =
+        "https://localhost:44301/StaticImages/Product/DefaultProduct.png";
+    } else {
+      this.imagepath =
+        "https://localhost:44301/StaticImages/Product/" +
+        this.product.ProdImage;
+    }
   }
 }
 </script>

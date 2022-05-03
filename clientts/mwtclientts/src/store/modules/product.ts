@@ -50,9 +50,9 @@ class Products extends VuexModule {
       });
   }
   @Action
-  public async Getcategory(data: any): Promise<any> {
+  public async Getcategory(): Promise<any> {
     return callApi
-      .AsyncPOST("Product/GetCategories", data)
+      .AsyncGET("Product/GetCategories")
       .then((response) => {
         return response;
       })
