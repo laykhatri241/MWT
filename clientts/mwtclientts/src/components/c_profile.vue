@@ -8,9 +8,7 @@
               <v-container class="py-0">
                 <v-row class="justify-center">
                   <v-avatar size="200px">
-                    <v-img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiGcFYBKGruads8sUVAfUBlX8orSdEwuSSTg&usqp=CAU"
-                    />
+                    <img v-if="currentuser.Avatar" :src="imagepath" />
                   </v-avatar>
                 </v-row>
                 <v-row>
@@ -49,6 +47,9 @@
                   <h3 style="color: green" class="text-center mt-4">
                     {{ message }}
                   </h3>
+                  <h3 style="color: red" class="text-center mt-4">
+                    {{ warning }}
+                  </h3>
                   <v-col cols="12" class="text-right">
                     <v-btn color="success" @click="submitForm()" class="mr-0">
                       Update Profile!!</v-btn
@@ -65,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import Navbar from "@/components/Navbar.vue";
 import User from "@/interfaces/user";
 import UpdatePassword from "@/interfaces/updatepassword";
@@ -76,10 +77,13 @@ const users = namespace("user");
 @Component({})
 export default class UpdateProfile extends Vue {
   private message: string = "";
+  private warning: string = "";
+
   currentuser = new User();
   address = new Address();
   updatePassword = new UpdatePassword();
   currentFile = "undefined";
+  imagepath = "";
   passwordRules = [
     (v: any) => !!v || "Password is required",
     (v: string) =>
@@ -100,20 +104,21 @@ export default class UpdateProfile extends Vue {
 
   public submitForm(): void {
     const formData = new FormData();
-    if(this.currentFile != "undefined")
-    {
-
+    if (this.currentFile != "undefined") {
       formData.append("file", this.currentFile);
     }
     this.currentuser.id = Number(localStorage.getItem("UserID"));
-    console.log(JSON.stringify(this.currentuser));
-    
+
     formData.append("prod", JSON.stringify(this.currentuser));
 
     this.UpdateUser(formData).then((res) => {
       console.log(res);
-
-      // console.log("hhhhhhh", this.currentuser);
+      if (res.content == "true") {
+        this.message = "Succesfully Updated";
+        // this.$router.push("/companyDashboard");
+      } else {
+        this.warning = "Failed To Update";
+      }
     });
   }
 
@@ -132,6 +137,17 @@ export default class UpdateProfile extends Vue {
   }
   handleChange(file: any) {
     this.currentFile = file;
+  }
+  @Watch("currentuser.Avatar")
+  onimagechage() {
+    if (this.currentuser.Avatar == null) {
+      this.imagepath =
+        "https://localhost:44301/StaticImages/Avatar/DefaultProfile.jpeg";
+    } else {
+      this.imagepath =
+        "https://localhost:44301/StaticImages/Avatar/" +
+        this.currentuser.Avatar;
+    }
   }
 }
 </script>

@@ -20,7 +20,23 @@ class Addresses extends VuexModule {
       .AsyncPOST("Address/AddAddress", data)
 
       .then((response) => {
-        console.log(response);
+        // console.log(response);
+
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async UpdateAddress(data: Address): Promise<boolean> {
+    data.UserID = Number(localStorage.getItem("UserID"));
+    return callApi
+
+      .AsyncPOST("Address/UpdateAddress", data)
+
+      .then((response) => {
+        // console.log(response);
 
         return response;
       })
@@ -34,7 +50,21 @@ class Addresses extends VuexModule {
 
       .AsyncGET("Address/GetAllAddress/" + localStorage.getItem("UserID"))
       .then((response) => {
-        console.log(response);
+        // console.log(response);
+
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async getMyAddress(data: Address): Promise<any> {
+    return callApi
+
+      .AsyncGET("Address/GetAllAddress/" + localStorage.getItem("UserID"))
+      .then((response) => {
+        // console.log(response);
 
         return response;
       })

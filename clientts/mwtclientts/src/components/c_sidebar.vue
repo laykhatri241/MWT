@@ -45,16 +45,16 @@
         </v-list-item-content>
         
       </v-list-item>
-      <!-- <v-list-item link >
+      <v-list-item link to="UpdatecompanyDetails">
         <v-list-item-icon>
-          <v-icon>mdi-clipboard-list-outline</v-icon>
+          <v-icon>mdi-update</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title>Category</v-list-item-title>
+          <v-list-item-title>Update Bussiness Details</v-list-item-title>
         </v-list-item-content>
         
-      </v-list-item> -->
+      </v-list-item>
       <v-list-item link>
         <v-list-item-icon>
           <v-icon>mdi-card-account-details-outline</v-icon>
@@ -64,7 +64,7 @@
           <v-list-item-title>Orders</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link to="companyDetails" >
+      <v-list-item link>
         <v-list-item-icon>
           <v-icon>mdi-cog</v-icon>
         </v-list-item-icon>
@@ -73,15 +73,6 @@
           <v-list-item-title>System Setting</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <!-- <v-list-item link  >
-        <v-list-item-icon>
-          <v-icon>mdi-info</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title>Company Details</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item> -->
     </v-list>
   </v-navigation-drawer>
 </template>

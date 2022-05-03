@@ -1,5 +1,4 @@
 import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
-import api from "@/api";
 import callAPI from "@/api/callApi";
 import BusinessDetailsMaster from "@/interfaces/businessDetailsMaster";
 
@@ -31,14 +30,14 @@ class BusinessDetails extends VuexModule {
       });
   }
   @Action
-  public async BusinessDetails(data: BusinessDetailsMaster): Promise<boolean> {
+  public async UpdateBusinessDetails(
+    data: BusinessDetailsMaster
+  ): Promise<boolean> {
     data.UserID = Number(localStorage.getItem("UserID"));
     return callAPI
-      .AsyncGET("Business/IsBusinessDetail/" + localStorage.getItem("UserID"))
+      .AsyncPOST("Business/UpdateBusinessDetail", data)
       .then((response) => {
-        // response.data.data.id = response.data.id;
-        // this.context.commit("createBusiness", response.data.data);
-        console.log(response);
+        // console.log(response);
 
         return response;
       })
@@ -47,15 +46,28 @@ class BusinessDetails extends VuexModule {
       });
   }
   @Action
-  public async GetBusinessDetails(data: BusinessDetailsMaster): Promise<boolean> {
+  public async BusinessDetails(data: BusinessDetailsMaster): Promise<boolean> {
+    data.UserID = Number(localStorage.getItem("UserID"));
+    return callAPI
+      .AsyncGET("Business/IsBusinessDetail/" + localStorage.getItem("UserID"))
+      .then((response) => {
+        // console.log(response);
+
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async GetBusinessDetails(
+    data: BusinessDetailsMaster
+  ): Promise<boolean> {
     data.UserID = Number(localStorage.getItem("UserID"));
     return callAPI
       .AsyncGET("Business/GetBusinessDetail/" + localStorage.getItem("UserID"))
       .then((response) => {
-        // response.data.data.id = response.data.id;
-        // this.context.commit("createBusiness", response.data.data);
-        console.log(response);
-
+        // console.log(response);
         return response;
       })
       .catch((err) => {

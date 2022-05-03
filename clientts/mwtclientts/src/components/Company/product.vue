@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Add Product!!</h3>
+    <v-btn color="primary" class="mr-0" to="/productlist"> Back to list</v-btn>
     <v-container id="user-profile" fluid tag="section">
       <v-row justify="center">
         <v-col cols="12" md="6">
@@ -58,11 +58,11 @@
                     {{ message }}
                   </h3>
                   <v-col cols="12" class="text-right">
-                    <v-btn color="primary" class="mr-0" to="/productlist">
-                      Back to list!!</v-btn
-                    >
+                    <!-- <v-btn color="primary" class="mr-0" to="/productlist">
+                      Back to list</v-btn
+                    > -->
                     <v-btn color="success" class="mr-0" @click="submitForm()">
-                      Add Product!!</v-btn
+                      Add Product</v-btn
                     >
                   </v-col>
                 </v-row>
@@ -105,7 +105,7 @@ export default class AddProducts extends Vue {
     formData.append("file", this.currentFile);
     formData.append("prod", JSON.stringify(this.product));
     this.AddProduct(formData).then((res) => {
-      //   console.log("hhhhhhh", this.product);
+      this.$router.push("/productlist");
     });
   }
   created(): void {
@@ -120,7 +120,6 @@ export default class AddProducts extends Vue {
     this.currentFile = file;
   }
   onchange(value: any) {
-    // console.log(value);
     this.product.CategoryID =
       this.CName.findIndex((cn: any) => cn == value) + 1;
   }
