@@ -10,6 +10,7 @@
           outlined
         >
         </v-text-field>
+
       </v-col>
     </v-row>
     <v-row>
@@ -19,8 +20,6 @@
           hint="password"
           persistent-hint
           v-model="NewPass"
-          
-
           outlined
         >
         </v-text-field>

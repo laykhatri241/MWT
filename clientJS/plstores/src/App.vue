@@ -53,7 +53,7 @@
         </div>
         <v-switch @click="darkMode" />
       </v-app-bar>
-      <v-content>
+      <v-content >
         <v-bottom-navigation :value="activeBtn" color="primary" horizontal>
           <a href="/" class="v-btn">
             <span>Home</span>
