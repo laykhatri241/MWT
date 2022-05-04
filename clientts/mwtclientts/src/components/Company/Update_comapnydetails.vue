@@ -5,62 +5,66 @@
       <v-row justify="center">
         <v-col cols="12" md="6">
           <v-card class="mx-auto" outlined>
-            <v-form>
-              <v-container class="py-0">
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-text-field
-                      :rules="nameRules"
-                      v-model="address.Address1"
-                      label="Address 1"
-                    ></v-text-field>
-                  </v-col>
+            <v-container class="py-0">
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-text-field
+                    :rules="nameRules"
+                    v-model="address.Address1"
+                    label="Address 1"
+                  ></v-text-field>
+                </v-col>
 
-                  <v-col cols="12" md="12">
-                    <v-text-field
-                      :rules="nameRules"
-                      v-model="address.Address2"
-                      label="Address 2"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="12">
-                    <v-text-field
-                      :rules="nameRules"
-                      v-model="address.Pincode"
-                      label="Pincode"
-                    ></v-text-field>
-                  </v-col>
-                  <h3 style="color: green" class="text-center mt-4">
-                    {{ message }}
-                  </h3>
-                  <h3 style="color: red" class="text-center mt-4">
-                    {{ warning }}
-                  </h3>
-                  <v-col cols="12" class="text-right">
-                    <v-btn
-                      color="success"
-                      class="mr-0"
-                      @click="submitAddress()"
-                    >
-                      Update Address</v-btn
-                    >
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-form>
+                <v-col cols="12" md="12">
+                  <v-text-field
+                    :rules="nameRules"
+                    v-model="address.Address2"
+                    label="Address 2"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="12">
+                  <v-text-field
+                    :rules="nameRules"
+                    v-model="address.Pincode"
+                    label="Pincode"
+                  ></v-text-field>
+                </v-col>
+                <h3 style="color: green" class="text-center mt-4">
+                  {{ message }}
+                </h3>
+                <h3 style="color: red" class="text-center mt-4">
+                  {{ warning }}
+                </h3>
+                <v-col cols="12" class="text-right">
+                  <v-btn color="success" class="mr-0" @click="submitAddress()">
+                    Update Address</v-btn
+                  >
+                </v-col>
+              </v-row>
+            </v-container>
           </v-card>
         </v-col>
         <v-col cols="12" md="6">
-          <v-card class="v-card-profile">
+          <v-card class="v-card-profile" outlined>
             <v-card-text class="text-center">
               <v-col cols="12" md="12">
-                <v-text-field class="purple-input" v-model="business.GSTIN" label="GSTIN" />
+                <v-text-field
+                  class="purple-input"
+                  v-model="business.GSTIN"
+                  label="GSTIN"
+                />
               </v-col>
               <v-col cols="12" md="12">
-                <v-text-field class="purple-input" v-model="business.PAN" label="PAN" />
+                <v-text-field
+                  class="purple-input"
+                  v-model="business.PAN"
+                  label="PAN"
+                />
               </v-col>
               <v-col class="text-right">
-                <v-btn color="success" @click="submitBussiness()" class="mr-0"> Update</v-btn>
+                <v-btn color="success" @click="submitBussiness()" class="mr-0">
+                  Update</v-btn
+                >
               </v-col>
             </v-card-text>
           </v-card>

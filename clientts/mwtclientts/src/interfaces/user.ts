@@ -7,6 +7,5 @@ class User {
     Role !:number;
     Avatar !: string;
   }
-  
-  export default  User 
+export default  User 
   

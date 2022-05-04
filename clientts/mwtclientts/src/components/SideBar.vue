@@ -14,19 +14,30 @@
 
     <v-card flat color="#151515" class="rounded-xl mx-4 py-10">
       <v-list flat class="" dark>
-        <v-list-item-group v-model="selectedItem">
-          <v-list-item
-            v-for="(item, i) in items"
-            :key="i"
-            active-class="border"
-            v-slot="{ active }"
-            :ripple="false"
-          >
+        <v-list-item-group v-model="selectedItem" active-class="border">
+          <v-list-item>
             <v-list-item-content>
-              <v-icon
-                v-text="item.icon"
-                :color="active ? 'white' : 'grey lighten-1'"
-              ></v-icon>
+              <v-icon>mdi-home-outline</v-icon>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <v-icon>mdi-cart-outline</v-icon>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <v-icon>mdi-store-outline</v-icon>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <v-icon>mdi-calendar-check-outline</v-icon>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <v-icon>mdi-apps</v-icon>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -54,32 +65,22 @@
   </v-navigation-drawer>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    selectedItem: 0,
-    items: [
-      { icon: "mdi-home-outline" },
-      { icon: "mdi-cart-outline" },
-      { icon: "mdi-store-outline" },
-      { icon: "mdi-calendar-check-outline" },
-      { icon: "mdi-apps" },
-    ],
-  }),
-  props: ["drawer"],
-  watch: {
-    drawer(value) {
-      return value;
-    },
-  },
-};
+<script lang="ts">
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+@Component({})
+export default class SideBar extends Vue {
+  selectedItem = 0;
+  @Prop(Boolean)
+  drawer!: boolean | true;
+
+}
 </script>
 
 <style scoped>
 .border {
   margin: 0px 8px;
   background: #6f0dff;
-  border-radius: 15px;
+  border-radius: 20px;
   text-decoration: none;
   width: 60px;
   height: 60px;
