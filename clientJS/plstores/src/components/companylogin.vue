@@ -45,11 +45,12 @@
                           @click:append="show1 = !show1"
                         ></v-text-field>
                       </v-col>
-
+                       
                       <v-col class="d-flex" cols="12" sm="6" xsm="12"> </v-col>
                       <v-spacer></v-spacer>
-
+                      
                       <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
+                         
                         <v-btn
                           large
                           block
@@ -59,6 +60,9 @@
                         >
                           Login
                         </v-btn>
+                        
+
+                        
                       </v-col>
                       <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
                         <v-btn large color="success" @click="showpopup">
@@ -121,8 +125,8 @@
                       </v-col>
                       <v-spacer></v-spacer>
                       <router-link to="/companyregister"
-                        >Register your company here</router-link
-                      >
+                          >Register your company here</router-link
+                        >
                       <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
                         <v-btn x-large color="success" @click="validatesignup()"
                           >Register</v-btn
@@ -165,22 +169,17 @@ export default {
             console.log(data);
             const log = JSON.parse(data.content);
 
-            // console.log(log);
+            console.log(log);
             const logintoken = log.Password;
             const userid = log.id;
-            const userrole = log.Role;
-
-            console.log(log.Role);
+            
+            
             localStorage.setItem("logintoken", logintoken);
             localStorage.setItem("userid", userid);
-            localStorage.setItem("userrole", log.Role);
-            this.$emit("userloggedin",true)
-            if (userrole == 2) {
-              this.$router.push("/companydashboard");
-            } else if (userrole == 3) {
-              this.$router.push("/updateuserprofile");
-            }
 
+            
+            // this.$router.push("/companydashboard");
+            
             // console.log(getdata)
           });
       }
@@ -202,8 +201,8 @@ export default {
     showpopup() {
       this.$emit("showpopup", false);
     },
-  
-    
+
+    fetch() {},
     reset() {
       this.$refs.form.reset();
     },

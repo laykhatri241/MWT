@@ -24,10 +24,9 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title></v-list-item-title>
-              <router-link to="/addproduct">{{
-                item.title
-              }}</router-link>
+              <v-list-item-title> </v-list-item-title>
+              
+              <v-btn @click="$router.push(item.url)"  >{{item.title}}</v-btn>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -42,8 +41,10 @@ export default {
     return {
       drawer: null,
       items: [
-        { title: "Home", icon: "mdi-view-dashboard" },
-        { title: "Add product", icon: "mdi-forum" },
+        { title: "Home", icon: "mdi-view-dashboard"  },
+        { title: "Add product", icon: "mdi-forum", url: "/addproduct" },
+        { title: "reset passowrd", icon: "mdi-forum" ,url: "/resetpassword" },
+        { title: "Address", icon: "mdi-home-city-outline",url: "/companyaddress" },
       ],
     };
   },

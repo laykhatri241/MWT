@@ -151,7 +151,7 @@
         </v-card>
       </div>
     </div>
-    <v-container>
+    <v-container >
       <v-row no-gutters>
         <v-col :cols="12">
           <v-card-text

@@ -1,6 +1,6 @@
 <template>
-  <v-stepper v-model="e6 " vertical style="margin: 50px">
-    <v-stepper-step :complete="e6 > 1" step="1" >
+  <v-stepper v-model="e6" vertical style="margin: 50px">
+    <v-stepper-step :complete="e6 > 1" step="1">
       register company details
     </v-stepper-step>
 
@@ -54,19 +54,13 @@
         <v-text-field label="GSTIN" v-model="GSTIN"></v-text-field>
         <v-text-field label="PAN" v-model="PAN"></v-text-field>
       </v-card>
-      <v-btn color="primary" @click="(e6 > 5), gstpandetails()">
-        Continue
-      </v-btn>
+      <v-btn color="primary" @click="e6 > 5, gstpandetails()"> Continue </v-btn>
       <v-btn text @click="e6 = 5"> Next </v-btn>
     </v-stepper-content>
 
-    <v-stepper-step step="5"> View setup instructions </v-stepper-step>
-    <v-text-field>CHANGES ARE NOT APPLICABLE AFTER THIS</v-text-field>
-    <v-stepper-content step="5">
-      <v-card color="" class="mb-12" height="200px"></v-card>
-      <v-btn color="primary" href="companydashboard"> SUBMIT </v-btn>
-      <v-btn text> Cancel </v-btn>
-    </v-stepper-content>
+    <v-card color="" class="mb-12" height="200px"></v-card>
+    <v-btn color="primary" href="companydashboard"> SUBMIT </v-btn>
+    <v-btn text> Cancel </v-btn>
   </v-stepper>
 </template>
 <script>
@@ -86,7 +80,6 @@ export default {
       GSTIN: "",
       Fullname: "",
       valid: true,
-      
     };
   },
   methods: {
@@ -137,14 +130,11 @@ export default {
     },
 
     async gstpandetails() {
-      callAPI.AsyncPOST(
-        "Business/AddBusinessDetails",
-        {
-          UserID: localStorage.getItem("userid"),
-          GSTIN: this.GSTIN,
-          PAN: this.PAN,
-        }
-      );
+      callAPI.AsyncPOST("Business/AddBusinessDetails", {
+        UserID: localStorage.getItem("userid"),
+        GSTIN: this.GSTIN,
+        PAN: this.PAN,
+      });
     },
   },
 };
