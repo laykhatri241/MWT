@@ -86,7 +86,8 @@ namespace MWTCore.Repository
         public async Task<List<ProductMaster>> RetrieveRandom(int count)
         {
             var prodList = new List<ProductMaster>();
-            if (_context.productMasters.ToList().Count() > 3)
+            int productTotalCount = _context.productMasters.ToList().Count();
+            if (productTotalCount > 3)
             {
                 while(prodList.Count < count)
                 {
@@ -95,6 +96,13 @@ namespace MWTCore.Repository
                     {
                         prodList.Add(prod);
 
+                    }
+                    if(count > productTotalCount )
+                    {
+                        if(prodList.Count() == productTotalCount)
+                        {
+                            break;
+                        }
                     }
                 }
             }

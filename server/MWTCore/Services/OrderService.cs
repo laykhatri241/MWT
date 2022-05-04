@@ -22,7 +22,7 @@ namespace MWTCore.Services
             return await _orderRepository.createCart(UserID);
         }
 
-        public async Task<int> AddToCart(CartItem cartItem)
+        public async Task<int> AddToCart(CartItemModel cartItem)
         {
             return await _orderRepository.AddToCart(cartItem);
         }

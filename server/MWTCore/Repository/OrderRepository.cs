@@ -19,11 +19,17 @@ namespace MWTCore.Repository
             _context = context;
         }
 
-        public async Task<int> AddToCart(CartItem cartItem)
+        public async Task<int> AddToCart(CartItemModel cartItem)
         {
-            cartItem.createdAt = DateTime.Now;
-            _context.cartItems.Add(cartItem);
-            return await _context.SaveChangesAsync() == 1 ? cartItem.id : 0;
+            var CartItem = new CartItem()
+            {
+                CartID = cartItem.CartID,
+                ProductID = cartItem.ProductID,
+                createdAt = DateTime.Now
+            };
+            
+            _context.cartItems.Add(CartItem);
+            return await _context.SaveChangesAsync() == 1 ? CartItem.id : 0;
         }
 
         public async Task<CartCheckout> cartCheckout(int cartID)
