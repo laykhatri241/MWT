@@ -7,7 +7,6 @@ class Product {
   ProdImage!: string;
   ProdPrice!: number;
   CategoryID!: number;
-  CategoryName! : string;
 }
 
 export default Product;

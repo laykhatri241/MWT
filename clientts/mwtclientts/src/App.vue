@@ -7,19 +7,13 @@
 </template>
 
 <script lang="ts">
-import CompanyDashboard from "@/components/companydashboard.vue";
-import Sidebar from "@/components/c_sidebar.vue";
-import Topbar from "@/components/company_topbar.vue";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
-@Component({
-  components: {
-    Sidebar,
-    Topbar,
-  },
-})
+@Component({})
 export default class App extends Vue {
-  // drawer = null;
+  // @Prop(Number)
+  // drawer!: number | null;
+  drawer = true;
   // data = localStorage.getItem("UserRole");
 }
 </script>
