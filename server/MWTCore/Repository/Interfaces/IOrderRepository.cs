@@ -19,6 +19,8 @@ namespace MWTCore.Repository.Interfaces
 
         public Task<CartCheckout> cartCheckout(int cartID);
 
-        public Task<bool> PurchaseSuccess(int cartID);
+        public Task<int> PurchaseSuccess(int cartID);
+
+        public Task<int> RemoveFromCart(int cartId, int productId);
     }
 }

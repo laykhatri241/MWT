@@ -255,5 +255,18 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
+        #region GetRandomByCategory
+        [Authorize(Roles = "3")]
+        [HttpGet("GetRandomByCategory/{count}/{categoryID}")]
+        public HttpAPIResponse GetRandomByCategory(int count,int categoryID)
+        {
+            var randomProdbyCategory = _productService.GetRandomByCategory(count,categoryID).Result;
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(randomProdbyCategory),
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+        #endregion
     }
 }

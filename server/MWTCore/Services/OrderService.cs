@@ -42,9 +42,14 @@ namespace MWTCore.Services
             return await _orderRepository.isCartAvailable(id);
         }
 
-        public async Task<bool> PurchaseSuccess(int CartID)
+        public async Task<int> PurchaseSuccess(int CartID)
         {
             return await _orderRepository.PurchaseSuccess(CartID);
+        }
+
+        public async Task<int> RemoveFromCart(int cartId, int productId)
+        {
+            return await _orderRepository.RemoveFromCart(cartId, productId);
         }
     }
 }
