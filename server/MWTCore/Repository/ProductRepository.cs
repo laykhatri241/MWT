@@ -87,7 +87,7 @@ namespace MWTCore.Repository
         {
             var prodList = new List<ProductMaster>();
             int productTotalCount = _context.productMasters.ToList().Count();
-            if (productTotalCount > 3)
+            if (productTotalCount > 1)
             {
                 while(prodList.Count < count)
                 {
@@ -100,6 +100,31 @@ namespace MWTCore.Repository
                     if(count > productTotalCount )
                     {
                         if(prodList.Count() == productTotalCount)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            return prodList;
+        }
+
+        public async Task<List<ProductMaster>> RetrieveRandomByCategory(int count,int categoryID)
+        {
+            var prodList = new List<ProductMaster>();
+            int productTotalCount = _context.productMasters.AsNoTracking().Where(pm=>pm.CategoryID==categoryID).ToList().Count();
+            if(productTotalCount > 1)
+            {
+                while(prodList.Count < count)
+                {
+                    var prod = await _context.productMasters.OrderBy(r => Guid.NewGuid()).Take(1).FirstAsync();
+                    if(!prodList.Contains(prod))
+                    {
+                        prodList.Add(prod);
+                    }
+                    if (count > productTotalCount)
+                    {
+                        if (prodList.Count() == productTotalCount)
                         {
                             break;
                         }

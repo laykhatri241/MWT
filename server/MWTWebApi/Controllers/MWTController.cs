@@ -265,6 +265,21 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
+        #region RemoveFromCart
+        [Authorize(Roles ="3")]
+        [HttpPost("RemoveFromCart")]
+        public HttpAPIResponse RemoveFromCart(CartItemModel cartItem)
+        {
+            var status = _orderService.RemoveFromCart(cartItem.CartID, cartItem.ProductID).Result;
+
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(status),
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+        #endregion
+
         #region CartCheckout
         [Authorize(Roles = "3")]
         [HttpGet("CartCheckout/{id}")]
@@ -282,10 +297,23 @@ namespace MWTWebApi.Controllers
 
         #region PaymentSuccess
         [Authorize(Roles = "3")]
-        [HttpGet("PaymentSuccess/{id}")]
-        public HttpAPIResponse PaymentSuccess(int id)
+        [HttpGet("PaymentSuccess/{id}/{UserID}")]
+        public HttpAPIResponse PaymentSuccess(int id,int UserID)
         {
             var status = _orderService.PurchaseSuccess(id).Result;
+            if(status >0)
+            {
+                var cartstatus = _orderService.AddCart(UserID).Result;
+                if(cartstatus == 0)
+                {
+                    return new HttpAPIResponse()
+                    {
+                        Content = JsonConvert.SerializeObject(status),
+                        StatusCode = HttpStatusCode.OK,
+                        ErrorMessage = "FailedToCreateNewCart"
+                    };
+                }
+            }
             return new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject(status),

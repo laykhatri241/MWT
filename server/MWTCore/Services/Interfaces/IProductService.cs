@@ -32,5 +32,7 @@ namespace MWTCore.Services.Interfaces
         public Task<List<ProductMaster>> GetProductByCategory(int CategoryID);
 
         public Task<List<ProductMaster>> GetRandomProducts(int Count);
+
+        public Task<List<ProductMaster>> GetRandomByCategory(int count,int categoryID);
     }
 }

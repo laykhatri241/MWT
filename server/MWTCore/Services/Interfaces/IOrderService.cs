@@ -17,8 +17,10 @@ namespace MWTCore.Services.Interfaces
 
         public Task<int> AddToCart(CartItemModel cartItem);
 
+        public Task<int> RemoveFromCart(int cartId, int productId);
+
         public Task<CartCheckout> cartCheckout(int CartID);
 
-        public Task<bool> PurchaseSuccess(int CartID);
+        public Task<int> PurchaseSuccess(int CartID);
     }
 }

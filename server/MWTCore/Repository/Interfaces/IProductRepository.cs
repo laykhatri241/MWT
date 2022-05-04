@@ -32,5 +32,7 @@ namespace MWTCore.Repository.Interfaces
         public Task<List<ProductMaster>> RetrieveByCategory(int categoryID);
 
         public Task<List<ProductMaster>> RetrieveRandom(int count);
+
+        public Task<List<ProductMaster>> RetrieveRandomByCategory(int count,int categoryID);
     }
 }
