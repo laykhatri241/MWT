@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app id="inspire">
-      <Sidebar :drawer.sync="drawer" />
+      <Sidebar :drawer="drawer" />
       <Topbar @drawerEvent="drawer = !drawer" />
       <main class="v-main" data-booted="true">
         <v-container class="mx-auto" style="padding: inherit">
@@ -27,7 +27,7 @@ import callAPI from "@/api/callApi";
 })
 export default class CompanyDashboard extends Vue {
   Username = localStorage.getItem("UserFullName");
-  drawer = null;
+  drawer = true;
 
   created(): void {
     callAPI

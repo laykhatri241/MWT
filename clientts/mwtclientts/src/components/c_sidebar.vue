@@ -26,15 +26,15 @@
           <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link to="/CompanyProfile">
+      <!-- <v-list-item link to="/CompanyProfile">
         <v-list-item-icon>
           <v-icon>mdi-account</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>
           <v-list-item-title>Update Profile</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+        </v-list-item-content> -->
+      <!-- </v-list-item> -->
       <v-list-item link to="productlist">
         <v-list-item-icon>
           <v-icon>mdi-clipboard-list-outline</v-icon>
@@ -77,9 +77,13 @@
   </v-navigation-drawer>
 </template>
 
-<script>
-export default {
-  props: ["drawer"],
+<script lang="ts">
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+@Component({})
+export default class SideBar extends Vue {
+  @Prop(Boolean)
+  drawer!: boolean;
+  // drawer = true
 };
 </script>
 

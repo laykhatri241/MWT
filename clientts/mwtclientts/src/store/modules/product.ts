@@ -29,7 +29,6 @@ class Products extends VuexModule {
       .AsyncPOST("Product/UpdateProduct", data)
       .then((response) => {
         console.log(response);
-
         return response;
       })
       .catch((err) => {
@@ -42,7 +41,6 @@ class Products extends VuexModule {
       .AsyncGET(`Product/DeleteProduct/${id}`)
       .then((response) => {
         console.log(response);
-
         return response;
       })
       .catch((err) => {
@@ -101,6 +99,19 @@ class Products extends VuexModule {
   public async GetStock(id: any): Promise<any> {
     return callApi
       .AsyncGET(`Product/GetStock/${id}`)
+      .then((response) => {
+        // console.log(response);
+
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async GetRandomProduct(): Promise<any> {
+    return callApi
+      .AsyncGET("Product/GetRandomProducts/8")
       .then((response) => {
         // console.log(response);
 

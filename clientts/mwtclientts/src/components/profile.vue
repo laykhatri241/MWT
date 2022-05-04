@@ -137,9 +137,9 @@ export default class UpdateProfile extends Vue {
 
   created(): void {
     this.GetMyUser(this.currentuser).then((data) => {
-      console.log(data);
+      // console.log(data);
       var jdata = JSON.parse(data.content);
-      console.log(jdata);
+      // console.log(jdata);
       this.currentuser.Fullname = jdata.Fullname;
       this.currentuser.Username = jdata.Username;
       this.currentuser.DateOfBirth = moment(String(jdata.DateOfBirth)).format(

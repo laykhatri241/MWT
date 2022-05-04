@@ -150,8 +150,8 @@ export default class AddProducts extends Vue {
       this.product.ProdName = jdata.ProdName;
       this.product.ProdDetails = jdata.ProdDetails;
       this.product.ProdPrice = jdata.ProdPrice;
-      // this.product.ProdImage = jdata.ProdImage;
-      // this.product.CategoryID = jdata.CategoryID;
+      this.product.ProdImage = jdata.ProdImage;
+      this.product.CategoryID = jdata.CategoryID;
     });
   }
   handleChange(file: any) {
