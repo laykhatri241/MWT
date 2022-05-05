@@ -131,7 +131,7 @@
         },
         {
           text: 'Articles',
-          href: 'https://medium.com/vuetify',
+          href: 'https://medium.com/vuetify'
         },
       ],
       whatsNext: [
