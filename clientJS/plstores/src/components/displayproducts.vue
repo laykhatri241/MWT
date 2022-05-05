@@ -102,6 +102,8 @@
         </table>
       </v-flex>
     </v-layout>
+    <router-view></router-view>
+
   </div>
 </template>
 <script>
