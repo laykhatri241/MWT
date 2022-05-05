@@ -10,6 +10,8 @@ import companydashboard from'@/components/companydashboard'
 import addproduct from '@/components/addproduct'
 import displayproducts from'@/components/displayproducts'
 import editproducts from'@/components/editproducts'
+import updateaddress from'@/components/updateaddress'
+import companydetails from'@/components/companydetails'
 Vue.use(Router)
 
 export default new Router({
@@ -44,22 +46,38 @@ export default new Router({
         path:'/companydashboard',
         component:companydashboard,
         name:'companydashboard',
-       
+        children:[
+          {
+            path:'/addproduct',
+            component:addproduct,
+            name:'addproduct',
+            
+    
+          },
+          {
+            path:'/displayproducts',
+            component:displayproducts,
+            name:'displayproducts',
+          },
+        ],
       },
-      {
-        path:'/addproduct',
-        component:addproduct,
-        name:'addproduct',
-      },
-      {
-        path:'/displayproducts',
-        component:displayproducts,
-        name:'displayproducts',
-      },
+     
+      
+      
       {
         path:'/editproducts',
         component:editproducts,
         name:'editproducts',
+      },
+      {
+        path:'/updateaddress',
+        component:updateaddress,
+        name:'updateaddress',
+      },
+      {
+        path:'/companydetails',
+        component:companydetails,
+        name:'companydetails',
       },
         
       ]

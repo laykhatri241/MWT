@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="addProd">
     <v-app id="inspire" dark>
       <v-layout justify-center>
         <v-flex xs12 sm10 md8 lg6>
@@ -64,7 +64,7 @@
 </template>
 <script>
 import callAPI from "@/apihelper/api";
-
+import addproduct from "@/router/index";
 export default {
   created() {
     callAPI.AsyncGET("Product/GetCategories").then((data) => {
