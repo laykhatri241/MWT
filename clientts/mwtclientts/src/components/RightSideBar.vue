@@ -14,28 +14,21 @@
       <v-menu offset-y>
         <template v-slot:activator="{ attrs, on }">
           <span style="cursor: pointer" v-bind="attrs" v-on="on">
-            <v-chip
-              link
-              class="d-block text-center mx-auto mt-4 mb-10"
-              size="80"
-            >
-              <v-badge>
-                <v-list-item-avatar s>
-                  <v-img
-                    src="https://randomuser.me/api/portraits/women/81.jpg"
-                  />
-                </v-list-item-avatar>
-              </v-badge>
-              <!-- <span class="ml-3">{{ Username }}</span> -->
-            </v-chip>
+            <v-avatar class="d-block text-center mx-auto mt-4 mb-10" size="80">
+              <v-btn class="ma-0.5" outlined large fab color="white">
+                <v-icon color="" x-large>mdi-account</v-icon>
+              </v-btn>
+            </v-avatar>
+            <!-- <span class="ml-3">{{ Username }}</span> -->
+          
           </span>
         </template>
-
+        
         <v-list width="250" class="py-0">
           <v-list-item>
-            <v-list-item-avatar>
+            <!-- <v-list-item-avatar>
               <img src="https://randomuser.me/api/portraits/women/81.jpg" />
-            </v-list-item-avatar>
+            </v-list-item-avatar> -->
 
             <v-list-item-content>
               <v-list-item-title>{{ Username }}</v-list-item-title>

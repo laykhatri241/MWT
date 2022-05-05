@@ -3,6 +3,7 @@ import Dashboard from "@/views/HomeView.vue";
 import Login from "@/components/Login.vue";
 import CompanyDetails from "@/components/companyRegister.vue";
 
+
 const routes = [
   {
     path: "/",
@@ -13,6 +14,30 @@ const routes = [
     path: "/Dashboard",
     name: "Dashboard",
     component: Dashboard,
+    children: [   
+      {
+        path: "/userproductlist",
+        name: "userproductlist",
+        component: () => import("@/components/userproduct_list.vue"),
+      },
+      {
+        path: "/productDetails/:id?",
+        name: "productDetails",
+        component: () => import("@/components/product_details.vue"),
+      },
+      {
+        path: "/profile",
+        name: "profile",
+    
+        component: () => import("../components/profile.vue"),
+      },
+      {
+        path: "/changepassword",
+        name: "changepassword",
+    
+        component: () => import("@/components/change_password.vue"),
+      },
+    ],
   },
   {
     path: "/Signin",
@@ -25,23 +50,12 @@ const routes = [
     component: () => import("../components/Signup.vue"),
   },
   {
-    path: "/profile",
-    name: "profile",
-
-    component: () => import("../components/profile.vue"),
-  },
-  {
     path: "/AddAddress",
     name: "AddAddress",
 
     component: () => import("../components/user_address.vue"),
   },
-  {
-    path: "/changepassword",
-    name: "changepassword",
 
-    component: () => import("@/components/change_password.vue"),
-  },
   {
     path: "/companyDashboard",
     name: "companyDashboard",
@@ -57,7 +71,8 @@ const routes = [
         path: "/UpdatecompanyDetails",
         name: "UpdatecompanyDetails",
 
-        component: () => import("@/components/Company/Update_comapnydetails.vue"),
+        component: () =>
+          import("@/components/Company/Update_comapnydetails.vue"),
       },
       {
         path: "/CompanyProfile",
@@ -88,7 +103,7 @@ const routes = [
         name: "updateproduct",
 
         component: () => import("@/components/Company/update_product.vue"),
-      },     
+      },
     ],
   },
   {
@@ -97,7 +112,6 @@ const routes = [
 
     component: () => import("@/components/CompanySignup.vue"),
   },
-
 ];
 
 /**

@@ -1,11 +1,16 @@
 <template>
-  <div>
-        <Navbar />
-    <v-container id="user-profile" fluid tag="section">
-      <v-row justify="center">
-        <v-col cols="12" md="6">
-          <v-card class="v-card-profile">
-            <v-card-text class="text-center">
+  <v-app :style="{ background: $vuetify.theme.themes.dark.background }">
+    <v-app-bar dark color="rgba(0,0,0,0)" flat class="">
+      <div class="row" style="height: 25px; width: 40rem; margin-left: -50px">
+        <div class="col-md-7 col-sm-7 col-xs-12">
+          <!-- <v-breadcrumbs class="pb-0"></v-breadcrumbs> -->
+          <h2>Change Password</h2>
+          <div
+            data-v-255cc012=""
+            class="pl-6"
+            style="height: 25px; width: 40rem; margin-left: -20px"
+          >
+            <v-col cols="12" md="18">
               <v-col cols="12" md="12">
                 <v-text-field
                   class="purple-input"
@@ -13,39 +18,44 @@
                   label="Old Password"
                 />
               </v-col>
+              <v-card-actions class="pa-0">
+                <v-col cols="12" md="12">
+                  <v-text-field
+                    class="purple-input"
+                    :append-icon="value ? 'visibility' : 'visibility_off'"
+                    @click:append="() => (value = !value)"
+                    :type="value ? 'password' : 'text'"
+                    :rules="passwordRules"
+                    v-model="updatePassword.NewPass"
+                    label="New Password"
+                  />
+                </v-col>
+                <v-spacer></v-spacer>
+              </v-card-actions>
               <v-col cols="12" md="12">
                 <v-text-field
                   class="purple-input"
                   :append-icon="value ? 'visibility' : 'visibility_off'"
-                  @click:append="() => (value = !value)"
-                  :rules="passwordRules"
-                  v-model="updatePassword.NewPass"
-                  label="New Password"
-                />
-              </v-col>
-              <v-col cols="12" md="12">
-                <v-text-field
-                  class="purple-input"
-                  :append-icon="value ? 'visibility' : 'visibility_off'"
+                  :type="value ? 'password' : 'text'"
                   @click:append="() => (value = !value)"
                   :rules="confirmPasswordRules"
                   label="Confirm Password"
                 />
               </v-col>
-              <h3 style="color: green" class="text-center mt-4">
-                {{ message }}
-              </h3>
-              <v-col class="text-right">
-                <v-btn color="success" @click="updatepasssword()" class="mr-0">
-                  Update Password!!
-                </v-btn>
+              <v-col cols="12" md="12">
+                <h3 style="color: green" class="text-center mt-4">
+                  {{ message }}
+                </h3>
               </v-col>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+              <v-btn class="primary white--text" outlined tile dense
+                ><v-icon>mdi-key</v-icon> UPDATE PASSWORD</v-btn
+              >
+            </v-col>
+          </div>
+        </div>
+      </div>
+    </v-app-bar>
+  </v-app>
 </template>
 
 <script lang="ts">

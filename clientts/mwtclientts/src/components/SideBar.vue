@@ -15,8 +15,8 @@
     <v-card flat color="#151515" class="rounded-xl mx-4 py-10">
       <v-list flat class="" dark>
         <v-list-item-group v-model="selectedItem" active-class="border">
-          <v-list-item>
-            <v-list-item-content>
+          <v-list-item to="/userproductlist">
+            <v-list-item-content >
               <v-icon>mdi-home-outline</v-icon>
             </v-list-item-content>
           </v-list-item>

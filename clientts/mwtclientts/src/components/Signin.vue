@@ -63,6 +63,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import User from "@/interfaces/user";
+import CartMaster from "@/interfaces/cartmaster";
 const users = namespace("user");
 @Component
 export default class AddUser extends Vue {
@@ -109,6 +110,9 @@ export default class AddUser extends Vue {
   @users.Action
   public login!: (data: any) => Promise<any>;
 
+  @users.Action
+  public GetMyCart!: (data: any) => Promise<any>;
+
   public Loginform(): void {
     if (this.user.Username && this.user.Password) {
       this.login(this.user).then((resp) => {
@@ -124,7 +128,13 @@ export default class AddUser extends Vue {
               this.$router.push("/CompanyDashboard");
               break;
             case 3:
-              this.$router.push("/Dashboard");
+              this.GetMyCart(localStorage.getItem("UserID")).then((res) => {
+                var jdata = JSON.parse(res.content);
+                console.log("ghgjn",jdata);
+                
+                localStorage.setItem("CartId", jdata.CartID);
+              });
+              this.$router.push("/userproductlist");
               break;
           }
         } else {

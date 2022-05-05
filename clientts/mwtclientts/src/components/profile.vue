@@ -1,77 +1,80 @@
 <template>
-  <div>
-    <div>
-      <Navbar />
-      <v-container id="user-profile" fluid tag="section">
-        <v-row justify="center">
-          <v-col cols="12" md="6">
-            <v-card>
-              <v-form>
-                <v-container class="py-0">
-                  <v-row class="justify-center">
-                    <v-avatar size="200px">
-                      <img v-if="currentuser.Avatar" :src="imagepath" />
-                    </v-avatar>
-                  </v-row>
-                  <v-row>
-                    <v-file-input
-                      label="Choose Profile Image"
-                      @change="handleChange"
-                    ></v-file-input>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12" md="6">
-                      <v-text-field
-                        class="purple-input"
-                        v-model="currentuser.Fullname"
-                        label="Full Name"
-                      />
-                    </v-col>
-
-                    <v-col cols="12" md="6">
-                      <v-text-field
-                        label="User Name"
-                        v-model="currentuser.Username"
-                        class="purple-input"
-                        disabled
-                      />
-                    </v-col>
-
-                    <v-col cols="12" md="12">
-                      <v-text-field
-                        label="Date OF Birth"
-                        type="date"
-                        outlined
-                        v-model="currentuser.DateOfBirth"
-                        shaped
-                        prepend-inner-icon="mdi-calendar"
-                      ></v-text-field>
-                    </v-col>
-                    <h3 style="color: green" class="text-center mt-4">
-                      {{ message }}
-                    </h3>
-                    <h3 style="color: red" class="text-center mt-4">
-                      {{ warning }}
-                    </h3>
-
-                    <v-col cols="12" class="text-right">
-                      <v-btn color="success" @click="submitForm()" class="mr-0">
-                        Update Profile</v-btn
-                      >
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-form>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </div>
-
-    <!-- <Footer /> -->
-  </div>
+  <v-app :style="{ background: $vuetify.theme.themes.dark.background }">
+    <v-app-bar dark color="rgba(0,0,0,0)" flat class="">
+      <div class="row" style="height: 25px; width: 40rem; margin-left: -50px">
+        <div class="col-md-5 col-sm-5 col-xs-12">
+          <!-- <v-avatar>
+            <v-img
+              :src="
+                'https://localhost:44301/StaticImages/Product/' +
+                currentproduct.ProdImage
+              "
+            >
+            </v-img>
+          </v-avatar> -->
+          <v-carousel>
+            <img v-if="currentuser.Avatar" :src="imagepath" />
+            <!-- </img> -->
+          </v-carousel>
+        </div>
+        <div class="col-md-7 col-sm-7 col-xs-12">
+          <v-breadcrumbs class="pb-0"></v-breadcrumbs>
+          <div
+            data-v-255cc012=""
+            class="pl-6"
+            style="height: 25px; width: 40rem; margin-left: -20px"
+          >
+            <v-col cols="12" md="18">
+              <v-col cols="12" md="12">
+                <v-file-input
+                  label="Choose Profile Image"
+                  @change="handleChange"
+                ></v-file-input>
+              </v-col>
+              <v-card-actions class="pa-0">
+                <v-col cols="12" md="12">
+                  <v-text-field
+                    class="purple-input"
+                    v-model="currentuser.Fullname"
+                    label="Full Name"
+                  />
+                </v-col>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+              <v-col cols="12" md="12">
+                <v-text-field
+                  label="User Name"
+                  v-model="currentuser.Username"
+                  class="purple-input"
+                  disabled
+                />
+              </v-col>
+              <v-col cols="12" md="12">
+                <v-text-field
+                  label="Date OF Birth"
+                  type="date"
+                  outlined
+                  v-model="currentuser.DateOfBirth"
+                  shaped
+                  prepend-inner-icon="mdi-calendar"
+                ></v-text-field>
+              </v-col>
+              <h3 style="color: green" class="text-center mt-4">
+                {{ message }}
+              </h3>
+              <h3 style="color: red" class="text-center mt-4">
+                {{ warning }}
+              </h3>
+              <v-btn class="primary white--text" outlined tile dense
+                ><v-icon>mdi-account</v-icon> UPDATE PROFILE</v-btn
+              >
+            </v-col>
+          </div>
+        </div>
+      </div>
+    </v-app-bar>
+  </v-app>
 </template>
-
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import Navbar from "@/components/Navbar.vue";
