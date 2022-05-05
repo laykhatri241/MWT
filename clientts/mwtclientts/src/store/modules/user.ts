@@ -24,6 +24,7 @@ class Users extends VuexModule {
     return callApi
       .AsyncPOST("Account/Login", data)
       .then((response: any) => {
+        // this.context.commit("Login", response.data);
         return response;
       })
       .catch((err) => {
@@ -78,6 +79,32 @@ class Users extends VuexModule {
       .AsyncPOST("Account/ChangePassword", data)
       .then((response) => {
         this.context.commit("UpdatePasswoed", data);
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async GetMyCart(id: any): Promise<any> {
+    id = Number(localStorage.getItem("UserID"));
+    return callApi
+      .AsyncGET(`Account/GetMyCart/${id}`)
+      .then((response) => {
+        console.log(response);
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async AddToCart(data: any): Promise<any> {
+    data.id = Number(localStorage.getItem("UserID"));
+    return callApi
+      .AsyncPOST(`Account/AddToCart`, data)
+      .then((response) => {
+        console.log(response);
         return response;
       })
       .catch((err) => {
