@@ -111,5 +111,31 @@ class Users extends VuexModule {
         return err;
       });
   }
+  @Action
+  public async RemoveFromCart(data: any): Promise<any> {
+    data.id = Number(localStorage.getItem("UserID"));
+    return callApi
+      .AsyncPOST(`Account/RemoveFromCart`, data)
+      .then((response) => {
+        // console.log(response);
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async CartCheckout(id: any): Promise<any> {
+    id = Number(localStorage.getItem("CartId"));
+    return callApi
+    .AsyncGET(`Account/CartCheckout/${id}`)
+      .then((response) => {
+        // console.log(response);
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
 }
 export default Users;

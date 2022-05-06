@@ -130,7 +130,7 @@ export default class AddUser extends Vue {
             case 3:
               this.GetMyCart(localStorage.getItem("UserID")).then((res) => {
                 var jdata = JSON.parse(res.content);
-                console.log("ghgjn",jdata);
+                // console.log("ghgjn",jdata);
                 
                 localStorage.setItem("CartId", jdata.CartID);
               });

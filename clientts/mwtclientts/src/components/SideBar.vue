@@ -20,7 +20,7 @@
               <v-icon>mdi-home-outline</v-icon>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item>
+          <v-list-item to="/checkout">
             <v-list-item-content>
               <v-icon>mdi-cart-outline</v-icon>
             </v-list-item-content>
