@@ -1,0 +1,165 @@
+<template>
+  <v-app :style="{ background: $vuetify.theme.themes.dark.background }">
+    <v-app-bar dark color="rgba(0,0,0,0)" flat class="">
+      <div class="row" style="height: 25px; width: 40rem; margin-left: -50px">
+        <v-container>
+          <!-- <p class="display-3 font-weight-light text-center pa-4">
+            SHOPPING CART
+          </p> -->
+          <v-row>
+            <v-col :cols="12" md="9" sm="12">
+              <v-simple-table style="background-color: rgba(0, 0, 0, 0)">
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                      <th class="text-center">ITEM</th>
+                      <th class="text-center">PRICE</th>
+                      <th class="text-center">QUANTITY</th>
+                      <th class="text-center">TOTAL</th>
+                      <th class="text-center"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="item in product" v-bind:key="item.id">
+                      <td>
+                        <v-list-item
+                          ><!--click -->
+                          <v-list-item-avatar>
+                            <v-img
+                              :src="
+                                'https://localhost:44301/StaticImages/Product/' +
+                                item.ProdImage
+                              "
+                            ></v-img>
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-title>{{
+                              item.ProdCompanyName
+                            }}</v-list-item-title>
+
+                            <v-list-item-title>{{
+                              item.ProdName
+                            }}</v-list-item-title>
+                            <v-list-item-subtitle>{{
+                              item.ProdDetails
+                            }}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </td>
+                      <td>{{ item.ProdPrice }}</td>
+                      <td>
+                        <!-- <div v-for="(item , i) in productcount" v-bind:key="i"> -->
+                        <v-text-field
+                          class="pt-10"
+                          label="Outlined"
+                          style="width: 80px"
+                          single-line
+                          :value="productcount"
+                          outlined
+                        ></v-text-field>
+                        <!-- </div> -->
+                      </td>
+                      <td>{{ (Total = productcount[0] * item.ProdPrice) }}</td>
+                      <td><v-btn @click="removecart(item.id)">X</v-btn></td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+            </v-col>
+            <v-col
+              :cols="12"
+              md="3"
+              sm="12"
+              style="background-color: rgba(0, 0, 0, 0)"
+            >
+              <p class="headline">Order Summary</p>
+              <p class="overline">
+                Shipping and additional costs are calculated based on values you
+                have entered.
+              </p>
+              <v-simple-table>
+                <template v-slot:default>
+                  <tbody>
+                    <tr>
+                      <td>Order Subtotal</td>
+                      <td class="text-right" style="width: 50px">
+                        {{ totalcost }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Shipping Charges</td>
+                      <td class="text-right" style="width: 50px">$00.00</td>
+                    </tr>
+                    <tr>
+                      <td>Tax</td>
+                      <td class="text-right" style="width: 50px">$0.00</td>
+                    </tr>
+                    <tr>
+                      <td>Total</td>
+                      <td class="text-right" style="width: 50px">
+                        <b>{{ totalcost }}</b>
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+              <div class="text-center">
+                <v-btn class="primary white--text mt-5" outlined
+                  >PROCEED TO PAY</v-btn
+                >
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+    </v-app-bar>
+  </v-app>
+</template>
+<script lang="ts">
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { namespace } from "vuex-class";
+import User from "@/interfaces/user";
+import CartMaster from "@/interfaces/cartmaster";
+import CartItem from "@/interfaces/cartitem";
+import Product from "@/interfaces/product";
+const users = namespace("user");
+@Component
+export default class Checkout extends Vue {
+  cartitem = new CartItem();
+  product = [];
+  currentproduct = new Product();
+  Total = 0;
+  totalcost = 0;
+  productcount = [];
+  @users.Action
+  public CartCheckout!: (data: any) => Promise<any>;
+
+  @users.Action
+  public RemoveFromCart!: (data: any) => Promise<any>;
+
+  public removecart(id: any): void {
+    this.cartitem.ProductID = id;
+    //   this.cartitem.ProductID= this.currentproduct.id
+    this.cartitem.CartID = Number(localStorage.getItem("CartId"));
+    // console.log(this.cartitem);
+
+    this.RemoveFromCart(this.cartitem).then((res) => {
+      console.log(res);
+      location.reload();
+    });
+  }
+
+  created(): void {
+    this.CartCheckout(localStorage.getItem("CartId")).then((res) => {
+      //   console.log(res);
+      var jdata = JSON.parse(res.content);
+      console.log(jdata);
+      this.product = jdata.Products;
+      this.totalcost = jdata.TotalCost;
+      this.productcount = jdata.ProductCounts;
+      //   console.log("PRoduct Details", this.product);
+      console.log("Product count", this.productcount);
+    });
+  }
+}
+</script>
