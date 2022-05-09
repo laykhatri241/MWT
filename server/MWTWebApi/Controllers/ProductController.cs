@@ -101,10 +101,10 @@ namespace MWTWebApi.Controllers
 
         #region GetMyProducts
         [Authorize(Roles = "2")]
-        [HttpGet("GetMyProducts/{id}")]
-        public HttpAPIResponse GetMyProducts(int id)
+        [HttpGet("GetMyProducts/{Userid}")]
+        public HttpAPIResponse GetMyProducts(int Userid)
         {
-            var prods = _productService.GetMyProducts(id).Result;
+            var prods = _productService.GetMyProducts(Userid).Result;
             return new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject(prods),
@@ -114,10 +114,10 @@ namespace MWTWebApi.Controllers
         #endregion
 
         #region GetProduct
-        [HttpGet("GetProduct/{id}")]
-        public HttpAPIResponse GetProduct(int id)
+        [HttpGet("GetProduct/{Productid}")]
+        public HttpAPIResponse GetProduct(int Productid)
         {
-            var prods = _productService.GetProduct(id).Result;
+            var prods = _productService.GetProduct(Productid).Result;
             return new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject(prods),
@@ -171,10 +171,10 @@ namespace MWTWebApi.Controllers
 
         #region RemoveProduct
         [Authorize(Roles = "2")]
-        [HttpGet("DeleteProduct/{id}")]
-        public HttpAPIResponse DeleteProduct(int id)
+        [HttpGet("DeleteProduct/{Productid}")]
+        public HttpAPIResponse DeleteProduct(int Productid)
         {
-            var status = _productService.DeleteProduct(id).Result;
+            var status = _productService.DeleteProduct(Productid).Result;
             return new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject(status),
@@ -199,10 +199,10 @@ namespace MWTWebApi.Controllers
 
         #region GetStock
         [Authorize(Roles = "2,3")]
-        [HttpGet("GetStock/{id}")]
-        public HttpAPIResponse GetStock(int id)
+        [HttpGet("GetStock/{Stockid}")]
+        public HttpAPIResponse GetStock(int Stockid)
         {
-            var stock = _productService.GetStock(id).Result;
+            var stock = _productService.GetStock(Stockid).Result;
             return new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject(stock),
@@ -228,10 +228,10 @@ namespace MWTWebApi.Controllers
 
         #region GetProductsByCategory
         [Authorize (Roles = "3")]
-        [HttpGet("GetProductsByCategory/{id}")]
-        public HttpAPIResponse GetProductsByCategory(int id)
+        [HttpGet("GetProductsByCategory/{Categoryid}")]
+        public HttpAPIResponse GetProductsByCategory(int Categoryid)
         {
-            var prodByCategory = _productService.GetProductByCategory(id).Result;
+            var prodByCategory = _productService.GetProductByCategory(Categoryid).Result;
 
             return new HttpAPIResponse()
             {
@@ -243,10 +243,10 @@ namespace MWTWebApi.Controllers
 
         #region GetRandomProducts
         [Authorize(Roles = "3")]
-        [HttpGet("GetRandomProducts/{id}")]
-        public HttpAPIResponse GetRandomProducts(int id)
+        [HttpGet("GetRandomProducts/{Count}")]
+        public HttpAPIResponse GetRandomProducts(int Count)
         {
-            var prods = _productService.GetRandomProducts(id).Result;
+            var prods = _productService.GetRandomProducts(Count).Result;
             return new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject(prods),
