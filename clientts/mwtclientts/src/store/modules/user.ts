@@ -2,11 +2,13 @@ import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
 import api from "@/api";
 import callApi from "@/api/callApi";
 import User from "@/interfaces/user";
+import CartItem from "@/interfaces/cartitem";
 import call from "@/api";
 
 @Module({ namespaced: true })
 class Users extends VuexModule {
   user = new User();
+  cartitem = new CartItem();
   @Action
   public async createUser(data: User): Promise<any> {
     return callApi
@@ -99,10 +101,14 @@ class Users extends VuexModule {
       });
   }
   @Action
-  public async AddToCart(data: any): Promise<any> {
-    data.id = Number(localStorage.getItem("UserID"));
+  public async AddToCart(data: CartItem,count : number): Promise<any> {
+    // data.id = Number(localStorage.getItem("UserID"));
+    // console.log("gfdgfd");
+    console.log("gfdgfd",data);
+    console.log(count);
+    
     return callApi
-      .AsyncPOST(`Account/AddToCart`, data)
+      .AsyncPOST(`Account/AddToCart/${count}`, data)
       .then((response) => {
         console.log(response);
         return response;
@@ -128,7 +134,7 @@ class Users extends VuexModule {
   public async CartCheckout(id: any): Promise<any> {
     id = Number(localStorage.getItem("CartId"));
     return callApi
-    .AsyncGET(`Account/CartCheckout/${id}`)
+      .AsyncGET(`Account/CartCheckout/${id}`)
       .then((response) => {
         // console.log(response);
         return response;

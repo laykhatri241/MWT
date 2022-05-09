@@ -20,7 +20,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="item in product" v-bind:key="item.id">
+                    <tr v-for="(item,i) in product" v-bind:key="i">
                       <td>
                         <v-list-item
                           ><!--click -->
@@ -54,12 +54,12 @@
                           label="Outlined"
                           style="width: 80px"
                           single-line
-                          :value="productcount"
+                          :value="productcount[i]"
                           outlined
                         ></v-text-field>
                         <!-- </div> -->
                       </td>
-                      <td>{{ (Total = productcount[0] * item.ProdPrice) }}</td>
+                      <td>{{ (Total = productcount[i] * item.ProdPrice) }}</td>
                       <td><v-btn @click="removecart(item.id)">X</v-btn></td>
                     </tr>
                   </tbody>

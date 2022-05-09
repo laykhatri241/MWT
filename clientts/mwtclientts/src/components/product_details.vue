@@ -36,7 +36,12 @@
               Product Details : {{ currentproduct.ProdDetails }}
             </p>
 
-            <v-text-field outlined style="width: 100px" dense></v-text-field>
+            <v-text-field
+              v-model="count"
+              outlined
+              style="width: 100px"
+              dense
+            ></v-text-field>
             <v-btn
               v-if="message === ''"
               class="primary white--text"
@@ -77,12 +82,13 @@ const Products = namespace("product");
 @Component({})
 export default class Home extends Vue {
   //   product = new Product();
+  count = 1;
   cartitem = new CartItem();
   private currentproduct = {} as Product;
   private message: string = "";
 
   @users.Action
-  public AddToCart!: (data: any) => Promise<any>;
+  public AddToCart!: (data: CartItem,count: number) => Promise<any>;
 
   public stock = new Stock();
   @Prop(Number)
@@ -97,7 +103,11 @@ export default class Home extends Vue {
   public addtocart(): void {
     this.cartitem.ProductID = Number(this.$route.params.id);
     this.cartitem.CartID = Number(localStorage.getItem("CartId"));
-    this.AddToCart(this.cartitem).then((res) => {
+    console.log(this.cartitem);
+    console.log(this.count);
+    
+
+    this.AddToCart(this.cartitem, (this.count)).then((res) => {
       console.log(res);
     });
   }
