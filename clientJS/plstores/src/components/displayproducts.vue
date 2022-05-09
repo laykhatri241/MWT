@@ -10,7 +10,7 @@
             <th style="padding: 20px">ProdDetails</th>
             <th style="padding: 20px">ProdPrice</th>
             <th style="padding: 20px">categoryname</th>
-
+            <th style="padding: 20px">ProdImage</th>
             <th style="padding: 20px">EDIT</th>
             <th style="padding: 20px">REMOVE</th>
           </tr>
@@ -20,6 +20,8 @@
             <td>{{ item.ProdDetails }}</td>
             <td>{{ item.ProdPrice }}</td>
             <td>{{ item.CategoryID }}</td>
+
+            <td><v-img :src="item.ProdImage" max-width="50px"></v-img></td>
 
             <td>
               <v-dialog v-model="dialog" max-width="600px">
@@ -81,13 +83,22 @@
                             multiple
                           ></v-autocomplete>
                         </v-col>
+                        <v-col cols="12" sm="6">
+                          <v-file-input
+                            ref="ProdImage"
+                            label="ProdImage"
+                            @change="onFileChange"
+                            required
+                          ></v-file-input>
+                        </v-col>
+                        <v-col cols="12" sm="6"> </v-col>
                       </v-row>
                     </v-container>
                     <small>*indicates required field</small>
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="dialog = false">
+                    <v-btn color="blue darken-1" text @click="dialog = false ,reset()">
                       Close
                     </v-btn>
                     <v-btn color="blue darken-1" text @click="updateproduct">
@@ -103,7 +114,6 @@
       </v-flex>
     </v-layout>
     <router-view></router-view>
-
   </div>
 </template>
 <script>
@@ -117,18 +127,36 @@ export default {
     ProdName: "",
     ProdDetails: "",
     ProdImage: "",
+    path : "",
     ProdPrice: "",
     CategoryID: "",
     dialog: false,
+    currentFile :undefined,
     id: 0,
   }),
+
   methods: {
+     onFileChange(file) {
+      this.currentFile = file;
+      console.log(file);
+    },
+    reset() {
+      this.ProdCompanyName = "";
+      this.ProdName = "";
+      this.ProdDetails = "";
+      this.ProdPrice = "";
+      this.CategoryID = "";
+      this.path = "";
+      this.ProdImage="";
+      this.currentFile = undefined;
+    },
     deleteproduct(id) {
       callAPI
-         
-        .AsyncGET("Product/DeleteProduct/" +id)
+
+        .AsyncGET("Product/DeleteProduct/" + id)
         .then((resp) => console.log(resp));
     },
+
     fillmodal(productid) {
       this.items.forEach((productitem) => {
         if (productid == productitem.id) {
@@ -138,11 +166,25 @@ export default {
           this.ProdPrice = productitem.ProdPrice;
           this.CategoryID = productitem.CategoryID;
           this.id = productitem.id;
+          this.ProdImage = productitem.ProdImage;
+           if (productitem.ProdImage != "") {
+            path =
+              "https://localhost:5001/StaticImages/Product/" +
+              currentValue.ProdImage;
+          } else {
+            path =
+              "https://localhost:5001/StaticImages/Product/DefaultProduct.png";
+          }
         }
       });
     },
     updateproduct() {
       let formData = new FormData();
+      formData.append
+      (
+
+        "currentfile",currentfile,
+      )
       formData.append(
         "product",
         JSON.stringify({
@@ -154,6 +196,7 @@ export default {
           ProdImage: this.ProdImage,
           ProdPrice: this.ProdPrice,
           CategoryID: this.CategoryID,
+
         })
       );
 
@@ -169,6 +212,7 @@ export default {
         const jdata = JSON.parse(data.content);
         console.log(jdata);
         jdata.forEach((currentValue) => {
+         
           this.items.push(currentValue);
         });
       });
