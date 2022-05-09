@@ -15,7 +15,7 @@ class Products extends VuexModule {
     return callApi
       .AsyncPOST("Product/AddProduct", data)
       .then((response) => {
-        console.log("console", response);
+        // console.log("console", response);
 
         return response;
       })
@@ -28,7 +28,7 @@ class Products extends VuexModule {
     return callApi
       .AsyncPOST("Product/UpdateProduct", data)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         return response;
       })
       .catch((err) => {
@@ -40,7 +40,7 @@ class Products extends VuexModule {
     return callApi
       .AsyncGET(`Product/DeleteProduct/${id}`)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         return response;
       })
       .catch((err) => {
