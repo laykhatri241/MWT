@@ -66,6 +66,7 @@
 import callAPI from "@/apihelper/api";
 import addproduct from "@/router/index";
 export default {
+
   created() {
     callAPI.AsyncGET("Product/GetCategories").then((data) => {
       console.log(data.content);
@@ -119,7 +120,7 @@ export default {
       callAPI
         .AsyncPOST("Product/AddProduct", formData)
         .then((resp) => console.log(resp));
-      this.$router.push("/updateuserprofile");
+      this.$router.push("/displayproduct");
     },
   },
 };
