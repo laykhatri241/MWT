@@ -131,6 +131,12 @@ namespace MWTCore.Repository
             return await _context.cartMasters.AsNoTracking().AnyAsync(cm => cm.UserID == id && cm.isPaid == false);
         }
 
+        public async Task<List<CartMaster>> OrderHistory(int UserID)
+        {
+            var orders = await _context.cartMasters.Where(cm => cm.UserID == UserID).ToListAsync();
+            return orders;
+        }
+
         public async Task<int> PurchaseSuccess(int cartID)
         {
             var checkout = cartCheckout(cartID).Result;

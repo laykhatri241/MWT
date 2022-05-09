@@ -22,5 +22,7 @@ namespace MWTCore.Services.Interfaces
         public Task<CartCheckout> cartCheckout(int CartID);
 
         public Task<int> PurchaseSuccess(int CartID);
+
+        public Task<List<CartMaster>> OrderHistory(int UserID);
     }
 }

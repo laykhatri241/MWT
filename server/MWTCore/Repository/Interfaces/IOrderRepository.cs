@@ -22,5 +22,7 @@ namespace MWTCore.Repository.Interfaces
         public Task<int> PurchaseSuccess(int cartID);
 
         public Task<int> RemoveFromCart(int cartId, int productId);
+
+        public Task<List<CartMaster>> OrderHistory(int UserID);
     }
 }

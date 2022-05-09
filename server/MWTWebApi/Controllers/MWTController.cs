@@ -11,6 +11,7 @@ using MWTWebApi.Model.Custom;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -38,7 +39,7 @@ namespace MWTWebApi.Controllers
             _authentication = authentication;
             _orderService = orderService;
         }
-        
+
         #endregion
 
         #region TestAPI
@@ -111,9 +112,9 @@ namespace MWTWebApi.Controllers
             if (_user != null)
             {
                 _user.Password = _authentication.AuthenticateData(_user.Username, _user.Role);
-                if(!_orderService.isCartAvailable(_user.id).Result && _user.Role==3)
+                if (!_orderService.isCartAvailable(_user.id).Result && _user.Role == 3)
                 {
-                    if(_orderService.AddCart(_user.id).Result == 0)
+                    if (_orderService.AddCart(_user.id).Result == 0)
                     {
                         return new HttpAPIResponse()
                         {
@@ -253,9 +254,9 @@ namespace MWTWebApi.Controllers
         #region AddToCart
         [Authorize(Roles = "3")]
         [HttpPost("AddToCart/{count}")]
-        public HttpAPIResponse AddToCart(CartItemModel cartItem,int count)
+        public HttpAPIResponse AddToCart(CartItemModel cartItem, int count)
         {
-            var status = _orderService.AddToCart(cartItem,count).Result;
+            var status = _orderService.AddToCart(cartItem, count).Result;
 
             return new HttpAPIResponse()
             {
@@ -266,7 +267,7 @@ namespace MWTWebApi.Controllers
         #endregion
 
         #region RemoveFromCart
-        [Authorize(Roles ="3")]
+        [Authorize(Roles = "3")]
         [HttpPost("RemoveFromCart")]
         public HttpAPIResponse RemoveFromCart(CartItemModel cartItem)
         {
@@ -274,7 +275,7 @@ namespace MWTWebApi.Controllers
 
             return new HttpAPIResponse()
             {
-                Content = JsonConvert.SerializeObject(status>0?true:false),
+                Content = JsonConvert.SerializeObject(status > 0 ? true : false),
                 StatusCode = HttpStatusCode.OK
             };
         }
@@ -301,10 +302,10 @@ namespace MWTWebApi.Controllers
         public HttpAPIResponse PaymentSuccess(int Cartid, int UserID)
         {
             var status = _orderService.PurchaseSuccess(Cartid).Result;
-            if(status >0)
+            if (status > 0)
             {
                 var cartstatus = _orderService.AddCart(UserID).Result;
-                if(cartstatus == 0)
+                if (cartstatus == 0)
                 {
                     return new HttpAPIResponse()
                     {
@@ -318,6 +319,20 @@ namespace MWTWebApi.Controllers
             {
                 Content = JsonConvert.SerializeObject(status),
                 StatusCode = HttpStatusCode.OK
+            };
+        }
+        #endregion
+
+        #region OrderHistory
+        [Authorize(Roles = "2,3")]
+        [HttpGet("OrderHistory/{UserID}")]
+        public HttpAPIResponse OrderHistory(int UserID)
+        {
+            var orders = _orderService.OrderHistory(UserID).Result;
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(orders),
+                StatusCode = HttpStatusCode.OK,
             };
         }
         #endregion
