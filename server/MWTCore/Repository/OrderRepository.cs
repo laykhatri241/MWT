@@ -19,17 +19,37 @@ namespace MWTCore.Repository
             _context = context;
         }
 
-        public async Task<int> AddToCart(CartItemModel cartItem)
+        public async Task<int> AddToCart(CartItemModel cartItem , int count)
         {
-            var CartItem = new CartItem()
-            {
-                CartID = cartItem.CartID,
-                ProductID = cartItem.ProductID,
-                createdAt = DateTime.Now
-            };
+            var currentInCart = await _context.cartItems.Where(ci => ci.CartID == cartItem.CartID && ci.ProductID == cartItem.ProductID).ToListAsync();
 
-            _context.cartItems.Add(CartItem);
-            return await _context.SaveChangesAsync() == 1 ? CartItem.id : 0;
+            if (currentInCart.Count() >= count)
+            {
+                while(currentInCart.Count() != count)
+                {
+                    var cItem = currentInCart.First();
+                    _context.cartItems.Remove(cItem);
+                    currentInCart.RemoveAt(0);
+                }
+            }
+            else if(currentInCart.Count() <= count)
+            {
+                
+                while (currentInCart.Count() < count)
+                {
+                    var CartItem = new CartItem()
+                    {
+                        CartID = cartItem.CartID,
+                        ProductID = cartItem.ProductID,
+                        createdAt = DateTime.Now
+                    };
+                    _context.cartItems.Add(CartItem);
+                    currentInCart.Add(CartItem);
+                }
+            }
+
+            
+            return await _context.SaveChangesAsync() ;
         }
 
         public async Task<CartCheckout> cartCheckout(int cartID)
@@ -151,9 +171,12 @@ namespace MWTCore.Repository
 
         public async Task<int> RemoveFromCart(int cartId, int productId)
         {
-            var cartItem = await _context.cartItems.Where(ci => ci.CartID == cartId && ci.ProductID == productId).FirstAsync();
+            var cartItem = await _context.cartItems.Where(ci => ci.CartID == cartId && ci.ProductID == productId).ToListAsync();
 
-            _context.cartItems.Remove(cartItem);
+            foreach(var item in cartItem)
+            {
+                _context.cartItems.Remove(item);
+            }
             return await _context.SaveChangesAsync();
         }
 

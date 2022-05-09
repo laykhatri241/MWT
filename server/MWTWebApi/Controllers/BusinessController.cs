@@ -50,10 +50,10 @@ namespace MWTWebApi.Controllers
 
         #region IsBusinessDetail
         [Authorize(Roles = "2")]
-        [HttpGet("IsBusinessDetail/{id}")]
-        public HttpAPIResponse IsBusinessDetail(int id)
+        [HttpGet("IsBusinessDetail/{BusinessDetailid}")]
+        public HttpAPIResponse IsBusinessDetail(int BusinessDetailid)
         {
-            var status = _accountService.BusinessDetailsExist(id).Result;
+            var status = _accountService.BusinessDetailsExist(BusinessDetailid).Result;
             return new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject(status),
@@ -65,9 +65,9 @@ namespace MWTWebApi.Controllers
         #region DeleteBusinessDetail
         [Authorize(Roles = "2")]
         [HttpPost("DeleteBusinessDetail")]
-        public HttpAPIResponse DeleteBusinessDetail([FromBody] int id)
+        public HttpAPIResponse DeleteBusinessDetail([FromBody] int BusinessDetailid)
         {
-            var status = _accountService.DeleteBusinessDetails(id).Result;
+            var status = _accountService.DeleteBusinessDetails(BusinessDetailid).Result;
 
             return new HttpAPIResponse()
             {
@@ -79,10 +79,10 @@ namespace MWTWebApi.Controllers
 
         #region GetBusinessDetail
         [Authorize(Roles = "2")]
-        [HttpGet("GetBusinessDetail/{id}")]
-        public HttpAPIResponse GetBusinessDetail(int id)
+        [HttpGet("GetBusinessDetail/{BusinessDetailid}")]
+        public HttpAPIResponse GetBusinessDetail(int BusinessDetailid)
         {
-            var detail = _accountService.GetBusinessDetails(id).Result;
+            var detail = _accountService.GetBusinessDetails(BusinessDetailid).Result;
 
             return new HttpAPIResponse()
             {

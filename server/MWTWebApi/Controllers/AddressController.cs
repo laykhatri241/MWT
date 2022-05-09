@@ -65,10 +65,10 @@ namespace MWTWebApi.Controllers
 
         #region GetAllAddresses
         [Authorize(Roles = "2,3")]
-        [HttpGet("GetAllAddress/{id}")]
-        public HttpAPIResponse GetAllAddress(int id)
+        [HttpGet("GetAllAddress/{Addressid}")]
+        public HttpAPIResponse GetAllAddress(int Addressid)
         {
-            var addresses = _accountService.GetAddresses(id).Result;
+            var addresses = _accountService.GetAddresses(Addressid).Result;
 
             return new HttpAPIResponse()
             {
@@ -80,10 +80,10 @@ namespace MWTWebApi.Controllers
 
         #region GetAddress
         [Authorize(Roles = "2,3")]
-        [HttpGet("GetMyAddress/{id}")]
-        public HttpAPIResponse GetMyAddress(int id)
+        [HttpGet("GetMyAddress/{Addressid}")]
+        public HttpAPIResponse GetMyAddress(int Addressid)
         {
-            var address = _accountService.GetAddress(id).Result;
+            var address = _accountService.GetAddress(Addressid).Result;
 
             return new HttpAPIResponse()
             {
@@ -96,9 +96,9 @@ namespace MWTWebApi.Controllers
         #region RemoveAddress
         [Authorize(Roles = "2,3")]
         [HttpPost("RemoveAddress")]
-        public HttpAPIResponse RemoveAddress([FromBody] int id)
+        public HttpAPIResponse RemoveAddress([FromBody] int Addressid)
         {
-            var status = _accountService.RemoveAddress(id).Result;
+            var status = _accountService.RemoveAddress(Addressid).Result;
 
             return new HttpAPIResponse()
             {

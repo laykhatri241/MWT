@@ -137,10 +137,10 @@ namespace MWTWebApi.Controllers
 
         #region GetMyuser
         [Authorize(Roles = "1,2,3")]
-        [HttpGet("GetMyUser/{id}")]
-        public HttpAPIResponse GetMyUser(int id)
+        [HttpGet("GetMyUser/{Userid}")]
+        public HttpAPIResponse GetMyUser(int Userid)
         {
-            var _user = _accountService.FetchUser(id).Result;
+            var _user = _accountService.FetchUser(Userid).Result;
             _user.Password = "";
             if (_user != null)
             {
@@ -237,10 +237,10 @@ namespace MWTWebApi.Controllers
 
         #region GetMyCart
         [Authorize(Roles = "3")]
-        [HttpGet("GetMyCart/{id}")]
-        public HttpAPIResponse GetMyCart(int id)
+        [HttpGet("GetMyCart/{Cartid}")]
+        public HttpAPIResponse GetMyCart(int Cartid)
         {
-            var cart = _orderService.GetCart(id).Result;
+            var cart = _orderService.GetCart(Cartid).Result;
 
             return new HttpAPIResponse()
             {
@@ -252,10 +252,10 @@ namespace MWTWebApi.Controllers
 
         #region AddToCart
         [Authorize(Roles = "3")]
-        [HttpPost("AddToCart")]
-        public HttpAPIResponse AddToCart(CartItemModel cartItem)
+        [HttpPost("AddToCart/{count}")]
+        public HttpAPIResponse AddToCart(CartItemModel cartItem,int count)
         {
-            var status = _orderService.AddToCart(cartItem).Result;
+            var status = _orderService.AddToCart(cartItem,count).Result;
 
             return new HttpAPIResponse()
             {
@@ -274,7 +274,7 @@ namespace MWTWebApi.Controllers
 
             return new HttpAPIResponse()
             {
-                Content = JsonConvert.SerializeObject(status),
+                Content = JsonConvert.SerializeObject(status>0?true:false),
                 StatusCode = HttpStatusCode.OK
             };
         }
@@ -282,10 +282,10 @@ namespace MWTWebApi.Controllers
 
         #region CartCheckout
         [Authorize(Roles = "3")]
-        [HttpGet("CartCheckout/{id}")]
-        public HttpAPIResponse CartCheckout(int id)
+        [HttpGet("CartCheckout/{Cartid}")]
+        public HttpAPIResponse CartCheckout(int Cartid)
         {
-            var checkout = _orderService.cartCheckout(id).Result;
+            var checkout = _orderService.cartCheckout(Cartid).Result;
 
             return new HttpAPIResponse()
             {
@@ -297,10 +297,10 @@ namespace MWTWebApi.Controllers
 
         #region PaymentSuccess
         [Authorize(Roles = "3")]
-        [HttpGet("PaymentSuccess/{id}/{UserID}")]
-        public HttpAPIResponse PaymentSuccess(int id,int UserID)
+        [HttpGet("PaymentSuccess/{Cartid}/{UserID}")]
+        public HttpAPIResponse PaymentSuccess(int Cartid, int UserID)
         {
-            var status = _orderService.PurchaseSuccess(id).Result;
+            var status = _orderService.PurchaseSuccess(Cartid).Result;
             if(status >0)
             {
                 var cartstatus = _orderService.AddCart(UserID).Result;
