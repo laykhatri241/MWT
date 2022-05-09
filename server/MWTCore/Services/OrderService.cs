@@ -42,6 +42,11 @@ namespace MWTCore.Services
             return await _orderRepository.isCartAvailable(id);
         }
 
+        public async Task<List<CartMaster>> OrderHistory(int UserID)
+        {
+            return await _orderRepository.OrderHistory(UserID);
+        }
+
         public async Task<int> PurchaseSuccess(int CartID)
         {
             return await _orderRepository.PurchaseSuccess(CartID);
