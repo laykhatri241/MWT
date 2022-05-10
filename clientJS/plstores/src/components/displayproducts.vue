@@ -14,14 +14,14 @@
             <th style="padding: 20px">EDIT</th>
             <th style="padding: 20px">REMOVE</th>
           </tr>
-          <tr v-for="item in items" v-bind:key="item.id">
+          <tr v-for="(item, index) in items" v-bind:key="item.id">
             <td>{{ item.ProdCompanyName }}</td>
             <td>{{ item.ProdName }}</td>
             <td>{{ item.ProdDetails }}</td>
             <td>{{ item.ProdPrice }}</td>
             <td>{{ item.CategoryID }}</td>
 
-            <td><v-img :src="item.ProdImage" max-width="50px"></v-img></td>
+            <td><v-img :src="path[index - 1]" max-width="50px"></v-img></td>
 
             <td>
               <v-dialog v-model="dialog" max-width="600px">
@@ -98,10 +98,14 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="dialog = false ,reset()">
+                    <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="(dialog = false), reset()"
+                    >
                       Close
                     </v-btn>
-                    <v-btn color="blue darken-1" text @click="updateproduct">
+                    <v-btn color="blue darken-1" text @click="updateproduct()">
                       Save
                     </v-btn>
                   </v-card-actions>
@@ -127,16 +131,16 @@ export default {
     ProdName: "",
     ProdDetails: "",
     ProdImage: "",
-    path : "",
+    path: [],
     ProdPrice: "",
     CategoryID: "",
     dialog: false,
-    currentFile :undefined,
+    currentFile: undefined,
     id: 0,
   }),
 
   methods: {
-     onFileChange(file) {
+    onFileChange(file) {
       this.currentFile = file;
       console.log(file);
     },
@@ -147,7 +151,7 @@ export default {
       this.ProdPrice = "";
       this.CategoryID = "";
       this.path = "";
-      this.ProdImage="";
+      this.ProdImage = "";
       this.currentFile = undefined;
     },
     deleteproduct(id) {
@@ -167,12 +171,12 @@ export default {
           this.CategoryID = productitem.CategoryID;
           this.id = productitem.id;
           this.ProdImage = productitem.ProdImage;
-           if (productitem.ProdImage != "") {
-            path =
+          if (productitem.ProdImage != "") {
+            this.path =
               "https://localhost:5001/StaticImages/Product/" +
-              currentValue.ProdImage;
+              productitem.ProdImage;
           } else {
-            path =
+            this.path =
               "https://localhost:5001/StaticImages/Product/DefaultProduct.png";
           }
         }
@@ -180,25 +184,38 @@ export default {
     },
     updateproduct() {
       let formData = new FormData();
-      formData.append
-      (
-
-        "currentfile",currentfile,
-      )
+      // formData.append
+      // (
+      //   "currentfile",this.currentfile,
+      // )
+      if (this.currentFile != "undefined") {
+        formData.append("file", this.currentFile);
+      }
+      // let data = {
+      //   SellerID: Number(localStorage.getItem("userid")),
+      //   id: this.id,
+      //   ProdCompanyName: this.ProdCompanyName,
+      //   ProdName: this.ProdName,
+      //   ProdDetails: this.ProdDetails,
+      //   ProdImage: this.ProdImage,
+      //   ProdPrice: this.ProdPrice,
+      //   CategoryID: this.CategoryID,
+      // };
+      // console.log("fqe", data);
       formData.append(
         "product",
         JSON.stringify({
-          SellerID: localStorage.getItem("userid"),
-          id: this.id,
+          SellerID: Number(localStorage.getItem("userid")),
+          id: this.id, 
           ProdCompanyName: this.ProdCompanyName,
           ProdName: this.ProdName,
           ProdDetails: this.ProdDetails,
           ProdImage: this.ProdImage,
           ProdPrice: this.ProdPrice,
           CategoryID: this.CategoryID,
-
         })
       );
+      console.log("hey", formData);
 
       callAPI
         .AsyncPOST("Product/UpdateProduct", formData)
@@ -212,7 +229,16 @@ export default {
         const jdata = JSON.parse(data.content);
         console.log(jdata);
         jdata.forEach((currentValue) => {
-         
+          if (currentValue.ProdImage != "") {
+            this.path.push(
+              "https://localhost:5001/StaticImages/Product/" +
+                currentValue.ProdImage
+            );
+          } else {
+            this.path.push(
+              "https://localhost:5001/StaticImages/Product/DefaultProduct.png"
+            );
+          }
           this.items.push(currentValue);
         });
       });

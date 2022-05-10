@@ -116,12 +116,16 @@ export default {
           CategoryID: this.CategoryID,
         })
       );
+     console.log(formData)
 
       callAPI
         .AsyncPOST("Product/AddProduct", formData)
         .then((resp) => console.log(resp));
-      this.$router.push("/displayproduct");
+      
     },
   },
 };
 </script>
+
+
+
