@@ -4,11 +4,12 @@ using System.Text;
 
 namespace MWTCore.Models.Custom
 {
-    public class StockModel
+    class OfferModel
     {
-        public int id { get; set; }
         public int ProductID { get; set; }
-        public int Stock { get; set; }
-       
+        public int Offer { get; set; }
+
+        public DateTime OfferStart { get; set; }
+        public DateTime OfferEnd { get; set; }
     }
 }

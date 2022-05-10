@@ -21,7 +21,7 @@ namespace MWTCore.Services.Interfaces
 
         public Task<bool> UpdateProduct(ProductModel product);
 
-        public Task<int> AddStock(StockMaster stock);
+        public Task<int> AddStock(StockModel stock);
 
         public Task<bool> DeleteProduct(int id);
 
@@ -34,5 +34,10 @@ namespace MWTCore.Services.Interfaces
         public Task<List<ProductMaster>> GetRandomProducts(int Count);
 
         public Task<List<ProductMaster>> GetRandomByCategory(int count,int categoryID);
+
+        public Task<List<ProductMaster>> GetAllProducts();
+
+        public Task<int> AddEditOffer(OfferMaster offer);
+        public Task<OfferMaster> GetOffer(int ProductID);
     }
 }

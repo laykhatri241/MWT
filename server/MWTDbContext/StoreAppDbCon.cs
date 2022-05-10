@@ -29,6 +29,6 @@ namespace MWTDbContext
 
         public DbSet<CartItem> cartItems { get; set; }
 
-        
+        public DbSet<OfferMaster> offerMasters { get; set; }
     }
 }

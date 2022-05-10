@@ -28,7 +28,7 @@ namespace MWTCore.Services
             return await _productRepository.AddProduct(product);
         }
 
-        public async Task<int> AddStock(StockMaster stock)
+        public async Task<int> AddStock(StockModel stock)
         {
             return await _productRepository.CreateStock(stock);
         }
@@ -36,6 +36,11 @@ namespace MWTCore.Services
         public async Task<bool> DeleteProduct(int id)
         {
             return await _productRepository.RemoveProduct(id);
+        }
+
+        public async Task<List<ProductMaster>> GetAllProducts()
+        {
+            return await _productRepository.GetAllProducts();
         }
 
         public async Task<List<CategoryMaster>> GetCategoryMasters()
@@ -81,6 +86,16 @@ namespace MWTCore.Services
         public async Task<bool> UpdateStock(StockModel stock)
         {
             return await _productRepository.UpdateStock(stock);
+        }
+
+        public async Task<int> AddEditOffer(OfferMaster offer)
+        {
+            return await _productRepository.AddEditOffer(offer);
+        }
+
+        public async Task<OfferMaster> GetOffer(int ProductID)
+        {
+            return await _productRepository.RetrieveOffer(ProductID);
         }
     }
 }

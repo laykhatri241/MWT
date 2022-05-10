@@ -18,9 +18,12 @@ namespace MWTWebApi.Model
 
             var context = new StoreAppDbCon(opsBuilder.Options);
 
-            new CheckDatabase(context);
+            if (context.Database.CanConnect())
 
-            
+            {
+                new CheckDatabase(context);
+            }
+
         }
     }
 }

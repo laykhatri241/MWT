@@ -9,5 +9,7 @@ namespace MWTCore.Models.Custom
         public int id { get; set; }
         public int ProductID { get; set; }
         public int CartID { get; set; }
+        public int Count { get; set; }
+        public int OfferID { get; set; }
     }
 }

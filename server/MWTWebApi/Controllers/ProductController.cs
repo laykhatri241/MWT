@@ -186,7 +186,7 @@ namespace MWTWebApi.Controllers
         #region AddStock
         [Authorize(Roles = "2")]
         [HttpPost("AddStock")]
-        public HttpAPIResponse AddStock(StockMaster stock)
+        public HttpAPIResponse AddStock(StockModel stock)
         {
             var status = _productService.AddStock(stock).Result;
             return new HttpAPIResponse()
@@ -216,7 +216,7 @@ namespace MWTWebApi.Controllers
         [HttpPost("UpdateStock")]
         public HttpAPIResponse UpdateStock(StockModel stock)
         {
-            
+
             var status = _productService.UpdateStock(stock).Result;
             return new HttpAPIResponse()
             {
@@ -227,7 +227,7 @@ namespace MWTWebApi.Controllers
         #endregion
 
         #region GetProductsByCategory
-        [Authorize (Roles = "3")]
+        [Authorize(Roles = "3")]
         [HttpGet("GetProductsByCategory/{Categoryid}")]
         public HttpAPIResponse GetProductsByCategory(int Categoryid)
         {
@@ -258,9 +258,9 @@ namespace MWTWebApi.Controllers
         #region GetRandomByCategory
         [Authorize(Roles = "3")]
         [HttpGet("GetRandomByCategory/{count}/{categoryID}")]
-        public HttpAPIResponse GetRandomByCategory(int count,int categoryID)
+        public HttpAPIResponse GetRandomByCategory(int count, int categoryID)
         {
-            var randomProdbyCategory = _productService.GetRandomByCategory(count,categoryID).Result;
+            var randomProdbyCategory = _productService.GetRandomByCategory(count, categoryID).Result;
             return new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject(randomProdbyCategory),
@@ -268,5 +268,49 @@ namespace MWTWebApi.Controllers
             };
         }
         #endregion
+
+        #region GetAllProduct
+        [Authorize(Roles = "1")]
+        [HttpGet("GetAllProduct")]
+        public HttpAPIResponse GetAllProduct()
+        {
+            var prods = _productService.GetAllProducts().Result;
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(prods),
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+        #endregion
+
+        #region AddEditOffer
+        [Authorize(Roles = "2")]
+        [HttpPost("AddEditOffer")]
+        public HttpAPIResponse AddEditOffer(OfferMaster offer)
+        {
+            var status = _productService.AddEditOffer(offer).Result;
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(status),
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+        #endregion
+
+        #region GetOffer
+        [Authorize(Roles ="2,3")]
+        [HttpGet("GetOffer/{ProductID}")]
+        public HttpAPIResponse GetOffer(int ProductID)
+        {
+            var offer = _productService.GetOffer(ProductID).Result;
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(offer),
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+        #endregion
+
+
     }
 }
