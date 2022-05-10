@@ -15,6 +15,14 @@ namespace MWTDbContext.Models
         [ForeignKey("cartMasters")]
         public int CartID { get; set; }
 
+        [ForeignKey("offerMasters")]
+        public int OfferID { get; set; }
+
+        public int Count { get; set; }
+
+        [Required]
+        public DateTime updatedAt { get; set; }
+
         [Required]
         public DateTime createdAt { get; set; }
     }

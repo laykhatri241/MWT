@@ -4,14 +4,16 @@ using MWTDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MWTDbContext.Migrations
 {
     [DbContext(typeof(StoreAppDbCon))]
-    partial class StoreAppDbConModelSnapshot : ModelSnapshot
+    [Migration("20220510053321_U_TCartMaster")]
+    partial class U_TCartMaster
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,19 +97,10 @@ namespace MWTDbContext.Migrations
                     b.Property<int>("CartID")
                         .HasColumnType("int");
 
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OfferID")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("createdAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("updatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("id");
@@ -161,30 +154,6 @@ namespace MWTDbContext.Migrations
                     b.ToTable("categoryMasters");
                 });
 
-            modelBuilder.Entity("MWTDbContext.Models.OfferMaster", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Offer")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("OfferEnd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("OfferStart")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductID")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.ToTable("offerMasters");
-                });
-
             modelBuilder.Entity("MWTDbContext.Models.ProductMaster", b =>
                 {
                     b.Property<int>("id")
@@ -236,6 +205,15 @@ namespace MWTDbContext.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Offer")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OfferEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("OfferStart")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("ProductID")
                         .HasColumnType("int");

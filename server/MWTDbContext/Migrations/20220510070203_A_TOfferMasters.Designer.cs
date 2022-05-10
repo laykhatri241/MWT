@@ -4,14 +4,16 @@ using MWTDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MWTDbContext.Migrations
 {
     [DbContext(typeof(StoreAppDbCon))]
-    partial class StoreAppDbConModelSnapshot : ModelSnapshot
+    [Migration("20220510070203_A_TOfferMasters")]
+    partial class A_TOfferMasters
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,19 +97,10 @@ namespace MWTDbContext.Migrations
                     b.Property<int>("CartID")
                         .HasColumnType("int");
 
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OfferID")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("createdAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("updatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("id");

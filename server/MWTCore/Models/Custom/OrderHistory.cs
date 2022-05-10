@@ -4,12 +4,13 @@ using System.Text;
 
 namespace MWTCore.Models.Custom
 {
-    public class CartItemModel
+    public class OrderHistory
     {
-        public int id { get; set; }
+        public int cartID { get; set; }
         public int ProductID { get; set; }
-        public int CartID { get; set; }
+        public int OrderID { get; set; }
         public int Count { get; set; }
-        public int OfferID { get; set; }
+        public int Cost { get; set; }
+        public DateTime OrderedOn { get; set; }
     }
 }

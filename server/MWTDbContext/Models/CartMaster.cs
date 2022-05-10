@@ -20,6 +20,8 @@ namespace MWTDbContext.Models
         public int OrderID { get; set; }
         [Required]
         public bool isPaid { get; set; }
+        [Required]
+        public DateTime updatedAt { get; set; }
 
         [Required]
         public DateTime createdAt { get; set; }
