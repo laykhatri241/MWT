@@ -53,7 +53,7 @@
                         label="Category Name"
                         :items="CName"
                         @change="onchange"
-                        :value="CName[product.CategoryID -1]"                        
+                        :value="CName[product.CategoryID - 1]"
                       >
                       </v-select>
                     </v-col>

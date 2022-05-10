@@ -111,7 +111,7 @@ class Products extends VuexModule {
   @Action
   public async GetRandomProduct(): Promise<any> {
     return callApi
-      .AsyncGET("Product/GetRandomProducts/8")
+      .AsyncGET("Product/GetRandomProducts/12")
       .then((response) => {
         // console.log(response);
 

@@ -65,7 +65,7 @@
               <h3 style="color: red" class="text-center mt-4">
                 {{ warning }}
               </h3>
-              <v-btn class="primary white--text" outlined tile dense
+              <v-btn class="primary white--text" outlined tile dense @click="submitForm()"
                 ><v-icon>mdi-account</v-icon> UPDATE PROFILE</v-btn
               >
             </v-col>

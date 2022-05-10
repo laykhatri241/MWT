@@ -47,7 +47,7 @@
                   {{ message }}
                 </h3>
               </v-col>
-              <v-btn class="primary white--text" outlined tile dense
+              <v-btn class="primary white--text" outlined tile dense @click="updatepasssword()"
                 ><v-icon>mdi-key</v-icon> UPDATE PASSWORD</v-btn
               >
             </v-col>
