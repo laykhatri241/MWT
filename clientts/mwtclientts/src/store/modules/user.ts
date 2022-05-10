@@ -101,14 +101,10 @@ class Users extends VuexModule {
       });
   }
   @Action
-  public async AddToCart(data: CartItem,count : number): Promise<any> {
-    // data.id = Number(localStorage.getItem("UserID"));
-    // console.log("gfdgfd");
-    console.log("gfdgfd",data);
-    console.log(count);
-    
+  public async AddToCart(data: any): Promise<any> {
+    console.log("gfdgfd", data);
     return callApi
-      .AsyncPOST(`Account/AddToCart/${count}`, data)
+      .AsyncPOST(`Account/AddToCart/${data.count}`, data)
       .then((response) => {
         console.log(response);
         return response;
@@ -135,6 +131,20 @@ class Users extends VuexModule {
     id = Number(localStorage.getItem("CartId"));
     return callApi
       .AsyncGET(`Account/CartCheckout/${id}`)
+      .then((response) => {
+        // console.log(response);
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async ProcessToPayment(id: number, Userid: number): Promise<any> {
+    id = Number(localStorage.getItem("CartId"));
+    Userid = Number(localStorage.getItem("UserID"));
+    return callApi
+      .AsyncGET(`Account/PaymentSuccess/${id}/${Userid}`)
       .then((response) => {
         // console.log(response);
         return response;

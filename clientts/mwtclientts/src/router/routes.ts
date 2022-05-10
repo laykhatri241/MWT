@@ -43,6 +43,12 @@ const routes = [
     
         component: () => import("@/components/checkout.vue"),
       },
+      {
+        path: "/payment",
+        name: "payment",
+    
+        component: () => import("@/components/payment.vue"),
+      },
     ],
   },
   {
