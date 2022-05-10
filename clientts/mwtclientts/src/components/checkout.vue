@@ -20,7 +20,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(item,i) in product" v-bind:key="i">
+                    <tr v-for="(item, i) in product" v-bind:key="i">
                       <td>
                         <v-list-item
                           ><!--click -->
@@ -86,14 +86,14 @@
                         {{ totalcost }}
                       </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                       <td>Shipping Charges</td>
                       <td class="text-right" style="width: 50px">$00.00</td>
                     </tr>
                     <tr>
                       <td>Tax</td>
                       <td class="text-right" style="width: 50px">$0.00</td>
-                    </tr>
+                    </tr> -->
                     <tr>
                       <td>Total</td>
                       <td class="text-right" style="width: 50px">
@@ -104,7 +104,10 @@
                 </template>
               </v-simple-table>
               <div class="text-center">
-                <v-btn class="primary white--text mt-5" outlined
+                <v-btn
+                  class="primary white--text mt-5"
+                  outlined
+                  @click="PaymentSuccess()"
                   >PROCEED TO PAY</v-btn
                 >
               </div>
@@ -135,7 +138,13 @@ export default class Checkout extends Vue {
   public CartCheckout!: (data: any) => Promise<any>;
 
   @users.Action
+  public ProcessToPayment!: (data: any) => Promise<any>;
+
+  @users.Action
   public RemoveFromCart!: (data: any) => Promise<any>;
+
+  @users.Action
+  public GetMyCart!: (data: any) => Promise<any>;
 
   public removecart(id: any): void {
     this.cartitem.ProductID = id;
@@ -144,14 +153,33 @@ export default class Checkout extends Vue {
     // console.log(this.cartitem);
 
     this.RemoveFromCart(this.cartitem).then((res) => {
-      console.log(res);
+      // console.log(res);
       location.reload();
+    });
+  }
+  public PaymentSuccess(): void {
+    const data = {
+      id: Number(localStorage.getItem("CartId")),
+      Userid: Number(localStorage.getItem("UserID")),
+    };
+
+    this.ProcessToPayment(data).then((res) => {
+      console.log("payment", res);
+      var pdata = JSON.parse(res.content);
+
+      this.GetMyCart(localStorage.getItem("UserID")).then((res) => {
+        var jdata = JSON.parse(res.content);
+        // console.log("ghgjn",jdata);
+
+        localStorage.setItem("CartId", jdata.CartID);
+      });
+      this.$router.push("/payment");
     });
   }
 
   created(): void {
     this.CartCheckout(localStorage.getItem("CartId")).then((res) => {
-      //   console.log(res);
+        // console.log(res);
       var jdata = JSON.parse(res.content);
       console.log(jdata);
       this.product = jdata.Products;

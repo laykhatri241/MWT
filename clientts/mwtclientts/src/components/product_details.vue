@@ -25,8 +25,15 @@
             <v-card-actions class="pa-0">
               <p class="headline font-weight-light pt-3">
                 Price :
-                {{ currentproduct.ProdPrice }}
-                <!-- <del style="" class="subtitle-1 font-weight-thin">{{ currentproduct.ProdPrice }}</del> -->
+                <!-- {{ (currentproduct.ProdPrice) }} -->
+                {{
+                  (discount =
+                    currentproduct.ProdPrice -
+                    (currentproduct.ProdPrice * stock.Offer) / 100)
+                }}
+                <del style="" class="subtitle-1 font-weight-thin">{{
+                  currentproduct.ProdPrice
+                }}</del>
               </p>
               <v-spacer></v-spacer>
             </v-card-actions>
@@ -37,7 +44,7 @@
             </p>
 
             <v-text-field
-              v-model="count"
+              v-model.number="cartitem.count"
               outlined
               style="width: 100px"
               dense
@@ -82,13 +89,13 @@ const Products = namespace("product");
 @Component({})
 export default class Home extends Vue {
   //   product = new Product();
-  count = 1;
+  discount = 0;
   cartitem = new CartItem();
   private currentproduct = {} as Product;
   private message: string = "";
 
   @users.Action
-  public AddToCart!: (data: CartItem,count: number) => Promise<any>;
+  public AddToCart!: (data: CartItem) => Promise<any>;
 
   public stock = new Stock();
   @Prop(Number)
@@ -103,11 +110,11 @@ export default class Home extends Vue {
   public addtocart(): void {
     this.cartitem.ProductID = Number(this.$route.params.id);
     this.cartitem.CartID = Number(localStorage.getItem("CartId"));
+    this.cartitem.Count = this.cartitem.Count;
     console.log(this.cartitem);
-    console.log(this.count);
-    
+    // console.log(this.count);
 
-    this.AddToCart(this.cartitem, (this.count)).then((res) => {
+    this.AddToCart(this.cartitem).then((res) => {
       console.log(res);
     });
   }
@@ -115,13 +122,13 @@ export default class Home extends Vue {
   created(): void {
     this.GetProducts(this.$route.params.id).then((res) => {
       var jdata = JSON.parse(res.content);
-      // console.log(res);
+      console.log(res);
       this.currentproduct = jdata;
     });
     this.GetStock(this.$route.params.id).then((res) => {
-      //   console.log(res);
+      console.log(res);
       var jdata = JSON.parse(res.content);
-      //   console.log(jdata);
+      console.log(jdata);
       this.stock = jdata;
       if (this.stock.Stock === 0) {
         this.message = "Out Of Stock";
