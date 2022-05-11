@@ -15,9 +15,7 @@ namespace MWTCore.Services.Interfaces
 
         public Task<CartMaster> GetCart(int UserID);
 
-        public Task<int> AddToCart(CartItemModel cartItem);
-
-        public Task<int> RemoveFromCart(int cartId, int productId);
+        public Task<int> UpdateCart(CartItemModel cartItem);
 
         public Task<CartCheckout> cartCheckout(int CartID);
 

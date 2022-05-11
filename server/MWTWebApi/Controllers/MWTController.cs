@@ -251,12 +251,12 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-        #region AddToCart
+        #region UpdateCart
         [Authorize(Roles = "3")]
-        [HttpPost("AddToCart")]
-        public HttpAPIResponse AddToCart(CartItemModel cartItem)
+        [HttpPost("UpdateCart")]
+        public HttpAPIResponse UpdateCart(CartItemModel cartItem)
         {
-            var status = _orderService.AddToCart(cartItem).Result;
+            var status = _orderService.UpdateCart(cartItem).Result;
 
             return new HttpAPIResponse()
             {
@@ -266,20 +266,7 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-        #region RemoveFromCart
-        [Authorize(Roles = "3")]
-        [HttpPost("RemoveFromCart")]
-        public HttpAPIResponse RemoveFromCart(CartItemModel cartItem)
-        {
-            var status = _orderService.RemoveFromCart(cartItem.CartID, cartItem.ProductID).Result;
-
-            return new HttpAPIResponse()
-            {
-                Content = JsonConvert.SerializeObject(status > 0 ? true : false),
-                StatusCode = HttpStatusCode.OK
-            };
-        }
-        #endregion
+        
 
         #region CartCheckout
         [Authorize(Roles = "3")]
