@@ -37,9 +37,6 @@ namespace MWTWebApi.Model
         public CheckDatabase(StoreAppDbCon context)
         {
             _context = context;
-
-
-            
             if (checkRoles())
             {
                 if (createRoles())

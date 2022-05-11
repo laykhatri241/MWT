@@ -26,6 +26,28 @@ namespace MWTCore.Repository
             return await _context.SaveChangesAsync() == 1 ? category.id : 0;
         }
 
+        public async Task<int> AddEditOffer(OfferMaster offer)
+        {
+            if (!_context.offerMasters.Any(om => om.ProductID == offer.ProductID && om.OfferStart >= offer.OfferStart && om.OfferEnd <= offer.OfferEnd))
+            {
+
+                if (offer.id == 0)
+                {
+                    _context.offerMasters.Add(offer);
+                }
+                else
+                {
+                    var offerRecord = await _context.offerMasters.FirstAsync(om => om.id == offer.id);
+                    offerRecord.Offer = offer.Offer;
+                    offerRecord.OfferStart = offer.OfferStart;
+                    offerRecord.OfferEnd = offer.OfferEnd;
+                }
+                return await _context.SaveChangesAsync() == 1 ? offer.id : 0;
+            }
+            return -1;
+
+        }
+
         public async Task<int> AddProduct(ProductMaster product)
         {
             product.updatedAt = DateTime.Now;
@@ -42,13 +64,9 @@ namespace MWTCore.Repository
             return await _context.SaveChangesAsync() == 1 && AddProduct == 1 ? product.id : 0;
         }
 
-        public async Task<int> CreateStock(StockMaster stock)
+        public async Task<List<ProductMaster>> GetAllProducts()
         {
-
-            stock.createdAt = DateTime.Now;
-            stock.updatedAt = DateTime.Now;
-            _context.stockMasters.Add(stock);
-            return await _context.SaveChangesAsync() == 1 ? stock.id : 0;
+            return await _context.productMasters.AsNoTracking().ToListAsync();
         }
 
         public async Task<List<CategoryMaster>> GetCategoryMasters()
@@ -78,6 +96,12 @@ namespace MWTCore.Repository
             return prods;
         }
 
+        public async Task<OfferMaster> RetrieveOffer(int ProductID)
+        {
+            var offer = await _context.offerMasters.AsNoTracking().OrderByDescending(om => om.id).FirstOrDefaultAsync(om => om.ProductID == ProductID);
+            return offer;
+        }
+
         public async Task<ProductMaster> RetrieveProduct(int id)
         {
             return await _context.productMasters.AsNoTracking().FirstOrDefaultAsync(pd => pd.id == id);
@@ -89,7 +113,7 @@ namespace MWTCore.Repository
             int productTotalCount = _context.productMasters.ToList().Count();
             if (productTotalCount > 1)
             {
-                while(prodList.Count < count)
+                while (prodList.Count < count)
                 {
                     var prod = await _context.productMasters.OrderBy(r => Guid.NewGuid()).Take(1).FirstAsync();
                     if (!prodList.Contains(prod))
@@ -97,37 +121,34 @@ namespace MWTCore.Repository
                         prodList.Add(prod);
 
                     }
-                    if(count > productTotalCount )
+                    if (count > productTotalCount && prodList.Count() == productTotalCount)
                     {
-                        if(prodList.Count() == productTotalCount)
-                        {
-                            break;
-                        }
+
+                        break;
+
                     }
                 }
             }
             return prodList;
         }
 
-        public async Task<List<ProductMaster>> RetrieveRandomByCategory(int count,int categoryID)
+        public async Task<List<ProductMaster>> RetrieveRandomByCategory(int count, int categoryID)
         {
             var prodList = new List<ProductMaster>();
-            int productTotalCount = _context.productMasters.AsNoTracking().Where(pm=>pm.CategoryID==categoryID).ToList().Count();
-            if(productTotalCount > 1)
+            int productTotalCount = _context.productMasters.AsNoTracking().Where(pm => pm.CategoryID == categoryID).ToList().Count();
+            if (productTotalCount > 1)
             {
-                while(prodList.Count < count)
+                while (prodList.Count < count)
                 {
                     var prod = await _context.productMasters.OrderBy(r => Guid.NewGuid()).Take(1).FirstAsync();
-                    if(!prodList.Contains(prod))
+                    if (!prodList.Contains(prod))
                     {
                         prodList.Add(prod);
                     }
-                    if (count > productTotalCount)
+                    if (count > productTotalCount && prodList.Count() == productTotalCount)
                     {
-                        if (prodList.Count() == productTotalCount)
-                        {
-                            break;
-                        }
+                        break;
+
                     }
                 }
             }
@@ -158,9 +179,7 @@ namespace MWTCore.Repository
         {
             var stk = await _context.stockMasters.FirstAsync(sm => sm.id == stock.id);
             stk.Stock = stock.Stock;
-            stk.Offer = stock.Offer;
-            stk.OfferEnd = stock.OfferEnd;
-            stk.OfferStart = stock.OfferStart;
+
             stk.updatedAt = DateTime.Now;
 
             return await _context.SaveChangesAsync() == 1 ? true : false;

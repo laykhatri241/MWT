@@ -15,14 +15,14 @@ namespace MWTCore.Repository.Interfaces
 
         public Task<CartMaster> RetrieveCart(int UserID);
 
-        public Task<int> AddToCart(CartItemModel cartItem,int count);
+        public Task<int> UpdateCart(CartItemModel cartItem);
 
         public Task<CartCheckout> cartCheckout(int cartID);
 
         public Task<int> PurchaseSuccess(int cartID);
 
-        public Task<int> RemoveFromCart(int cartId, int productId);
+        public Task<List<OrderHistory>> OrderHistory(int UserID);
 
-        public Task<List<CartMaster>> OrderHistory(int UserID);
+        public Task<List<CompanyOrderHistory>> OrderPlaced(int SellerID);
     }
 }

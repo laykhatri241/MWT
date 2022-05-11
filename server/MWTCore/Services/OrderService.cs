@@ -22,9 +22,9 @@ namespace MWTCore.Services
             return await _orderRepository.createCart(UserID);
         }
 
-        public async Task<int> AddToCart(CartItemModel cartItem, int count)
+        public async Task<int> UpdateCart(CartItemModel cartItem)
         {
-            return await _orderRepository.AddToCart(cartItem, count);
+            return await _orderRepository.UpdateCart(cartItem);
         }
 
         public async Task<CartCheckout> cartCheckout(int CartID)
@@ -42,7 +42,7 @@ namespace MWTCore.Services
             return await _orderRepository.isCartAvailable(id);
         }
 
-        public async Task<List<CartMaster>> OrderHistory(int UserID)
+        public async Task<List<OrderHistory>> OrderHistory(int UserID)
         {
             return await _orderRepository.OrderHistory(UserID);
         }
@@ -52,9 +52,9 @@ namespace MWTCore.Services
             return await _orderRepository.PurchaseSuccess(CartID);
         }
 
-        public async Task<int> RemoveFromCart(int cartId, int productId)
+        public async Task<List<CompanyOrderHistory>> OrderPlaced(int SellerID)
         {
-            return await _orderRepository.RemoveFromCart(cartId, productId);
+            return await _orderRepository.
         }
     }
 }

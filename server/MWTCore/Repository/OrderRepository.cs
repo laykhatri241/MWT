@@ -3,6 +3,7 @@ using MWTCore.Models.Custom;
 using MWTCore.Repository.Interfaces;
 using MWTDbContext;
 using MWTDbContext.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,97 +20,86 @@ namespace MWTCore.Repository
             _context = context;
         }
 
-        public async Task<int> AddToCart(CartItemModel cartItem , int count)
+        public async Task<int> UpdateCart(CartItemModel cartItem)
         {
-            var currentInCart = await _context.cartItems.Where(ci => ci.CartID == cartItem.CartID && ci.ProductID == cartItem.ProductID).ToListAsync();
+            var item = await _context.cartItems.FirstOrDefaultAsync(ci => ci.CartID == cartItem.CartID && ci.ProductID == cartItem.ProductID);
 
-            if (currentInCart.Count() >= count)
+            int result = 0;
+
+            if (cartItem.Count == 0 && item != null)
             {
-                while(currentInCart.Count() != count)
-                {
-                    var cItem = currentInCart.First();
-                    _context.cartItems.Remove(cItem);
-                    currentInCart.RemoveAt(0);
-                }
+                _context.cartItems.Remove(item);
+                result = -1;
             }
-            else if(currentInCart.Count() <= count)
+            else if (item != null && cartItem.Count > 0)
             {
-                
-                while (currentInCart.Count() < count)
+                item.Count += cartItem.Count;
+                result = 1;
+            }
+            else if (item == null && cartItem.Count > 0)
+            {
+                _context.cartItems.Add(new CartItem
                 {
-                    var CartItem = new CartItem()
-                    {
-                        CartID = cartItem.CartID,
-                        ProductID = cartItem.ProductID,
-                        createdAt = DateTime.Now
-                    };
-                    _context.cartItems.Add(CartItem);
-                    currentInCart.Add(CartItem);
-                }
+                    CartID = cartItem.CartID,
+                    OfferID = cartItem.OfferID,
+                    Count = cartItem.Count,
+                    createdAt = DateTime.Now,
+                    updatedAt = DateTime.Now,
+                    ProductID = cartItem.ProductID,
+                });
+                result = 1;
             }
 
-            
-            return await _context.SaveChangesAsync() ;
+            if (result != 0)
+                await _context.SaveChangesAsync();
+
+            return result;
         }
 
         public async Task<CartCheckout> cartCheckout(int cartID)
         {
             var checkout = new CartCheckout();
+            var ProdList = new List<ProductMaster>();
+            var StockList = new List<StockMaster>();
+            var ProdCountList = new List<int>();
+            var OfferList = new List<OfferMaster>();
+            int TotalCost = 0;
+            int TotalItems = 0;
 
-            var productList = await _context.cartItems.Where(ci => ci.CartID == cartID).ToListAsync();
+            var productsInCart = await _context.cartItems.Where(ci => ci.CartID == cartID).ToListAsync();
 
-            var prodlist = new List<ProductModel>();
-            var stockList = new List<StockModel>();
-            var prodCount = new List<int>();
-            int totalCost = 0;
-            for (int i = 0; i < productList.Count(); i++)
+            foreach (var cartItem in productsInCart)
             {
-                var prod = await _context.productMasters.Where(pm => pm.id == productList[i].ProductID).FirstAsync();
-                var prodModel = new ProductModel()
+                var product = await _context.productMasters.FirstAsync(pm => pm.id == cartItem.ProductID);
+                ProdList.Add(product);
+
+                ProdCountList.Add(cartItem.Count);
+
+                TotalItems += cartItem.Count;
+
+                var stock = await _context.stockMasters.FirstAsync(sm => sm.ProductID == cartItem.ProductID);
+                StockList.Add(stock);
+
+                var offer = await _context.offerMasters.FirstOrDefaultAsync(om => om.ProductID == cartItem.ProductID);
+                if (offer != null)
                 {
-                    id = prod.id,
-                    CategoryID = prod.CategoryID,
-                    ProdPrice = prod.ProdPrice,
-                    ProdCompanyName = prod.ProdCompanyName,
-                    ProdDetails = prod.ProdDetails,
-                    ProdImage = prod.ProdImage,
-                    ProdName = prod.ProdName,
-                    SellerID = prod.SellerID
-                };
-                if (!prodlist.Any(pm => pm.id == prodModel.id))
-                {
-                    prodlist.Add(prodModel);
-                    prodCount.Add(1);
+                    OfferList.Add(offer);
+                    TotalCost += ((int)Math.Round((product.ProdPrice - product.ProdPrice * ((float)offer.Offer / 100)) * cartItem.Count));
                 }
                 else
                 {
-                    prodCount[prodlist.FindIndex(pl => pl.id == prodModel.id)] += 1;
+                    OfferList.Add(new OfferMaster());
+                    TotalCost += product.ProdPrice * cartItem.Count;
                 }
-
-                var stock = await _context.stockMasters.Where(sm => sm.id == productList[i].ProductID).FirstAsync();
-
-                if (!stockList.Any(sl => sl.id == stock.id))
-                {
-                    var st = new StockModel()
-                    {
-                        id = stock.id,
-                        Offer = stock.Offer,
-                        OfferStart = stock.OfferStart,
-                        OfferEnd = stock.OfferEnd,
-                        Stock = stock.Stock,
-                        ProductID = stock.ProductID
-                    };
-                    stockList.Add(st);
-                }
-
-                totalCost += stock.OfferStart <= DateTime.Now && stock.OfferEnd >= DateTime.Now ? (int)(prod.ProdPrice - (prod.ProdPrice * ((float)stock.Offer / 100))) : prod.ProdPrice;
-
             }
-            checkout.TotalItems = productList.Count();
-            checkout.Products = prodlist;
-            checkout.ProductCounts = prodCount;
-            checkout.TotalCost = totalCost;
-            checkout.StockInfo = stockList;
+
+            checkout.TotalCost = TotalCost;
+            checkout.TotalItems = TotalItems;
+            checkout.Products = ProdList;
+            checkout.StockInfo = StockList;
+            checkout.ProductCounts = ProdCountList;
+            checkout.Offers = OfferList;
+
             return checkout;
 
         }
@@ -119,6 +109,7 @@ namespace MWTCore.Repository
             var cart = new CartMaster();
             cart.UserID = UserID;
             cart.isPaid = false;
+            cart.updatedAt = DateTime.Now;
             cart.createdAt = DateTime.Now;
             cart.CartID = await lastCartNumber() + 1;
 
@@ -131,10 +122,42 @@ namespace MWTCore.Repository
             return await _context.cartMasters.AsNoTracking().AnyAsync(cm => cm.UserID == id && cm.isPaid == false);
         }
 
-        public async Task<List<CartMaster>> OrderHistory(int UserID)
+        public async Task<List<OrderHistory>> OrderHistory(int UserID)
         {
-            var orders = await _context.cartMasters.Where(cm => cm.UserID == UserID).ToListAsync();
-            return orders;
+
+            var ReturnHistory = new List<OrderHistory>();
+
+            var PaidCarts = await _context.cartMasters.AsNoTracking().Where(cm => cm.UserID == UserID && cm.isPaid == true).ToListAsync();
+
+            foreach (var cart in PaidCarts)
+            {
+                var cartID = cart.CartID;
+                var cartItems = await _context.cartItems.AsNoTracking().Where(ci => ci.CartID == cartID).ToListAsync();
+                foreach (var item in cartItems)
+                {
+                    var product = await _context.productMasters.AsNoTracking().FirstAsync(pm => pm.id == item.ProductID);
+                    var offer = await _context.offerMasters.AsNoTracking().FirstOrDefaultAsync(om => om.id == item.OfferID && om.ProductID == product.id);
+
+                    var History = new OrderHistory();
+                    History.Count = item.Count;
+                    History.cartID = cartID;
+                    History.ProductID = item.ProductID;
+                    if (offer == null)
+                    {
+                        History.Cost = product.ProdPrice;
+                    }
+                    else
+                    {
+                        History.Cost = ((int)Math.Round(product.ProdPrice - product.ProdPrice * ((float)offer.Offer / 100)));
+                    }
+                    History.OrderID = cart.OrderID;
+                    History.OrderedOn = cart.updatedAt;
+
+                    ReturnHistory.Add(History);
+                }
+            }
+
+            return ReturnHistory;
         }
 
         public async Task<int> PurchaseSuccess(int cartID)
@@ -147,6 +170,7 @@ namespace MWTCore.Repository
 
                 cartRecord.OrderID = await lastOrderNumber() + 1;
                 cartRecord.isPaid = true;
+                cartRecord.updatedAt = DateTime.Now;
 
                 foreach (var product in checkout.Products)
                 {
@@ -158,7 +182,7 @@ namespace MWTCore.Repository
                     else
                     {
 
-                    return -1;
+                        return -1;
                     }
                 }
 
@@ -173,17 +197,6 @@ namespace MWTCore.Repository
             }
 
 
-        }
-
-        public async Task<int> RemoveFromCart(int cartId, int productId)
-        {
-            var cartItem = await _context.cartItems.Where(ci => ci.CartID == cartId && ci.ProductID == productId).ToListAsync();
-
-            foreach(var item in cartItem)
-            {
-                _context.cartItems.Remove(item);
-            }
-            return await _context.SaveChangesAsync();
         }
 
         public async Task<CartMaster> RetrieveCart(int UserID)
@@ -205,5 +218,7 @@ namespace MWTCore.Repository
             return number == null ? 0 : number.OrderID;
 
         }
+
+
     }
 }
