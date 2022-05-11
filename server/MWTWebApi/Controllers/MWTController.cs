@@ -266,8 +266,6 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-        
-
         #region CartCheckout
         [Authorize(Roles = "3")]
         [HttpGet("CartCheckout/{Cartid}")]
@@ -321,6 +319,15 @@ namespace MWTWebApi.Controllers
                 Content = JsonConvert.SerializeObject(orders),
                 StatusCode = HttpStatusCode.OK,
             };
+        }
+        #endregion
+
+        #region OrderPlaced
+        [Authorize(Roles = "2")]
+        [HttpGet("OrderPlaced/{SellerID}")]
+        public HttpAPIResponse OrderPlaced(int SellerID)
+        {
+            var orders = _orderService
         }
         #endregion
     }
