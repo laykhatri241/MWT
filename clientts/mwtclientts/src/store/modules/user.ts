@@ -26,7 +26,7 @@ class Users extends VuexModule {
     return callApi
       .AsyncPOST("Account/Login", data)
       .then((response: any) => {
-        // this.context.commit("Login", response.data);
+       
         return response;
       })
       .catch((err) => {
@@ -38,9 +38,7 @@ class Users extends VuexModule {
     return callApi
       .AsyncPOST("Account/CheckUsername", data)
       .then((response) => {
-        console.log(response);
-
-        //this.context.commit("CheckUsername", response.data.data);
+        // console.log(response);
         return response;
       })
       .catch((err) => {
@@ -53,7 +51,7 @@ class Users extends VuexModule {
     return callApi
       .AsyncGET(`Account/GetMyUser/${data.id}`)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         return response;
       })
       .catch((err) => {
@@ -66,7 +64,7 @@ class Users extends VuexModule {
     return callApi
       .AsyncPOST("Account/UpdateUser", data)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         //localStorage.getItem('Token')
         return response;
       })
@@ -80,7 +78,7 @@ class Users extends VuexModule {
     return callApi
       .AsyncPOST("Account/ChangePassword", data)
       .then((response) => {
-        this.context.commit("UpdatePasswoed", data);
+        // this.context.commit("UpdatePasswoed", data);
         return response;
       })
       .catch((err) => {
@@ -93,7 +91,7 @@ class Users extends VuexModule {
     return callApi
       .AsyncGET(`Account/GetMyCart/${id}`)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         return response;
       })
       .catch((err) => {
@@ -102,11 +100,10 @@ class Users extends VuexModule {
   }
   @Action
   public async AddToCart(data: any): Promise<any> {
-    console.log("gfdgfd", data);
     return callApi
       .AsyncPOST(`Account/AddToCart/${data.count}`, data)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         return response;
       })
       .catch((err) => {

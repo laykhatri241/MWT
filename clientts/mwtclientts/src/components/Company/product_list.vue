@@ -17,6 +17,7 @@
           <th>Delete</th>
           <th>Update</th>
           <th>UpdateStock</th>
+          <th>UpdateOffer</th>
         </tr>
       </thead>
 
@@ -39,6 +40,7 @@
           <UpdateProduct :productid="item.id" class="mt-3" />
         </td>
         <td><UpdateStock :productid="item.id" class="mt-3" /></td>
+        <td><UpdateOffer :productid="item.id" class="mt-3" /></td>
       </tr>
     </table>
   </div>
@@ -50,18 +52,20 @@ import Category from "@/interfaces/category";
 import Product from "@/interfaces/product";
 import UpdateProduct from "@/components/Company/update_product.vue";
 import UpdateStock from "@/components/Company/updatestock.vue";
+import UpdateOffer from "@/components/Company/updateoffer.vue";
 import { locales } from "moment";
 const Products = namespace("product");
 @Component({
   components: {
     UpdateProduct,
     UpdateStock,
+    UpdateOffer,
   },
 })
 export default class ProductList extends Vue {
   category = new Category();
 
-  public product = [ ] as Product[];
+  public product = [] as Product[];
   pro = new Product();
   @Prop(Number)
   productid!: number | null;

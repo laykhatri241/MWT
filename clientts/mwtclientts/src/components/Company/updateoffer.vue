@@ -3,12 +3,12 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" dark v-bind="attrs" v-on="on">
-          UpdateStock
+          Update Offer
         </v-btn>
       </template>
       <v-card>
         <v-card-title>
-          <span class="text-h7">Update Stock</span>
+          <span class="text-h7">Update Offer</span>
         </v-card-title>
         <v-card-text>
           <v-container id="user-profile" fluid tag="section">
@@ -20,19 +20,35 @@
                       <v-text-field
                         class="purple-input"
                         label="Product id"
-                        v-model="stock.ProductID"
+                        v-model="offer.ProductID"
                         disabled
                       />
                     </v-col>
 
                     <v-col cols="12" md="12">
                       <v-text-field
-                        label="Stock"
-                        v-model="stock.Stock"
+                        label="Offer"
+                        v-model="offer.Offer"
                         class="purple-input"
                       />
                     </v-col>
 
+                    <v-col cols="12" md="12">
+                      <v-text-field
+                        label="Offer Start"
+                        type="date"
+                        v-model="offer.OfferStart"
+                        prepend-inner-icon="mdi-calendar"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12">
+                      <v-text-field
+                        label="Offer End "
+                        type="date"
+                        v-model="offer.OfferEnd"
+                        prepend-inner-icon="mdi-calendar"
+                      ></v-text-field>
+                    </v-col>
                     <h3 style="color: green" class="text-center mt-4">
                       {{ message }}
                     </h3>
@@ -60,6 +76,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import UpdateStock from "@/interfaces/updatestock";
 import Product from "@/interfaces/product";
+import Offer from "@/interfaces/offer";
 import moment, { locales } from "moment";
 const Products = namespace("product");
 @Component({})
@@ -67,7 +84,7 @@ export default class AddProducts extends Vue {
   private message: string = "";
   private warning: string = "";
 
-  stock = new UpdateStock();
+  offer = new Offer();
   product = new Product();
   dialog = false;
 
@@ -83,7 +100,7 @@ export default class AddProducts extends Vue {
   productid!: number;
 
   public submitForm(): void {
-    this.UpdateStock(this.stock).then((res) => {
+    this.UpdateStock(this.offer).then((res) => {
       //   console.log(res);
       if (res.content == "true") {
         this.message = "Succesfully Updated!!!!";
@@ -97,9 +114,16 @@ export default class AddProducts extends Vue {
     this.GetStock(this.productid).then((res) => {
       //   console.log(res);
       var jdata = JSON.parse(res.content);
-      this.stock.id = jdata.id;
-      this.stock.ProductID = jdata.ProductID;
-      this.stock.Stock = jdata.Stock;
+      this.offer.id = jdata.id;
+      this.offer.ProductID = jdata.ProductID;
+
+      this.offer.Offer = jdata.Offer;
+      (this.offer.OfferStart = moment(String(jdata.OfferStart)).format(
+        "yyyy-MM-DD"
+      )),
+        (this.offer.OfferEnd = moment(String(jdata.OfferEnd)).format(
+          "yyyy-MM-DD"
+        ));
     });
   }
 }
