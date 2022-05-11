@@ -64,19 +64,6 @@ namespace MWTCore.Repository
             return await _context.SaveChangesAsync() == 1 && AddProduct == 1 ? product.id : 0;
         }
 
-        public async Task<int> CreateStock(StockModel stock)
-        {
-            var stk = new StockMaster()
-            {
-                Stock = stock.Stock,
-                createdAt = DateTime.Now,
-                updatedAt = DateTime.Now
-            };
-
-            _context.stockMasters.Add(stk);
-            return await _context.SaveChangesAsync() == 1 ? stk.id : 0;
-        }
-
         public async Task<List<ProductMaster>> GetAllProducts()
         {
             return await _context.productMasters.AsNoTracking().ToListAsync();
@@ -134,12 +121,11 @@ namespace MWTCore.Repository
                         prodList.Add(prod);
 
                     }
-                    if (count > productTotalCount)
+                    if (count > productTotalCount && prodList.Count() == productTotalCount)
                     {
-                        if (prodList.Count() == productTotalCount)
-                        {
-                            break;
-                        }
+
+                        break;
+
                     }
                 }
             }
@@ -159,12 +145,10 @@ namespace MWTCore.Repository
                     {
                         prodList.Add(prod);
                     }
-                    if (count > productTotalCount)
+                    if (count > productTotalCount && prodList.Count() == productTotalCount)
                     {
-                        if (prodList.Count() == productTotalCount)
-                        {
-                            break;
-                        }
+                        break;
+
                     }
                 }
             }

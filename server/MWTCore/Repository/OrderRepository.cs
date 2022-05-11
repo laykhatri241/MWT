@@ -3,6 +3,7 @@ using MWTCore.Models.Custom;
 using MWTCore.Repository.Interfaces;
 using MWTDbContext;
 using MWTDbContext.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,28 +24,36 @@ namespace MWTCore.Repository
         {
             var item = await _context.cartItems.FirstOrDefaultAsync(ci => ci.CartID == cartItem.CartID && ci.ProductID == cartItem.ProductID);
 
+            int result = 0;
+
             if (cartItem.Count == 0 && item != null)
             {
                 _context.cartItems.Remove(item);
-                return -await _context.SaveChangesAsync();
+                result = -1;
             }
-            else if (item == null)
-            {
-                item = new CartItem();
-                item.CartID = cartItem.CartID;
-                item.OfferID = cartItem.OfferID;
-                item.Count = cartItem.Count;
-                item.createdAt = DateTime.Now;
-                item.updatedAt = DateTime.Now;
-                item.ProductID = cartItem.ProductID;
-                _context.cartItems.Add(item);
-                return await _context.SaveChangesAsync() == 1 ? item.id : 0;
-            }
-            else 
+            else if (item != null && cartItem.Count > 0)
             {
                 item.Count += cartItem.Count;
-                return await _context.SaveChangesAsync() == 1 ? item.id : 0;
+                result = 1;
             }
+            else if (item == null && cartItem.Count > 0)
+            {
+                _context.cartItems.Add(new CartItem
+                {
+                    CartID = cartItem.CartID,
+                    OfferID = cartItem.OfferID,
+                    Count = cartItem.Count,
+                    createdAt = DateTime.Now,
+                    updatedAt = DateTime.Now,
+                    ProductID = cartItem.ProductID,
+                });
+                result = 1;
+            }
+
+            if (result != 0)
+                await _context.SaveChangesAsync();
+
+            return result;
         }
 
         public async Task<CartCheckout> cartCheckout(int cartID)
@@ -75,15 +84,13 @@ namespace MWTCore.Repository
                 if (offer != null)
                 {
                     OfferList.Add(offer);
-                    TotalCost += ((int)Math.Round( (product.ProdPrice - product.ProdPrice * ((float)offer.Offer / 100)) * cartItem.Count));
+                    TotalCost += ((int)Math.Round((product.ProdPrice - product.ProdPrice * ((float)offer.Offer / 100)) * cartItem.Count));
                 }
                 else
                 {
                     OfferList.Add(new OfferMaster());
                     TotalCost += product.ProdPrice * cartItem.Count;
                 }
-
-
             }
 
             checkout.TotalCost = TotalCost;
@@ -117,16 +124,16 @@ namespace MWTCore.Repository
 
         public async Task<List<OrderHistory>> OrderHistory(int UserID)
         {
-            
+
             var ReturnHistory = new List<OrderHistory>();
 
             var PaidCarts = await _context.cartMasters.AsNoTracking().Where(cm => cm.UserID == UserID && cm.isPaid == true).ToListAsync();
 
-            foreach(var cart in PaidCarts)
+            foreach (var cart in PaidCarts)
             {
                 var cartID = cart.CartID;
                 var cartItems = await _context.cartItems.AsNoTracking().Where(ci => ci.CartID == cartID).ToListAsync();
-                foreach(var item in cartItems)
+                foreach (var item in cartItems)
                 {
                     var product = await _context.productMasters.AsNoTracking().FirstAsync(pm => pm.id == item.ProductID);
                     var offer = await _context.offerMasters.AsNoTracking().FirstOrDefaultAsync(om => om.id == item.OfferID && om.ProductID == product.id);
@@ -135,13 +142,13 @@ namespace MWTCore.Repository
                     History.Count = item.Count;
                     History.cartID = cartID;
                     History.ProductID = item.ProductID;
-                    if(offer == null)
+                    if (offer == null)
                     {
                         History.Cost = product.ProdPrice;
                     }
                     else
                     {
-                       History.Cost = ((int)Math.Round(product.ProdPrice - product.ProdPrice * ((float)offer.Offer / 100)));
+                        History.Cost = ((int)Math.Round(product.ProdPrice - product.ProdPrice * ((float)offer.Offer / 100)));
                     }
                     History.OrderID = cart.OrderID;
                     History.OrderedOn = cart.updatedAt;
@@ -211,5 +218,7 @@ namespace MWTCore.Repository
             return number == null ? 0 : number.OrderID;
 
         }
+
+
     }
 }
