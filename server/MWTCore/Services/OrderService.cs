@@ -22,9 +22,9 @@ namespace MWTCore.Services
             return await _orderRepository.createCart(UserID);
         }
 
-        public async Task<int> AddToCart(CartItemModel cartItem)
+        public async Task<int> UpdateCart(CartItemModel cartItem)
         {
-            return await _orderRepository.AddToCart(cartItem);
+            return await _orderRepository.UpdateCart(cartItem);
         }
 
         public async Task<CartCheckout> cartCheckout(int CartID)
@@ -52,9 +52,6 @@ namespace MWTCore.Services
             return await _orderRepository.PurchaseSuccess(CartID);
         }
 
-        public async Task<int> RemoveFromCart(int cartId, int productId)
-        {
-            return await _orderRepository.RemoveFromCart(cartId, productId);
-        }
+      
     }
 }
