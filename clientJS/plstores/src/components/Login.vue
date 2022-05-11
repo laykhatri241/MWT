@@ -26,7 +26,7 @@
                     <v-row>
                       <v-col cols="12">
                         <v-text-field
-                          v-model="loginusername"
+                          v-model="userlogin.Username"
                           :rules="[rules.required]"
                           label="UserName"
                           required
@@ -34,7 +34,7 @@
                       </v-col>
                       <v-col cols="12">
                         <v-text-field
-                          v-model="loginPassword"
+                          v-model="userlogin.Password"
                           :append-icon="show1 ? 'eye' : 'eye-off'"
                           :rules="[rules.required, rules.min]"
                           :type="show1 ? 'text' : 'password'"
@@ -77,7 +77,7 @@
                     <v-row>
                       <v-col cols="12" sm="6" md="6">
                         <v-text-field
-                          v-model="fullName"
+                          v-model="userregistermodel.fullName"
                           :rules="[rules.required]"
                           label="Full Name"
                           maxlength="20"
@@ -86,7 +86,7 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
                         <v-text-field
-                          v-model="userName"
+                          v-model="userregistermodel.userName"
                           :rules="[rules.required]"
                           label="User Name"
                           maxlength="20"
@@ -95,7 +95,7 @@
                       </v-col>
                       <v-col cols="12">
                         <v-text-field
-                          v-model="password"
+                          v-model="userregistermodel.password"
                           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                           :rules="[rules.required, rules.min]"
                           :type="show1 ? 'text' : 'password'"
@@ -109,7 +109,7 @@
                       <v-col cols="12">
                         <v-text-field
                           block
-                          v-model="verify"
+                          v-model="userregistermodel.verify"
                           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                           :rules="[rules.required, passwordMatch]"
                           :type="show1 ? 'text' : 'password'"
@@ -147,7 +147,10 @@
 <script>
 import axios from "axios";
 import callApi from "@/apihelper/api";
+import login from "@/apihelper/modules/login";
+import userregister from"@/apihelper/modules/userregister"
 export default {
+    
   computed: {
     passwordMatch() {
       return () => this.password === this.verify || "Password must match";
@@ -157,10 +160,7 @@ export default {
     async validate() {
       if (this.$refs.loginForm.validate()) {
         callApi
-          .AsyncPOST("Account/Login", {
-            Username: this.loginusername,
-            Password: this.loginPassword,
-          })
+          .AsyncPOST("Account/Login", this.userlogin)
           .then((data) => {
             console.log(data);
             const log = JSON.parse(data.content);
@@ -190,10 +190,8 @@ export default {
       if (this.$refs.registerForm.validate()) {
         // submit form to server/API here...
         callApi
-          .AsyncPOST("Account/SignUp", {
-            Fullname: this.fullName,
-            Username: this.userName,
-            Password: this.password,
+          .AsyncPOST("Account/SignUp",this.userregistermodel, {
+            
             Role: 3,
           })
           .then((resp) => console.log(resp));
@@ -210,6 +208,7 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation();
     },
+  
   },
   data: () => ({
     dialog: true,
@@ -218,14 +217,12 @@ export default {
       { name: "Login", icon: "mdi-account" },
       { name: "Register", icon: "mdi-account-outline" },
     ],
+          userlogin : new login(),
+          userregistermodel: new userregister(),
     valid: true,
 
-    fullName: "",
-    userName: "",
-    password: "",
-    verify: "",
-    loginPassword: "",
-    loginusername: "",
+   
+   
 
     // emailRules: [
     //   v => !!v || "Required",
