@@ -14,7 +14,7 @@
             <th style="padding: 20px">EDIT</th>
             <th style="padding: 20px">REMOVE</th>
           </tr>
-          <tr v-for="(item, index) in items" v-bind:key="item.id">
+          <tr v-for="(item, index) in product" v-bind:key="item.id">
             <td>{{ item.ProdCompanyName }}</td>
             <td>{{ item.ProdName }}</td>
             <td>{{ item.ProdDetails }}</td>
@@ -24,7 +24,7 @@
             <td><v-img :src="path[index - 1]" max-width="50px"></v-img></td>
 
             <td>
-              <v-dialog v-model="dialog" max-width="600px">
+              <v-dialog persistent v-model="dialog " max-width="600px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     color="primary"
@@ -47,7 +47,7 @@
                           <v-text-field
                             ref="ProdCompanyName"
                             label="ProdCompanyName"
-                            v-model="ProdCompanyName"
+                            v-model="editproductmodel.ProdCompanyName"
                             required
                           ></v-text-field>
                         </v-col>
@@ -56,7 +56,7 @@
                           <v-text-field
                             ref="ProdName"
                             label="ProdName"
-                            v-model="ProdName"
+                            v-model="editproductmodel.ProdName"
                             required
                           ></v-text-field>
                         </v-col>
@@ -64,7 +64,7 @@
                           <v-text-field
                             ref="ProdDetails"
                             label="ProdDetails"
-                            v-model="ProdDetails"
+                            v-model="editproductmodel.ProdDetails"
                             required
                           ></v-text-field>
                         </v-col>
@@ -72,14 +72,14 @@
                           <v-text-field
                             ref="ProdPrice"
                             label="ProdPrice"
-                            v-model="ProdPrice"
+                            v-model="editproductmodel.ProdPrice"
                             required
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-autocomplete
                             label="categoryname"
-                            v-model="CategoryID"
+                            v-model="editproductmodel.CategoryID"
                             multiple
                           ></v-autocomplete>
                         </v-col>
@@ -112,7 +112,7 @@
                 </v-card>
               </v-dialog>
             </td>
-            <td><v-btn @click="deleteproduct(item.id)">REMOVE</v-btn></td>
+            <td><v-btn @click="deleteproduct(item.id)">REMOVE</v-btn></td> 
           </tr>
         </table>
       </v-flex>
@@ -122,21 +122,20 @@
 </template>
 <script>
 import callAPI from "@/apihelper/api";
+import editproduct from "@/apihelper/modules/editproductmodel";
+
 
 export default {
   data: () => ({
     items: [],
-    Product: "",
-    ProdCompanyName: "",
-    ProdName: "",
-    ProdDetails: "",
-    ProdImage: "",
+    product:[],
     path: [],
-    ProdPrice: "",
-    CategoryID: "",
+    
     dialog: false,
     currentFile: undefined,
-    id: 0,
+    
+    editproductmodel: new editproduct(),
+
   }),
 
   methods: {
@@ -164,13 +163,13 @@ export default {
     fillmodal(productid) {
       this.items.forEach((productitem) => {
         if (productid == productitem.id) {
-          this.ProdCompanyName = productitem.ProdCompanyName;
-          this.ProdName = productitem.ProdName;
-          this.ProdDetails = productitem.ProdDetails;
-          this.ProdPrice = productitem.ProdPrice;
-          this.CategoryID = productitem.CategoryID;
-          this.id = productitem.id;
-          this.ProdImage = productitem.ProdImage;
+          this.editproductmodel.ProdCompanyName = productitem.ProdCompanyName;
+          this.editproductmodel.ProdName = productitem.ProdName;
+          this.editproductmodel.ProdDetails = productitem.ProdDetails;
+          this.editproductmodel.ProdPrice = productitem.ProdPrice;
+          this.editproductmodel.CategoryID = productitem.CategoryID;
+          this.editproductmodel.id = productitem.id;
+          this.editproductmodel.ProdImage = productitem.ProdImage;
           if (productitem.ProdImage != "") {
             this.path =
               "https://localhost:5001/StaticImages/Product/" +
@@ -191,31 +190,11 @@ export default {
       if (this.currentFile != "undefined") {
         formData.append("file", this.currentFile);
       }
-      // let data = {
-      //   SellerID: Number(localStorage.getItem("userid")),
-      //   id: this.id,
-      //   ProdCompanyName: this.ProdCompanyName,
-      //   ProdName: this.ProdName,
-      //   ProdDetails: this.ProdDetails,
-      //   ProdImage: this.ProdImage,
-      //   ProdPrice: this.ProdPrice,
-      //   CategoryID: this.CategoryID,
-      // };
-      // console.log("fqe", data);
+        this.editproductmodel.SellerID = Number(localStorage.getItem("userid")),
       formData.append(
-        "product",
-        JSON.stringify({
-          SellerID: Number(localStorage.getItem("userid")),
-          id: this.id, 
-          ProdCompanyName: this.ProdCompanyName,
-          ProdName: this.ProdName,
-          ProdDetails: this.ProdDetails,
-          ProdImage: this.ProdImage,
-          ProdPrice: this.ProdPrice,
-          CategoryID: this.CategoryID,
-        })
+        "product",JSON.stringify(this.editproductmodel)
+      
       );
-      console.log("hey", formData);
 
       callAPI
         .AsyncPOST("Product/UpdateProduct", formData)
@@ -223,11 +202,13 @@ export default {
     },
   },
   created() {
+    
     callAPI
       .AsyncGET("Product/GetMyProducts/" + localStorage.getItem("userid"))
       .then((data) => {
         const jdata = JSON.parse(data.content);
         console.log(jdata);
+        this.product = jdata
         jdata.forEach((currentValue) => {
           if (currentValue.ProdImage != "") {
             this.path.push(
