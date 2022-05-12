@@ -28,10 +28,7 @@ namespace MWTCore.Services
             return await _productRepository.AddProduct(product);
         }
 
-        public async Task<int> AddStock(StockModel stock)
-        {
-            return await _productRepository.CreateStock(stock);
-        }
+       
 
         public async Task<bool> DeleteProduct(int id)
         {

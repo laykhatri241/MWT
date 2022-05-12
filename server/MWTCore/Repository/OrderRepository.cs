@@ -219,6 +219,9 @@ namespace MWTCore.Repository
 
         }
 
-
+        public Task<List<CompanyOrderHistory>> OrderPlaced(int SellerID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

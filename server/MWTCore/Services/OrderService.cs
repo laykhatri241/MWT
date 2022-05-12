@@ -54,7 +54,7 @@ namespace MWTCore.Services
 
         public async Task<List<CompanyOrderHistory>> OrderPlaced(int SellerID)
         {
-            return await _orderRepository.
+            return await _orderRepository.OrderPlaced(SellerID);
         }
     }
 }

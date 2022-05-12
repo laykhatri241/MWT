@@ -327,7 +327,12 @@ namespace MWTWebApi.Controllers
         [HttpGet("OrderPlaced/{SellerID}")]
         public HttpAPIResponse OrderPlaced(int SellerID)
         {
-            var orders = _orderService
+            var orders = _orderService.OrderPlaced(SellerID).Result;
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(orders),
+                StatusCode = HttpStatusCode.OK
+            };
         }
         #endregion
     }

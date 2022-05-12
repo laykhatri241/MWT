@@ -21,7 +21,6 @@ namespace MWTCore.Services.Interfaces
 
         public Task<bool> UpdateProduct(ProductModel product);
 
-        public Task<int> AddStock(StockModel stock);
 
         public Task<bool> DeleteProduct(int id);
 
