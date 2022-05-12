@@ -99,9 +99,10 @@ class Users extends VuexModule {
       });
   }
   @Action
-  public async AddToCart(data: any): Promise<any> {
+  public async UpdateCart
+  (data: any): Promise<any> {
     return callApi
-      .AsyncPOST(`Account/AddToCart/${data.count}`, data)
+      .AsyncPOST(`Account/UpdateCart`, data)
       .then((response) => {
         // console.log(response);
         return response;

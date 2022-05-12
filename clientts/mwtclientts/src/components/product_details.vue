@@ -29,7 +29,7 @@
                 {{
                   (discount =
                     currentproduct.ProdPrice -
-                    (currentproduct.ProdPrice * stock.Offer) / 100)
+                    (currentproduct.ProdPrice * offer.Offer) / 100)
                 }}
                 <del style="" class="subtitle-1 font-weight-thin">{{
                   currentproduct.ProdPrice
@@ -81,6 +81,7 @@ import { namespace } from "vuex-class";
 import Category from "@/interfaces/category";
 import Product from "@/interfaces/product";
 import Stock from "@/interfaces/updatestock";
+import Offer from "@/interfaces/offer"
 import moment, { locales } from "moment";
 import User from "@/interfaces/user";
 import CartItem from "@/interfaces/cartitem";
@@ -95,9 +96,13 @@ export default class Home extends Vue {
   private message: string = "";
 
   @users.Action
-  public AddToCart!: (data: CartItem) => Promise<any>;
+  public UpdateCart!: (data: CartItem) => Promise<any>;
+
+  @Products.Action
+  public GetOffer!: (data: any) => Promise<any>;
 
   public stock = new Stock();
+  public offer = new Offer();
   @Prop(Number)
   productid!: number | null;
 
@@ -110,11 +115,12 @@ export default class Home extends Vue {
   public addtocart(): void {
     this.cartitem.ProductID = Number(this.$route.params.id);
     this.cartitem.CartID = Number(localStorage.getItem("CartId"));
+    this.cartitem.OfferID = this.offer.id;
     this.cartitem.Count = this.cartitem.Count;
     console.log(this.cartitem);
     // console.log(this.count);
 
-    this.AddToCart(this.cartitem).then((res) => {
+    this.UpdateCart(this.cartitem).then((res) => {
       console.log(res);
     });
   }
@@ -122,17 +128,22 @@ export default class Home extends Vue {
   created(): void {
     this.GetProducts(this.$route.params.id).then((res) => {
       var jdata = JSON.parse(res.content);
-      console.log(res);
+      // console.log(res);
       this.currentproduct = jdata;
     });
     this.GetStock(this.$route.params.id).then((res) => {
-      console.log(res);
+      // console.log(res);
       var jdata = JSON.parse(res.content);
-      console.log(jdata);
+      // console.log(jdata);
       this.stock = jdata;
       if (this.stock.Stock === 0) {
         this.message = "Out Of Stock";
       }
+    });
+    this.GetOffer(this.$route.params.id).then((res) => {
+      console.log("data", res);
+      var jdata = JSON.parse(res.content);
+      this.offer = jdata
     });
   }
 }
