@@ -309,7 +309,7 @@ namespace MWTWebApi.Controllers
         #endregion
 
         #region OrderHistory
-        [Authorize(Roles = "2,3")]
+        [Authorize(Roles = "3")]
         [HttpGet("OrderHistory/{UserID}")]
         public HttpAPIResponse OrderHistory(int UserID)
         {
@@ -322,7 +322,20 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-        
+        #region CompanyOrderHistory
+        [Authorize(Roles  ="2")]
+        [HttpGet("CompanyHistory/{SellerID}")]
+        public HttpAPIResponse CompanyHistory(int SellerID)
+        {
+            var orders = _orderService.CompanyHistory(SellerID).Result;
+            return new HttpAPIResponse()
+            {
+                Content = JsonConvert.SerializeObject(orders),
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+        #endregion
+
     }
 }
 

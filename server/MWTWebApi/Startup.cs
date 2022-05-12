@@ -35,6 +35,7 @@ namespace MWTWebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddNewtonsoftJson();
+            
             services.AddDbContext<StoreAppDbCon>(ops => ops.UseSqlServer(Configuration.GetConnectionString("MWTConn")));
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IAccountRepository, AccountRepository>();
@@ -57,7 +58,7 @@ namespace MWTWebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory logFac)
         {
             if (env.IsDevelopment())
             {
@@ -95,7 +96,7 @@ namespace MWTWebApi
                     );
             });
 
-            
+            logFac.AddFile("Logs/LogData-{Date}.txt");
         }
     }
 }

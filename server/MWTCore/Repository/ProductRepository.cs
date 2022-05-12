@@ -26,37 +26,42 @@ namespace MWTCore.Repository
             return await _context.SaveChangesAsync() == 1 ? category.id : 0;
         }
 
-        public async Task<int> AddEditOffer(OfferMaster offer)
+        public async Task<int> AddOffer
+            (OfferModel offer)
         {
-            if (!_context.offerMasters.Any(om => om.ProductID == offer.ProductID && om.OfferStart >= offer.OfferStart && om.OfferEnd <= offer.OfferEnd))
+            var Offer = new OfferMaster()
             {
+                Offer = offer.Offer,
+                OfferEnd = offer.OfferEnd,
+                OfferStart = offer.OfferStart,
+                ProductID = offer.ProductID
+            };
 
-                if (offer.id == 0)
-                {
-                    _context.offerMasters.Add(offer);
-                }
-                else
-                {
-                    var offerRecord = await _context.offerMasters.FirstAsync(om => om.id == offer.id);
-                    offerRecord.Offer = offer.Offer;
-                    offerRecord.OfferStart = offer.OfferStart;
-                    offerRecord.OfferEnd = offer.OfferEnd;
-                }
-                return await _context.SaveChangesAsync() == 1 ? offer.id : 0;
-            }
-            return -1;
+            _context.offerMasters.Add(Offer);
+            return await _context.SaveChangesAsync() == 1 ? Offer.id : 0;
 
         }
 
-        public async Task<int> AddProduct(ProductMaster product)
+        public async Task<int> AddProduct(ProductModel product)
         {
-            product.updatedAt = DateTime.Now;
-            product.createdAt = DateTime.Now;
-            _context.productMasters.Add(product);
-            var AddProduct = _context.SaveChanges();
+            var addProd = new ProductMaster()
+            {
+                CategoryID = product.CategoryID,
+                createdAt = DateTime.Now,
+                ProdCompanyName = product.ProdCompanyName,
+                ProdDetails = product.ProdDetails,
+                ProdImage = product.ProdImage,
+                ProdName = product.ProdName,
+                ProdPrice = product.ProdPrice,
+                SellerID = product.SellerID,
+                updatedAt = DateTime.Now
+
+            };
+            _context.productMasters.Add(addProd) ;
+            var AddProduct = await _context.SaveChangesAsync();
             _context.stockMasters.Add(new StockMaster()
             {
-                ProductID = product.id,
+                ProductID = addProd.id,
                 Stock = 0,
                 createdAt = DateTime.Now,
                 updatedAt = DateTime.Now,

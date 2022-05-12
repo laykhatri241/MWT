@@ -13,7 +13,7 @@ namespace MWTCore.Services.Interfaces
 
         public Task<int> AddCategory(CategoryMaster category);
 
-        public Task<int> AddProduct(ProductMaster product);
+        public Task<int> AddProduct(ProductModel product);
 
         public Task<List<ProductMaster>> GetMyProducts(int id);
 
@@ -36,7 +36,7 @@ namespace MWTCore.Services.Interfaces
 
         public Task<List<ProductMaster>> GetAllProducts();
 
-        public Task<int> AddEditOffer(OfferMaster offer);
+        public Task<int> AddOffer(OfferModel offer);
         public Task<OfferMaster> GetOffer(int ProductID);
     }
 }

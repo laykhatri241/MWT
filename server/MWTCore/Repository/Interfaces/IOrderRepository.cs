@@ -23,6 +23,6 @@ namespace MWTCore.Repository.Interfaces
 
         public Task<List<OrderHistory>> OrderHistory(int UserID);
 
-        
+        public Task<object> CompanyHistory(int SellerID);
     }
 }
