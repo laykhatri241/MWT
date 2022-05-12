@@ -63,7 +63,7 @@ namespace MWTWebApi.Controllers
         public HttpAPIResponse AddProduct()
         {
             var formCollection = Request.ReadFormAsync().Result;
-            var product = JsonConvert.DeserializeObject<ProductMaster>(formCollection.First().Value);
+            var product = JsonConvert.DeserializeObject<ProductModel>(formCollection.First().Value);
 
             if (formCollection.Files.Any())
             {
@@ -271,12 +271,12 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-        #region AddEditOffer
+        #region AddOffer
         [Authorize(Roles = "2")]
-        [HttpPost("AddEditOffer")]
-        public HttpAPIResponse AddEditOffer(OfferMaster offer)
+        [HttpPost("AddOffer")]
+        public HttpAPIResponse AddOffer(OfferModel offer)
         {
-            var status = _productService.AddEditOffer(offer).Result;
+            var status = _productService.AddOffer(offer).Result;
             return new HttpAPIResponse()
             {
                 Content = JsonConvert.SerializeObject(status),

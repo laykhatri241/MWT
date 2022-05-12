@@ -219,6 +219,33 @@ namespace MWTCore.Repository
 
         }
 
-        
+        public async Task<object> CompanyHistory(int SellerID)
+        {
+            return await
+                  (from pm in _context.productMasters
+                   join ci in _context.cartItems on pm.id equals ci.ProductID
+                   join cm in _context.cartMasters on ci.CartID equals cm.id
+                   join us in _context.users on cm.UserID equals us.id
+                   join ct in _context.categoryMasters on pm.CategoryID equals ct.id
+                   join om in _context.offerMasters on ci.OfferID equals om.id into Offers
+                   from Offer in Offers.DefaultIfEmpty()
+                   where pm.SellerID == SellerID
+                   select new
+                   {
+                       ProductID = pm.id,
+                       ProdCompanyName = pm.ProdCompanyName,
+                       ProdName = pm.ProdName,
+                       ProdDetails = pm.ProdDetails,
+                       ProdImage = pm.ProdImage,
+                       ProdPrice = pm.ProdPrice,
+                       userID = us.id,
+                       UserFullname = us.Fullname,
+                       CartCount = ci.Count,
+                       CategoryName = ct.categoryName,
+                       Offer = Offer.Offer
+                   })
+                   .ToListAsync();
+
+        }
     }
 }

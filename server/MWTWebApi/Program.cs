@@ -18,6 +18,15 @@ namespace MWTWebApi
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging((hostingContent, logBuilder)=>
+                {
+                    logBuilder.ClearProviders();
+                    logBuilder.AddConfiguration(hostingContent.Configuration.GetSection("Logging"));
+                    logBuilder.AddDebug();
+                    logBuilder.AddEventLog();
+                    logBuilder.AddConsole();
+                })
+
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

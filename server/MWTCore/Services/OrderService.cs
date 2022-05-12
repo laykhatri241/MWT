@@ -52,6 +52,9 @@ namespace MWTCore.Services
             return await _orderRepository.PurchaseSuccess(CartID);
         }
 
-       
+        public async Task<object> CompanyHistory(int SellerID)
+        {
+            return await _orderRepository.CompanyHistory(SellerID);
+        }
     }
 }

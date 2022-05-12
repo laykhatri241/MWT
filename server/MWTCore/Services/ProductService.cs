@@ -23,7 +23,7 @@ namespace MWTCore.Services
             return await _productRepository.AddCategory(category);
         }
 
-        public async Task<int> AddProduct(ProductMaster product)
+        public async Task<int> AddProduct(ProductModel product)
         {
             return await _productRepository.AddProduct(product);
         }
@@ -85,9 +85,9 @@ namespace MWTCore.Services
             return await _productRepository.UpdateStock(stock);
         }
 
-        public async Task<int> AddEditOffer(OfferMaster offer)
+        public async Task<int> AddOffer(OfferModel offer)
         {
-            return await _productRepository.AddEditOffer(offer);
+            return await _productRepository.AddOffer(offer);
         }
 
         public async Task<OfferMaster> GetOffer(int ProductID)
