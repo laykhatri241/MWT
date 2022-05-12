@@ -1,4 +1,4 @@
-import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
+import { VuexModule, Module, Mutation, Action} from "vuex-module-decorators";
 import callApi from "@/api/callApi";
 import Product from "@/interfaces/product";
 import Category from "@/interfaces/category";
@@ -8,7 +8,7 @@ class Products extends VuexModule {
   products = new Product();
   categories = new Category();
   updateStock = new UpdateStock();
-
+ 
   @Action
   public async AddProduct(data: Product): Promise<any> {
     data.SellerID = Number(localStorage.getItem("UserID"));
@@ -121,6 +121,32 @@ class Products extends VuexModule {
         return err;
       });
   }
+  @Action
+  public async AddEditOffer(data : any): Promise<any> {
+    return callApi
+      .AsyncPOST("Product/AddEditOffer", data)
+      .then((response) => {
+        // console.log(response);
+
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async GetOffer(id : number): Promise<any> {
+    return callApi
+      .AsyncGET(`Product/GetOffer/${id}`)
+      .then((response) => {
+        // console.log(response);
+
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  } 
 }
 
 export default Products;

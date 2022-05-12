@@ -28,7 +28,7 @@
                     <v-col cols="12" md="12">
                       <v-text-field
                         label="Offer"
-                        v-model="offer.Offer"
+                        v-model.number="offer.Offer"
                         class="purple-input"
                       />
                     </v-col>
@@ -49,12 +49,12 @@
                         prepend-inner-icon="mdi-calendar"
                       ></v-text-field>
                     </v-col>
-                    <h3 style="color: green" class="text-center mt-4">
+                    <!-- <h3 style="color: green" class="text-center mt-4">
                       {{ message }}
                     </h3>
                     <h3 style="color: red" class="text-center mt-4">
                       {{ warning }}
-                    </h3>
+                    </h3> -->
                   </v-row>
                 </v-container>
               </v-form>
@@ -91,31 +91,35 @@ export default class AddProducts extends Vue {
   currentFile = "undefined";
 
   @Products.Action
-  public GetStock!: (data: any) => Promise<any>;
+  public GetOffer!: (id: number) => Promise<any>;
 
   @Products.Action
-  public UpdateStock!: (data: any) => Promise<any>;
+  public AddEditOffer!: (data: any) => Promise<any>;
 
   @Prop(Number)
   productid!: number;
 
   public submitForm(): void {
-    this.UpdateStock(this.offer).then((res) => {
-      //   console.log(res);
+    console.log(this.offer);
+
+    this.AddEditOffer(this.offer).then((res) => {
+      console.log("Add", res);
       if (res.content == "true") {
         this.message = "Succesfully Updated!!!!";
-        // this.dialog = false;
+        this.dialog = false;
       } else {
         this.warning = "Failed!!";
       }
     });
   }
   created(): void {
-    this.GetStock(this.productid).then((res) => {
+    this.GetOffer(this.productid).then((res) => {
       //   console.log(res);
       var jdata = JSON.parse(res.content);
-      this.offer.id = jdata.id;
-      this.offer.ProductID = jdata.ProductID;
+      console.log("jdata", jdata);
+
+      // this.offer.id = jdata.id;
+      this.offer.ProductID = this.productid;
 
       this.offer.Offer = jdata.Offer;
       (this.offer.OfferStart = moment(String(jdata.OfferStart)).format(

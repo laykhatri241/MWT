@@ -98,17 +98,14 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { namespace } from "vuex-class";
-import RightSideBar from "@/components/RightSideBar.vue";
-import SideBar from "@/components/SideBar.vue";
-import Category from "@/interfaces/category";
-import Product from "@/interfaces/product";
+import Offer from "@/interfaces/offer"
 import moment, { locales } from "moment";
 const Products = namespace("product");
 @Component({})
 export default class Home extends Vue {
   product = [];
   search = "";
-
+  public offer = new Offer();
   @Prop(Number)
   productid!: number | null;
 
@@ -122,6 +119,7 @@ export default class Home extends Vue {
       // console.log(jdata);
       this.product = jdata;
     });
+    
   }
   get filteredList() {
     return this.product.filter((post: any) => {
