@@ -64,6 +64,7 @@ namespace MWTCore.Repository
             return await _context.SaveChangesAsync() == 1 && AddProduct == 1 ? product.id : 0;
         }
 
+       
         public async Task<List<ProductMaster>> GetAllProducts()
         {
             return await _context.productMasters.AsNoTracking().ToListAsync();

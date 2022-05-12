@@ -19,7 +19,6 @@ namespace MWTCore.Repository.Interfaces
 
         public Task<ProductMaster> RetrieveProduct(int id);
 
-        public Task<int> CreateStock(StockModel stock);
 
         public Task<bool> UpdateProduct(ProductModel product);
 

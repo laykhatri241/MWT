@@ -183,19 +183,7 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-        #region AddStock
-        [Authorize(Roles = "2")]
-        [HttpPost("AddStock")]
-        public HttpAPIResponse AddStock(StockModel stock)
-        {
-            var status = _productService.AddStock(stock).Result;
-            return new HttpAPIResponse()
-            {
-                Content = JsonConvert.SerializeObject(status),
-                StatusCode = HttpStatusCode.OK
-            };
-        }
-        #endregion
+        
 
         #region GetStock
         [Authorize(Roles = "2,3")]
