@@ -47,6 +47,13 @@
                         </v-list-item>
                       </td>
                       <td>{{ item.ProdPrice }}</td>
+                      <!-- <td>
+                        {{
+                          (discount =
+                            item.ProdPrice -
+                            (item.ProdPrice * offer.Offer) / 100)
+                        }}
+                      </td> -->
                       <td>
                         <!-- <div v-for="(item , i) in productcount" v-bind:key="i"> -->
                         <v-text-field
@@ -123,13 +130,17 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import User from "@/interfaces/user";
 import CartMaster from "@/interfaces/cartmaster";
+import Offer from "@/interfaces/offer";
 import CartItem from "@/interfaces/cartitem";
 import Product from "@/interfaces/product";
 const users = namespace("user");
+const Products = namespace("product");
 @Component
 export default class Checkout extends Vue {
   cartitem = new CartItem();
+  public offer = new Offer();
   product = [];
+  discount = 0;
   currentproduct = new Product();
   Total = 0;
   totalcost = 0;
@@ -140,19 +151,24 @@ export default class Checkout extends Vue {
   @users.Action
   public ProcessToPayment!: (data: any) => Promise<any>;
 
+  @Products.Action
+  public GetOffer!: (data: any) => Promise<any>;
+
   @users.Action
-  public RemoveFromCart!: (data: any) => Promise<any>;
+  public UpdateCart!: (data: CartItem) => Promise<any>;
 
   @users.Action
   public GetMyCart!: (data: any) => Promise<any>;
 
   public removecart(id: any): void {
     this.cartitem.ProductID = id;
-    //   this.cartitem.ProductID= this.currentproduct.id
     this.cartitem.CartID = Number(localStorage.getItem("CartId"));
-    // console.log(this.cartitem);
+    this.cartitem.OfferID = this.offer.id;
+    this.cartitem.Count = this.cartitem.Count;
+    console.log(this.cartitem);
+    // console.log(this.count);
 
-    this.RemoveFromCart(this.cartitem).then((res) => {
+    this.UpdateCart(this.cartitem).then((res) => {
       // console.log(res);
       location.reload();
     });
@@ -179,14 +195,19 @@ export default class Checkout extends Vue {
 
   created(): void {
     this.CartCheckout(localStorage.getItem("CartId")).then((res) => {
-        // console.log(res);
+      // console.log(res);
       var jdata = JSON.parse(res.content);
       console.log(jdata);
       this.product = jdata.Products;
-      this.totalcost = jdata.TotalCost;
+      this.totalcost = jdata.TotalCost; 
       this.productcount = jdata.ProductCounts;
       //   console.log("PRoduct Details", this.product);
       console.log("Product count", this.productcount);
+    });
+    this.GetOffer(this.product).then((res) => {
+      console.log("data", res);
+      var jdata = JSON.parse(res.content);
+      this.offer = jdata;
     });
   }
 }
