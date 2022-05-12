@@ -322,19 +322,7 @@ namespace MWTWebApi.Controllers
         }
         #endregion
 
-        #region OrderPlaced
-        [Authorize(Roles = "2")]
-        [HttpGet("OrderPlaced/{SellerID}")]
-        public HttpAPIResponse OrderPlaced(int SellerID)
-        {
-            var orders = _orderService.OrderPlaced(SellerID).Result;
-            return new HttpAPIResponse()
-            {
-                Content = JsonConvert.SerializeObject(orders),
-                StatusCode = HttpStatusCode.OK
-            };
-        }
-        #endregion
+        
     }
 }
 

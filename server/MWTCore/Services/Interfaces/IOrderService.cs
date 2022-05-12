@@ -23,6 +23,6 @@ namespace MWTCore.Services.Interfaces
 
         public Task<List<OrderHistory>> OrderHistory(int UserID);
 
-        public Task<List<CompanyOrderHistory>> OrderPlaced(int SellerID);
+        
     }
 }

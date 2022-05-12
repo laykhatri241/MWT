@@ -52,9 +52,6 @@ namespace MWTCore.Services
             return await _orderRepository.PurchaseSuccess(CartID);
         }
 
-        public async Task<List<CompanyOrderHistory>> OrderPlaced(int SellerID)
-        {
-            return await _orderRepository.OrderPlaced(SellerID);
-        }
+       
     }
 }
