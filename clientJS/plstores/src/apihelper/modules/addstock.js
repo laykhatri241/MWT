@@ -1,9 +1,7 @@
-export default class loginModel{
-    id=""
-    ProductID=""
+export default class addstockModel{
+    id=0
+    ProductID=0
     Stock=""
-    Offer=""
-    OfferStart=""
-    OfferEnd=""
+    
     
 }
