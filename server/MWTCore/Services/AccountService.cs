@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MWTCore.Services
@@ -29,6 +30,25 @@ namespace MWTCore.Services
                 }
                 return builder.ToString();
             }
+        }
+
+        #endregion
+
+
+        #region CheckGSTIN
+        private bool CheckSGSTIN(string gst)
+        {
+            var regex = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
+            return Regex.Match(gst, regex).Success;
+
+        }
+        #endregion
+
+        #region CheckPAN
+        private bool CheckPAN(string pan)
+        {
+            var regex = "[A-Z]{5}[0-9]{4}[A-Z]{1}";
+            return Regex.Match(pan, regex).Success;
         }
         #endregion
         public AccountService(IAccountRepository accountRepository)
@@ -54,7 +74,7 @@ namespace MWTCore.Services
         public async Task<bool> UpdatePassword(ChangePassword changePassword)
         {
             changePassword.OldPass = ComputeSha256Hash(changePassword.OldPass);
-            changePassword.NewPass= ComputeSha256Hash(changePassword.NewPass);
+            changePassword.NewPass = ComputeSha256Hash(changePassword.NewPass);
             return await _accountRepository.UpdatePassword(changePassword);
         }
 
@@ -66,9 +86,9 @@ namespace MWTCore.Services
 
         public async Task<User> UserExists(string Username, string Password)
         =>
-        await _accountRepository.IsUser(Username, ComputeSha256Hash( Password));
-        
-        public async Task<bool> CheckOldPassword(string oldPassword , int id)
+        await _accountRepository.IsUser(Username, ComputeSha256Hash(Password));
+
+        public async Task<bool> CheckOldPassword(string oldPassword, int id)
         =>
         (await _accountRepository.RetriveUser(id)).Password.Equals(ComputeSha256Hash(oldPassword));
 
@@ -76,32 +96,63 @@ namespace MWTCore.Services
         => await _accountRepository.GetAddresses(id);
 
         public async Task<AddressMaster> GetAddress(int id)
-        => 
+        =>
         await _accountRepository.GetAddress(id);
 
         public async Task<bool> RemoveAddress(int id)
-        =>await _accountRepository.DeleteAddress(id);
+        => await _accountRepository.DeleteAddress(id);
 
         public async Task<int> CreateBusinessDetails(BusinessDetailsMaster businessDetails)
-        => 
-        await _accountRepository.CreateBusinessDetails(businessDetails);
-        
+        {
+            if (CheckSGSTIN(businessDetails.GSTIN))
+            {
+                if (CheckPAN(businessDetails.PAN))
+                {
+                    return await _accountRepository.CreateBusinessDetails(businessDetails);
+                }
+                else
+                {
+                    return -2;
+                }
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
 
         public async Task<bool> BusinessDetailsExist(int id)
-        => 
+        =>
         await _accountRepository.IsBusinessDetail(id);
-        
+
 
         public async Task<bool> DeleteBusinessDetails(int id)
-        =>await _accountRepository.DeleteBusinessDetail(id);
+        => await _accountRepository.DeleteBusinessDetail(id);
 
 
         public async Task<BusinessDetailsMaster> GetBusinessDetails(int id)
         => await _accountRepository.RetrieveBusinessDetail(id);
 
         public async Task<bool> UpdateBusinessDetail(BusinessDetailModel businessDetail)
-        => await _accountRepository.UpdateBusinessDetail(businessDetail);
+        {
+            if (CheckSGSTIN(businessDetail.GSTIN))
+            {
+                if (CheckPAN(businessDetail.PAN))
+                {
+                    return await _accountRepository.UpdateBusinessDetail(businessDetail);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-      
+
     }
 }
