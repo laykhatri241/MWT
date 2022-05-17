@@ -166,10 +166,10 @@ export default class AddProducts extends Vue {
   onimagechage() {
     if (this.product.ProdImage == null) {
       this.imagepath =
-        "https://localhost:44301/StaticImages/Product/DefaultProduct.png";
+        "https://localhost:5001/StaticImages/Product/DefaultProduct.png";
     } else {
       this.imagepath =
-        "https://localhost:44301/StaticImages/Product/" +
+        "https://localhost:5001/StaticImages/Product/" +
         this.product.ProdImage;
     }
   }

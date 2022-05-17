@@ -83,10 +83,10 @@ export default class ProductList extends Vue {
 
       if (jdata.ProdImage != null) {
         this.imagepath =
-          "https://localhost:44301/StaticImages/Product/DefaultProduct.png";
+          "https://localhost:5001/StaticImages/Product/DefaultProduct.png";
       } else {
         this.imagepath =
-          "https://localhost:44301/StaticImages/Product/" + this.pro.ProdImage;
+          "https://localhost:5001/StaticImages/Product/" + this.pro.ProdImage;
       }
       this.product = jdata;
     });
@@ -117,10 +117,10 @@ export default class ProductList extends Vue {
   // onimagechage() {
   //   if (this.product == null) {
   //     this.imagepath =
-  //       "https://localhost:44301/StaticImages/Product/DefaultProduct.png";
+  //       "https://localhost:5001/StaticImages/Product/DefaultProduct.png";
   //   } else {
   //     this.imagepath =
-  //       "https://localhost:44301/StaticImages/Product/" + this.pro.ProdImage;
+  //       "https://localhost:5001/StaticImages/Product/" + this.pro.ProdImage;
   //   }
   // }
 }

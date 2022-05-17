@@ -6,7 +6,7 @@
           <v-carousel>
             <img
               :src="
-                'https://localhost:44301/StaticImages/Product/' +
+                'https://localhost:5001/StaticImages/Product/' +
                 currentproduct.ProdImage
               "
             />
