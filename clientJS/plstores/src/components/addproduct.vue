@@ -93,6 +93,8 @@ export default {
       if (this.userimage != null) {
         formData.append("file", this.userimage);
       }
+      this.addproductmodel.SellerID=localStorage.getItem("userid");
+
       formData.append("product", JSON.stringify(this.addproductmodel));
       console.log(formData);
       console.log(this.addproductmodel);

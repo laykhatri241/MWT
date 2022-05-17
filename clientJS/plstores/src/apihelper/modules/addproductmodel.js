@@ -6,5 +6,5 @@ export default class addproductmodel{
     ProdImage= ""
     ProdPrice= ""
     CategoryID=0
-   
+   SellerID=0
 }

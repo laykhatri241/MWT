@@ -12,6 +12,7 @@ import displayproducts from'@/components/displayproducts'
 import editproducts from'@/components/editproducts'
 import updateaddress from'@/components/updateaddress'
 import companydetails from'@/components/companydetails'
+import userproduct from '@/components/userproduct'
 Vue.use(Router)
 
 export default new Router({
@@ -41,6 +42,11 @@ export default new Router({
         path:'/resetpassword',
         component:resetpassword,
         name:'resetpassword',
+      },
+      {
+        path:'/userproduct',
+        component:userproduct,
+        name:'userproduct',
       },
       {
         path:'/companydashboard',
