@@ -49,6 +49,11 @@ const routes = [
     
         component: () => import("@/components/payment.vue"),
       },
+      {
+        path: "/userorderhistory",
+        name: "userorderhistory",
+        component: () => import("@/components/userorderhistory.vue"),
+      },
     ],
   },
   {

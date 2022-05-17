@@ -6,7 +6,7 @@
           <!-- <v-avatar>
             <v-img
               :src="
-                'https://localhost:44301/StaticImages/Product/' +
+                'https://localhost:5001/StaticImages/Product/' +
                 currentproduct.ProdImage
               "
             >
@@ -158,10 +158,10 @@ export default class UpdateProfile extends Vue {
   onimagechage() {
     if (this.currentuser.Avatar == null) {
       this.imagepath =
-        "https://localhost:44301/StaticImages/Avatar/DefaultProfile.jpeg";
+        "https://localhost:50001/StaticImages/Avatar/DefaultProfile.jpeg";
     } else {
       this.imagepath =
-        "https://localhost:44301/StaticImages/Avatar/" +
+        "https://localhost:5001/StaticImages/Avatar/" +
         this.currentuser.Avatar;
     }
   }
