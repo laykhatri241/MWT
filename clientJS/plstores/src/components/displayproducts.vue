@@ -117,94 +117,63 @@
             <!-- <td><v-btn @click="getstock">Stock</v-btn></td>
 
             <td> -->
-              <v-dialog persistent v-model="dialog" max-width="600px">
-                <template v-slot:activator="{ on, attrs }">
+            <v-dialog persistent v-model="stockdialog" max-width="600px">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn color="primary" dark v-bind="attrs" v-on="on">
+                  Stock
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="text-h5">Stock details</span>
+                </v-card-title>
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-text-field
+                          ref="id"
+                          label="id"
+                          v-model="addstockmodel.id"
+                          required
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12"> </v-col>
+                      <v-col cols="12">
+                        <v-text-field
+                          ref="ProductID"
+                          label="ProductID"
+                          v-model="addstockmodel.ProductID"
+                          required
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-text-field
+                          ref="Stock"
+                          label="Stock"
+                          v-model="addstockmodel.Stock"
+                          required
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                  <small>*indicates required field</small>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
                   <v-btn
-                    color="primary"
-                    @click="fillmodal(item.id)"
-                    dark
-                    v-bind="attrs"
-                    v-on="on"
+                    color="blue darken-1"
+                    text
+                    @click="(stockdialog = false)"
                   >
-                    Stock
+                    Close
                   </v-btn>
-                </template>
-                <v-card>
-                  <v-card-title>
-                    <span class="text-h5">Edit Producvt</span>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col cols="12">
-                          <v-text-field
-                            ref="ProdCompanyName"
-                            label="ProdCompanyName"
-                            v-model="editproductmodel.ProdCompanyName"
-                            required
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12"> </v-col>
-                        <v-col cols="12">
-                          <v-text-field
-                            ref="ProdName"
-                            label="ProdName"
-                            v-model="editproductmodel.ProdName"
-                            required
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12">
-                          <v-text-field
-                            ref="ProdDetails"
-                            label="ProdDetails"
-                            v-model="editproductmodel.ProdDetails"
-                            required
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            ref="ProdPrice"
-                            label="ProdPrice"
-                            v-model="editproductmodel.ProdPrice"
-                            required
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6">
-                          <v-autocomplete
-                            label="categoryname"
-                            v-model="editproductmodel.CategoryID"
-                            multiple
-                          ></v-autocomplete>
-                        </v-col>
-                        <v-col cols="12" sm="6">
-                          <v-file-input
-                            ref="ProdImage"
-                            label="ProdImage"
-                            @change="onFileChange"
-                            required
-                          ></v-file-input>
-                        </v-col>
-                        <v-col cols="12" sm="6"> </v-col>
-                      </v-row>
-                    </v-container>
-                    <small>*indicates required field</small>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      color="blue darken-1"
-                      text
-                      @click="(dialog = false), reset()"
-                    >
-                      Close
-                    </v-btn>
-                    <v-btn color="blue darken-1" text @click="getstock()">
-                      Save
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            
+                  <v-btn color="blue darken-1" text @click="updatestock()">
+                    Add
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </tr>
         </table>
       </v-flex>
@@ -224,6 +193,7 @@ export default {
     path: [],
 
     dialog: false,
+    stockdialog:false,
     currentFile: undefined,
 
     editproductmodel: new editproduct(),
@@ -286,21 +256,27 @@ export default {
         formData.append("product", JSON.stringify(this.editproductmodel));
 
       callAPI
-        .AsyncPOST("Product/UpdateProduct", formData)
+        .AsyncPOST("Product/UpdateProduct/", formData)
         .then((resp) => console.log(resp));
     },
-    addstock() {},
+    updatestock() {
+            callAPI.AsyncPOST("Product/UpdateStock/", this.addstockmodel).then((resp) => console.log(resp));
+
+
+    },
     getstock() {
       callAPI
-        .AsyncPOST("Product/GetStock", +Stockid)
+        .AsyncGET("Product/GetStock/", +ProductId)
         .then((resp) => console.log(resp));
     },
   },
+
   created() {
     callAPI
       .AsyncGET("Product/GetMyProducts/" + localStorage.getItem("userid"))
       .then((data) => {
         const jdata = JSON.parse(data.content);
+
         console.log(jdata);
         this.product = jdata;
         jdata.forEach((currentValue) => {
