@@ -50,14 +50,14 @@
           <v-img
             height="180"
             :src="
-              'https://localhost:44301/StaticImages/Product/' + shoe.ProdImage
+              'https://localhost:5001/StaticImages/Product/' + shoe.ProdImage
             "
           ></v-img>
           <v-toolbar color="transparent" class="mt-n7" flat>
             <!-- <v-avatar color="white" rounded class="mr-2">
               <v-img
                 :src="
-                  'https://localhost:44301/StaticImages/Product/' +
+                  'https://localhost:5001/StaticImages/Product/' +
                   shoe.ProdImage
                 "
                 contain

@@ -27,7 +27,7 @@
                           <v-list-item-avatar>
                             <v-img
                               :src="
-                                'https://localhost:44301/StaticImages/Product/' +
+                                'https://localhost:5001/StaticImages/Product/' +
                                 item.ProdImage
                               "
                             ></v-img>
@@ -195,20 +195,20 @@ export default class Checkout extends Vue {
 
   created(): void {
     this.CartCheckout(localStorage.getItem("CartId")).then((res) => {
-      // console.log(res);
+      console.log(res);
       var jdata = JSON.parse(res.content);
       console.log(jdata);
       this.product = jdata.Products;
       this.totalcost = jdata.TotalCost; 
       this.productcount = jdata.ProductCounts;
       //   console.log("PRoduct Details", this.product);
-      console.log("Product count", this.productcount);
+      // console.log("Product count", this.productcount);
     });
-    this.GetOffer(this.product).then((res) => {
-      console.log("data", res);
-      var jdata = JSON.parse(res.content);
-      this.offer = jdata;
-    });
+    // this.GetOffer(this.product).then((res) => {
+    //   console.log("data", res);
+    //   var jdata = JSON.parse(res.content);
+    //   this.offer = jdata;
+    // });
   }
 }
 </script>

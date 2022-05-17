@@ -25,7 +25,7 @@
               <v-icon>mdi-cart-outline</v-icon>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item>
+          <v-list-item to="userorderhistory">
             <v-list-item-content>
               <v-icon>mdi-store-outline</v-icon>
             </v-list-item-content>

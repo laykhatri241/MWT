@@ -26,7 +26,6 @@ class Users extends VuexModule {
     return callApi
       .AsyncPOST("Account/Login", data)
       .then((response: any) => {
-       
         return response;
       })
       .catch((err) => {
@@ -99,8 +98,7 @@ class Users extends VuexModule {
       });
   }
   @Action
-  public async UpdateCart
-  (data: any): Promise<any> {
+  public async UpdateCart(data: any): Promise<any> {
     return callApi
       .AsyncPOST(`Account/UpdateCart`, data)
       .then((response) => {
@@ -143,6 +141,18 @@ class Users extends VuexModule {
     Userid = Number(localStorage.getItem("UserID"));
     return callApi
       .AsyncGET(`Account/PaymentSuccess/${id}/${Userid}`)
+      .then((response) => {
+        // console.log(response);
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+  @Action
+  public async OrderHistory(data: any): Promise<any> {
+    return callApi
+      .AsyncGET(`Account/OrderHistory/${data}`)
       .then((response) => {
         // console.log(response);
         return response;

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 class callAPI {
-  static baseURL = "https://localhost:44301/";
+  static baseURL = "https://localhost:5001/";
 
   getAuth() {
     if (localStorage.getItem("TokenBarrier")?.length == null) {
